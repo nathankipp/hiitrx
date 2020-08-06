@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "/tri-tap/static/css/main.5f944f64.chunk.css",
+    "main.js": "/tri-tap/static/js/main.b9975a14.chunk.js",
+    "main.js.map": "/tri-tap/static/js/main.b9975a14.chunk.js.map",
+    "runtime-main.js": "/tri-tap/static/js/runtime-main.3875c67d.js",
+    "runtime-main.js.map": "/tri-tap/static/js/runtime-main.3875c67d.js.map",
+    "static/js/2.b2e189de.chunk.js": "/tri-tap/static/js/2.b2e189de.chunk.js",
+    "static/js/2.b2e189de.chunk.js.map": "/tri-tap/static/js/2.b2e189de.chunk.js.map",
+    "index.html": "/tri-tap/index.html",
+    "precache-manifest.f61c6afce41d195bfe24aa90d272eeac.js": "/tri-tap/precache-manifest.f61c6afce41d195bfe24aa90d272eeac.js",
+    "service-worker.js": "/tri-tap/service-worker.js",
+    "static/css/main.5f944f64.chunk.css.map": "/tri-tap/static/css/main.5f944f64.chunk.css.map",
+    "static/js/2.b2e189de.chunk.js.LICENSE.txt": "/tri-tap/static/js/2.b2e189de.chunk.js.LICENSE.txt",
+    "static/media/logo.svg": "/tri-tap/static/media/logo.5d5d9eef.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.3875c67d.js",
+    "static/js/2.b2e189de.chunk.js",
+    "static/css/main.5f944f64.chunk.css",
+    "static/js/main.b9975a14.chunk.js"
+  ]
+}
