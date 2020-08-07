@@ -1,4 +1,4 @@
-.App {
+.Lift {
   align-items: stretch;
   background-color: skyblue;
   display: flex;
@@ -22,6 +22,13 @@
   justify-content: center;
 }
 
+.tap.pressed {
+  background-color: green;
+}
+.tap.pressed.triggered {
+  background-color: red;
+}
+
 .circle {
   align-items: center;
   background-color: black;
@@ -33,10 +40,6 @@
   justify-content: center;
   user-select: none;
   width: 300px;
-}
-
-.circle.active {
-  background-color: green;
 }
 
 .overlay {
