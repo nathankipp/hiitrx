@@ -38,16 +38,15 @@
   font-size: 6rem;
   height: 300px;
   justify-content: center;
-  user-select: none;
   width: 300px;
 }
 
 .overlay {
+  align-items: center;
+  background-color: rgba(0, 0, 0, .25);
   bottom: 0;
   display: flex;
   justify-content: center;
-  align-items: center;
-  background-color: rgba(0, 0, 0, .25);
   left: 0;
   position: absolute;
   right: 0;
@@ -55,13 +54,13 @@
 }
 
 .modal {
-  justify-content: space-between;
-  flex-direction: column;
-  display: flex;
-  width: 80vw;
   background-color: white;
-  border: 2px solid black;
   border-radius: 0.5rem;
+  border: 2px solid black;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 80vw;
 }
 
 table {

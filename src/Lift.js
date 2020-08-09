@@ -5,25 +5,27 @@ const DEFAULTS = {
   ctext: 'Press',
 }
 const DELAY = 1500;
+const SAMPLE_SIZE = 5;
 
 const interval = (t1, t2) => t2 - t1;
 
 function Results({ clicks, reset }) {
   const results = [{
     item: 'Date',
-    value: new Date(clicks[0]).toLocaleDateString()
+    value: new Date(clicks[0].timeStamp).toLocaleDateString()
   },
   {
     item: 'Time',
-    value: new Date(clicks[0]).toLocaleTimeString()
+    value: new Date(clicks[0].timeStamp).toLocaleTimeString()
   }];
   const intervals = [];
-  for (let i = 0; i < 5; i += 1) {
+  for (let i = 0; i < SAMPLE_SIZE; i += 1) {
     const index = i * 2;
-    const int = interval(clicks[index], clicks[index+1]);
+    const int = interval(clicks[index].timeStamp, clicks[index+1].timeStamp);
+    const press = Math.round(clicks[index+1].pressure * 1000)/10;
     results.push({
       item: `Delay ${i+1}`,
-      value: `${int}ms`
+      value: `${int}ms [${press}%]`
     });
     intervals.push(int);
   }
@@ -61,7 +63,6 @@ function Lift() {
   const [clicks, setClicks] = useState([]);
   const [active, setActive] = useState(false);
   const [res, setRes] = useState(false);
-
   const [pressed, setPressed] = useState(false);
   const [triggered, setTriggered] = useState(false);
   let liftTimer;
@@ -78,20 +79,20 @@ function Lift() {
   }
 
   useEffect(() => {
-    const rand = (1 * DELAY) + Math.round(Math.random() * 250);
+    const rand = DELAY + Math.round(Math.random() * 250);
     if (pressed) {
       liftTimer = setTimeout(() => {
         setTriggered(true);
         setClicks([
           ...clicks,
-          Date.now(),
+          { timeStamp: Date.now() },
         ]);
       }, rand);
     }
   }, [pressed]);
 
   useEffect(() => {
-    if (clicks.length === 10) {
+    if (clicks.length === SAMPLE_SIZE * 2) {
       setRes(true);
     }
   }, [clicks]);
@@ -102,7 +103,7 @@ function Lift() {
     }
     setActive(true);
     setPressed(true);
-    console.log(e);
+    console.log('down', e);
   }
 
   const pointerUp = (e) => {
@@ -117,13 +118,16 @@ function Lift() {
       setCtext('Good');
       setClicks([
         ...clicks,
-        Date.now(),
+        {
+          timeStamp: Date.now(),
+          pressure: e.pressure,
+        },
       ]);
     }
     setActive(false);
     setTriggered(false);
     setTimeout(() => setCtext(DEFAULTS.ctext), DELAY);
-    console.log(e);
+    console.log('up', e);
   }
 
   return (
