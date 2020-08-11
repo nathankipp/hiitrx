@@ -10,6 +10,26 @@ html, body {
 
 #root {
   height: 100%;
+  user-select: none;
+}
+
+.links {
+  background-color: black;
+  left: 0;
+  padding: 0.5rem 1rem;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 1;
+  z-index: 1;
+}
+
+a, a:visited, a:link, a:active {
+  color: skyblue;
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-right: 2rem;
+  text-decoration: none;
 }
 
 code {
