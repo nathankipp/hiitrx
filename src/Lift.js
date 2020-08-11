@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+import Pressure from 'pressure';
 import './Lift.css';
 
 const DEFAULTS = {
@@ -65,7 +66,22 @@ function Lift() {
   const [res, setRes] = useState(false);
   const [pressed, setPressed] = useState(false);
   const [triggered, setTriggered] = useState(false);
-  let liftTimer;
+  const liftTimer = useRef(null);
+  const maxForce = useRef(0);
+
+  useEffect(() => {
+    Pressure.set('#circle', {
+      start: () => {
+        maxForce.current = 0;
+      },
+      change: force => {
+        maxForce.current = force > maxForce.current ? force : maxForce.current;
+      },
+      unsupported: function(){
+        maxForce.current = -1;
+      },
+    });
+  }, []);
 
   const update = (ctext, active) => {
     setCtext(ctext);
@@ -81,10 +97,10 @@ function Lift() {
   useEffect(() => {
     const rand = DELAY + Math.round(Math.random() * 250);
     if (pressed) {
-      liftTimer = setTimeout(() => {
+      liftTimer.current = setTimeout(() => {
         setTriggered(true);
-        setClicks([
-          ...clicks,
+        setClicks(c => [
+          ...c,
           { timeStamp: Date.now() },
         ]);
       }, rand);
@@ -103,7 +119,6 @@ function Lift() {
     }
     setActive(true);
     setPressed(true);
-    console.log('down', e);
   }
 
   const pointerUp = (e) => {
@@ -113,21 +128,20 @@ function Lift() {
     }
     if (!triggered) {
       setCtext('!');
-      clearTimeout(liftTimer);
+      clearTimeout(liftTimer.current);
     } else {
       setCtext('Good');
       setClicks([
         ...clicks,
         {
           timeStamp: Date.now(),
-          pressure: e.pressure,
+          pressure: maxForce.current,
         },
       ]);
     }
     setActive(false);
     setTriggered(false);
     setTimeout(() => setCtext(DEFAULTS.ctext), DELAY);
-    console.log('up', e);
   }
 
   return (
@@ -139,6 +153,7 @@ function Lift() {
       </div>
       <div className={`tap ${pressed && 'pressed'} ${triggered && 'triggered'}`}>
         <div
+          id="circle"
           className="circle"
           onPointerDown={pointerDown}
           onPointerUp={pointerUp}
