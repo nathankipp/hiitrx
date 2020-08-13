@@ -102,6 +102,7 @@ function App() {
         }, DELAY);
         break;
       }
+      default: break;
     }
   }, [clicks]);
 

@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Pressure from 'pressure';
 import './Lift.css';
+import { liftItem } from './items';
+import { putItemInTable } from './db';
 
 const DEFAULTS = {
   ctext: 'Press',
@@ -88,10 +90,27 @@ function Lift() {
     setActive(active);
   }
 
+  const save = () => {
+    const items = [];
+    for (let i = 0; i < clicks.length; i += 2) {
+      items.push(new Promise((resolve, reject) => {
+        const item = liftItem({
+            trigger: clicks[i].timeStamp,
+            lift: clicks[i+1].timeStamp,
+            pressure: clicks[i+1].pressure,
+          });
+        putItemInTable(item, 'lift').then(resolve).catch(reject);
+      }));
+    }
+    return Promise.all(items);
+  }
+
   const reset = () => {
-    setClicks([]);
-    update(DEFAULTS.ctext, false);
-    setRes(false);
+    save().finally(() => {
+      setRes(false);
+      setClicks([]);
+      update(DEFAULTS.ctext, false);
+    });
   }
 
   useEffect(() => {
