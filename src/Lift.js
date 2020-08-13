@@ -82,6 +82,9 @@ function Lift() {
       unsupported: function(){
         maxForce.current = -1;
       },
+    }, {
+      only: 'touch',
+      polyfill: false,
     });
   }, []);
 
