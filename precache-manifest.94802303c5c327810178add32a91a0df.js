@@ -1,10 +1,10 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "fdea3367ada29f3acf803c36af39e1ea",
+    "revision": "a56cc877da8967716d3957c4bcf8e260",
     "url": "/tri-tap/index.html"
   },
   {
-    "revision": "9627cb265a04a0bae7ed",
+    "revision": "93746c69cf46336710c7",
     "url": "/tri-tap/static/css/main.82af646e.chunk.css"
   },
   {
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/tri-tap/static/js/2.5d9477b0.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "9627cb265a04a0bae7ed",
-    "url": "/tri-tap/static/js/main.2d9335a3.chunk.js"
+    "revision": "93746c69cf46336710c7",
+    "url": "/tri-tap/static/js/main.a1d857d0.chunk.js"
   },
   {
     "revision": "4b42ee4d78d9434364ea",
