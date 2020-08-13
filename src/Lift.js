@@ -92,9 +92,11 @@ function Lift() {
 
   const save = () => {
     const items = [];
+    const timeStamp = Date.now();
     for (let i = 0; i < clicks.length; i += 2) {
       items.push(new Promise((resolve, reject) => {
         const item = liftItem({
+            timeStamp,
             trigger: clicks[i].timeStamp,
             lift: clicks[i+1].timeStamp,
             pressure: clicks[i+1].pressure,
