@@ -17,8 +17,9 @@ const onSubmit = e => {
     }
   });
   LS.isValid()
-    ? window.location.replace('#lift')
+    ? window.location.assign('#lift')
     : window.location.reload(true);
+  setTimeout(() => window.scrollTo(0,0), 500);
 }
 
 const getDefaultValue = (field) => {
@@ -48,12 +49,12 @@ export default function Tform() {
         <div>
           <input type="submit" value="Continue" />
         </div>
-        {
-          LS.items.map(({ field }) =>
-            <div key={field}>{field}: {LS.getItem(field)}</div>
-          )
-        }
       </form>
     </>
   );
 }
+// {
+//   LS.items.map(({ field }) =>
+//   <div key={field}>{field}: {LS.getItem(field)}</div>
+// )
+// }
