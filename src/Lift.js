@@ -169,13 +169,13 @@ function Lift() {
   }
 
   return (
-    <div className="Lift">
+    <>
       <div className="header">
         Press with your thumb.
         When the screen turns red, lift your thumb.
         Repeat five times.
       </div>
-      <div className={`tap ${pressed && 'pressed'} ${triggered && 'triggered'}`}>
+      <div className={`lift ${pressed && 'pressed'} ${triggered && 'triggered'}`}>
         <div
           id="circle"
           className="circle"
@@ -186,7 +186,7 @@ function Lift() {
         </div>
       </div>
       {res && <Results clicks={clicks} reset={reset} />}
-    </div>
+    </>
   );
 }
 

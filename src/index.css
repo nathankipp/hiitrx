@@ -10,7 +10,24 @@ html, body {
 
 #root {
   height: 100%;
+}
+
+.wrapper {
+  align-items: stretch;
+  background-color: skyblue;
+  display: flex;
+  flex-direction: column;
+  font-size: 1.25rem;
+  height: 100%;
+  justify-content: space-between;
+  position: relative;
+  text-align: center;
   user-select: none;
+}
+
+.header {
+  background-color: white;
+  padding: 4rem .5rem 1rem;
 }
 
 .links {
@@ -19,9 +36,16 @@ html, body {
   padding: 0.5rem 1rem;
   position: absolute;
   right: 0;
+  text-align: left;
   top: 0;
   z-index: 1;
-  z-index: 1;
+}
+
+.user {
+  float: right;
+  font-size: 0.75rem;
+  color: white;
+  font-weight: normal;
 }
 
 a, a:visited, a:link, a:active {
@@ -30,6 +54,66 @@ a, a:visited, a:link, a:active {
   font-weight: bold;
   margin-right: 2rem;
   text-decoration: none;
+}
+
+.circle {
+  align-items: center;
+  background-color: black;
+  border-radius: 150px;
+  color: white;
+  display: flex;
+  font-size: 6rem;
+  height: 300px;
+  justify-content: center;
+  user-select: none;
+  width: 300px;
+}
+
+.overlay {
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, .25);
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 98;
+}
+
+.modal {
+  justify-content: space-between;
+  flex-direction: column;
+  display: flex;
+  width: 80vw;
+  background-color: white;
+  border: 2px solid black;
+  border-radius: 0.5rem;
+  z-index: 99;
+}
+
+table {
+  padding: 1rem;
+}
+td, th {
+  padding: 0.25rem 0;
+}
+td:first-child,
+th:first-child {
+  text-align: left;
+}
+tr:last-child td,
+tr:last-child th {
+  font-weight: bold;
+}
+
+.reset {
+  background-color: black;
+  color: white;
+  padding: 1rem;
+  border-radius: 0 0 0.5rem 0.5rem;
+  margin: -1px;
 }
 
 code {
