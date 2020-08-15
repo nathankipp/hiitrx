@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Pressure from 'pressure';
 import './Lift.css';
+import { liftItem } from './items';
+import { putItemInTable } from './db';
 
 const DEFAULTS = {
   ctext: 'Press',
@@ -80,6 +82,9 @@ function Lift() {
       unsupported: function(){
         maxForce.current = -1;
       },
+    }, {
+      only: 'touch',
+      polyfill: false,
     });
   }, []);
 
@@ -88,10 +93,29 @@ function Lift() {
     setActive(active);
   }
 
+  const save = () => {
+    const items = [];
+    const timeStamp = Date.now();
+    for (let i = 0; i < clicks.length; i += 2) {
+      items.push(new Promise((resolve, reject) => {
+        const item = liftItem({
+            timeStamp,
+            trigger: clicks[i].timeStamp,
+            lift: clicks[i+1].timeStamp,
+            pressure: clicks[i+1].pressure,
+          });
+        putItemInTable(item, 'lift').then(resolve).catch(reject);
+      }));
+    }
+    return Promise.all(items);
+  }
+
   const reset = () => {
-    setClicks([]);
-    update(DEFAULTS.ctext, false);
-    setRes(false);
+    save().finally(() => {
+      setRes(false);
+      setClicks([]);
+      update(DEFAULTS.ctext, false);
+    });
   }
 
   useEffect(() => {
@@ -145,13 +169,13 @@ function Lift() {
   }
 
   return (
-    <div className="Lift">
+    <>
       <div className="header">
         Press with your thumb.
         When the screen turns red, lift your thumb.
         Repeat five times.
       </div>
-      <div className={`tap ${pressed && 'pressed'} ${triggered && 'triggered'}`}>
+      <div className={`lift ${pressed && 'pressed'} ${triggered && 'triggered'}`}>
         <div
           id="circle"
           className="circle"
@@ -162,7 +186,7 @@ function Lift() {
         </div>
       </div>
       {res && <Results clicks={clicks} reset={reset} />}
-    </div>
+    </>
   );
 }
 

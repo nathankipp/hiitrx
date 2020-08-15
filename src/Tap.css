@@ -1,13 +1,10 @@
-.lift {
+.tap {
   align-items: center;
   display: flex;
   flex-grow: 2;
   justify-content: center;
 }
 
-.lift.pressed {
+.circle.active {
   background-color: green;
-}
-.lift.pressed.triggered {
-  background-color: red;
 }

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './App.css';
+import './Tap.css';
 
 const DELAY = 1500;
 
@@ -56,7 +56,7 @@ function Results({ clicks, reset }) {
   );
 }
 
-function App() {
+function Tap() {
   const [ctext, setCtext] = useState('Start');
   const [clicks, setClicks] = useState([]);
   const [active, setActive] = useState(false);
@@ -102,6 +102,7 @@ function App() {
         }, DELAY);
         break;
       }
+      default: break;
     }
   }, [clicks]);
 
@@ -115,7 +116,7 @@ function App() {
   }
 
   return (
-    <div className="App">
+    <>
       <div className="header">
         Tap Start.  When a number appears, tap the circle that many times as quickly as you can.  Use only your thumb.
       </div>
@@ -128,8 +129,8 @@ function App() {
         </div>
       </div>
       {res && <Results clicks={clicks} reset={reset} />}
-    </div>
+    </>
   );
 }
 
-export default App;
+export default Tap;
