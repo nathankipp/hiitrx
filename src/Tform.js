@@ -35,21 +35,23 @@ export default function Tform() {
       <div className="header">
         My {days[new Date().getDay()]} Status
       </div>
-      <form onSubmit={onSubmit}>
-        {LS.items.map(({ label, field, type }) => (
-          <div key={field}>
-            {type !== 'hidden' && <label htmlFor={label}>{field}</label>}
-            <input
-              name={field}
-              defaultValue={getDefaultValue(field)}
-              type={type || 'text'}
-            />
+      <div className="form">
+        <form onSubmit={onSubmit}>
+          {LS.items.map(({ label, field, type }) => (
+            <div key={field}>
+              {type !== 'hidden' && <label htmlFor={label}>{field}</label>}
+              <input
+                name={field}
+                defaultValue={getDefaultValue(field)}
+                type={type || 'text'}
+              />
+            </div>
+          ))}
+          <div>
+            <input type="submit" value="Continue" />
           </div>
-        ))}
-        <div>
-          <input type="submit" value="Continue" />
-        </div>
-      </form>
+        </form>
+      </div>
     </>
   );
 }

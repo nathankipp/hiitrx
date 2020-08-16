@@ -16,10 +16,8 @@ html, body {
   align-items: stretch;
   background-color: skyblue;
   display: flex;
-  flex-direction: column;
   font-size: 1.25rem;
   height: 100%;
-  justify-content: space-between;
   position: relative;
   text-align: center;
   user-select: none;
@@ -38,6 +36,7 @@ html, body {
   right: 0;
   text-align: left;
   top: 0;
+  width: calc(100% - 2rem);
   z-index: 1;
 }
 
@@ -59,14 +58,37 @@ a, a:visited, a:link, a:active {
 .circle {
   align-items: center;
   background-color: black;
-  border-radius: 150px;
   color: white;
   display: flex;
   font-size: 6rem;
-  height: 300px;
   justify-content: center;
   user-select: none;
-  width: 300px;
+}
+@media (orientation: portrait) {
+  .wrapper {
+    flex-direction: column;
+  }
+  .circle {
+    border-radius: 35vw;
+    height: 70vw;
+    width: 70vw;
+  }
+}
+@media (orientation: landscape) {
+  .wrapper {
+    flex-direction: row;
+  }
+  .header {
+    max-width: 40%;
+  }
+  .tap, .lift, .form {
+    padding-top: 3rem;
+  }
+  .circle {
+    border-radius: 35vh;
+    height: 70vh;
+    width: 70vh;
+  }
 }
 
 .overlay {
