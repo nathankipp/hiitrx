@@ -5,11 +5,11 @@ const items = [
 ];
 
 function getItem(item) {
-  return window.localStorage.getItem(item) || '';
+  return window.sessionStorage.getItem(item) || '';
 }
 
 function setItem(item, value) {
-  window.localStorage.setItem(item, value);
+  window.sessionStorage.setItem(item, value);
 }
 
 function isValid() {
