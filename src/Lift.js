@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Pressure from 'pressure';
-import './Lift.css';
+// import './Lift.css';
 import { liftItem } from './items';
 import { putItemInTable } from './db';
 
@@ -37,25 +37,30 @@ function Results({ clicks, reset }) {
     value: `${Math.round(intervals.reduce((a, c) => a+c, 0) / intervals.length)}ms`
   })
   return (
-    <div className="overlay">
-      <div className="modal">
-        <table>
-          <thead>
-            <tr>
-              <th>Event</th>
-              <th>Result</th>
-            </tr>
-          </thead>
-          <tbody>
-            {results.map(r => (
-              <tr key={r.item}>
-                <td>{r.item}</td>
-                <td>{r.value}</td>
+    <div className="modal is-active">
+      <div className="modal-background"></div>
+      <div className="modal-content has-background-white has-text-centered">
+        <div className="my-2"
+          style={{ maxHeight: '70%', overflow: 'auto' }}
+        >
+          <table className="table is-size-7">
+            <thead>
+              <tr>
+                <th>Event</th>
+                <th>Result</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-        <div className="reset" onClick={reset}>Restart</div>
+            </thead>
+            <tbody>
+              {results.map(r => (
+                <tr key={r.item}>
+                  <td>{r.item}</td>
+                  <td>{r.value}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <div className="button is-primary" onClick={reset}>Restart</div>
       </div>
     </div>
   );
@@ -169,24 +174,32 @@ function Lift() {
   }
 
   return (
-    <>
-      <div className="header">
+    <div className="px-4 py-4">
+      <div className="has-text-weight-semibold mb-4">
         Press with your thumb.
-        When the screen turns red, lift your thumb.
+        When the border turns red, lift your thumb.
         Repeat five times.
       </div>
-      <div className={`lift ${pressed && 'pressed'} ${triggered && 'triggered'}`}>
+      <section
+        className={`section py-0 lift`}
+        style={{
+          position: 'absolute',
+          bottom: 20,
+          left: '50%',
+          transform: 'translate(-50%)',
+        }}
+      >
         <div
           id="circle"
-          className="circle"
+          className={`circle ${pressed && 'pressed'} ${triggered && 'triggered'}`}
           onPointerDown={pointerDown}
           onPointerUp={pointerUp}
         >
           {ctext}
         </div>
-      </div>
+      </section>
       {res && <Results clicks={clicks} reset={reset} />}
-    </>
+    </div>
   );
 }
 

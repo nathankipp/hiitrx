@@ -38,36 +38,34 @@ export default function App() {
           render={rp => <Data rp={rp} />}
         />
         <Route>
-          <div className="wrapper">
-            <div className="links">
-              {isValid && <Link to="/tap">Tap</Link>}
-              {isValid && <Link to="/lift">Lift</Link>}
-              <Link to="/user">
-                <div className="user">
-                  {
-                    [
-                      new Date().toLocaleDateString(),
-                      LS.getItem('name'),
-                    ].map(t => t ? <>{t}<br /></> : null)
-                  }
-                </div>
+          <nav className="navbar has-background-info-dark" role="navigation" aria-label="main navigation">
+            <div className="navbar-brand">
+              <Link className="navbar-item is-size-7 has-text-white" to="/user">
+              {
+                [
+                  new Date().toLocaleDateString(),
+                  LS.getItem('name'),
+                ].map(t => t ? <>{t}<br /></> : null)
+              }
               </Link>
+              {isValid && <Link className="navbar-item has-text-white" to="/lift">Lift</Link>}
+              {false && isValid && <Link className="navbar-item has-text-white" to="/tap">Tap</Link>}
             </div>
-            {isValid
-              ? <Switch>
-                  <Route path="/lift">
-                    <Lift />
-                  </Route>
-                  <Route path="/tap">
-                    <Tap />
-                  </Route>
-                  <Route>
-                    <Tform onSubmit={onSubmit} />}
-                  </Route>
-                </Switch>
-              : <Tform onSubmit={onSubmit} />
-            }
-          </div>
+          </nav>
+          {isValid
+            ? <Switch>
+                <Route path="/lift">
+                  <Lift />
+                </Route>
+                <Route path="/tap">
+                  <Tap />
+                </Route>
+                <Route>
+                  <Tform onSubmit={onSubmit} />
+                </Route>
+              </Switch>
+            : <Tform onSubmit={onSubmit} />
+          }
         </Route>
       </Switch>
     </Router>
