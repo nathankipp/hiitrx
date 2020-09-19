@@ -1,4 +1,50 @@
 html, body {
+  user-select: none;
+}
+
+.lift {
+  align-items: center;
+  display: flex;
+  flex-grow: 2;
+  justify-content: center;
+}
+
+.circle {
+  align-items: center;
+  background-color: black;
+  color: white;
+  display: flex;
+  font-size: 4rem;
+  justify-content: center;
+  user-select: none;
+
+  border: 10px solid black;
+  &.pressed {
+    border-color: green;
+  }
+
+  &.triggered {
+    border-color: red;
+  }
+}
+
+@media (orientation: portrait) {
+  .circle {
+    border-radius: 25vw;
+    height: 50vw;
+    width: 50vw;
+  }
+}
+
+@media (orientation: landscape) {
+  .circle {
+    border-radius: 25vh;
+    height: 50vh;
+    width: 50vh;
+  }
+}
+
+/* html, body {
   height: 100%;
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -9,12 +55,12 @@ html, body {
 }
 
 #root {
+  background-color: skyblue;
   height: 100%;
 }
 
 .wrapper {
   align-items: stretch;
-  background-color: skyblue;
   display: flex;
   font-size: 1.25rem;
   height: 100%;
@@ -54,43 +100,10 @@ a, a:visited, a:link, a:active {
   margin-right: 2rem;
   text-decoration: none;
 }
+*/
 
-.circle {
-  align-items: center;
-  background-color: black;
-  color: white;
-  display: flex;
-  font-size: 6rem;
-  justify-content: center;
-  user-select: none;
-}
-@media (orientation: portrait) {
-  .wrapper {
-    flex-direction: column;
-  }
-  .circle {
-    border-radius: 35vw;
-    height: 70vw;
-    width: 70vw;
-  }
-}
-@media (orientation: landscape) {
-  .wrapper {
-    flex-direction: row;
-  }
-  .header {
-    max-width: 40%;
-  }
-  .tap, .lift, .form {
-    padding-top: 3rem;
-  }
-  .circle {
-    border-radius: 35vh;
-    height: 70vh;
-    width: 70vh;
-  }
-}
 
+/*
 .overlay {
   bottom: 0;
   display: flex;
@@ -141,4 +154,4 @@ tr:last-child th {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
-}
+} */

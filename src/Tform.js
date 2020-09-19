@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Redirect } from 'react-router-dom';
-import './Tform.scss';
+// import './Tform.scss';
 import LS from './ls';
 
 const days = [
@@ -27,16 +27,18 @@ export default function Tform({ onSubmit }) {
   }
 
   return (
-    <>
-      <div className="header">
+    <div className="px-4 py-4">
+      <div className="has-text-weight-semibold mb-4">
         My {days[new Date().getDay()]} Status
       </div>
-      <div className="form">
+      <div>
         <form onSubmit={submitHandler}>
           {LS.items.map(({ label, field, type }) => (
             <div key={field}>
-              {type !== 'hidden' && <label htmlFor={label}>{field}</label>}
+              {type !== 'hidden' && <label htmlFor={field}>{field}</label>}
               <input
+                className="input mb-4"
+                id={field}
                 name={field}
                 defaultValue={getDefaultValue(field)}
                 type={type || 'text'}
@@ -44,11 +46,11 @@ export default function Tform({ onSubmit }) {
             </div>
           ))}
           <div>
-            <input type="submit" value="Continue" />
+            <input className="button is-primary" type="submit" value="Continue" />
           </div>
         </form>
       </div>
-    </>
+    </div>
   );
 }
 // {
