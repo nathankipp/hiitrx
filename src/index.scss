@@ -1,9 +1,12 @@
+html, body {
+  user-select: none;
+}
+
 .lift {
   align-items: center;
   display: flex;
   flex-grow: 2;
   justify-content: center;
-
 }
 
 .circle {
@@ -26,7 +29,6 @@
 }
 
 @media (orientation: portrait) {
-
   .circle {
     border-radius: 25vw;
     height: 50vw;
@@ -35,7 +37,6 @@
 }
 
 @media (orientation: landscape) {
-
   .circle {
     border-radius: 25vh;
     height: 50vh;
