@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/tri-tap/precache-manifest.6444ace945174b6d0442a870a581d77e.js"
+  "/tri-tap/precache-manifest.9455f660b9a277e80c00ec203a332ab9.js"
 );
 
 self.addEventListener('message', (event) => {
