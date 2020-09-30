@@ -1,5 +1,24 @@
-html, body {
+@charset "utf-8";
+@import 'bulma';
+@import '~bulma-slider';
+
+html, body, #root {
+  height: 100%;
+  width: 100%;
   user-select: none;
+}
+
+.slider-scale {
+  display: flex;
+  justify-content: space-between;
+  font-size: .7rem;
+  margin-top: -1rem;
+}
+
+.time-picker {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .lift {
@@ -43,115 +62,3 @@ html, body {
     width: 50vh;
   }
 }
-
-/* html, body {
-  height: 100%;
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-#root {
-  background-color: skyblue;
-  height: 100%;
-}
-
-.wrapper {
-  align-items: stretch;
-  display: flex;
-  font-size: 1.25rem;
-  height: 100%;
-  position: relative;
-  text-align: center;
-  user-select: none;
-}
-
-.header {
-  background-color: white;
-  padding: 4rem .5rem 1rem;
-}
-
-.links {
-  background-color: black;
-  left: 0;
-  padding: 0.5rem 1rem;
-  position: absolute;
-  right: 0;
-  text-align: left;
-  top: 0;
-  width: calc(100% - 2rem);
-  z-index: 1;
-}
-
-.user {
-  float: right;
-  font-size: 0.75rem;
-  color: white;
-  font-weight: normal;
-}
-
-a, a:visited, a:link, a:active {
-  color: skyblue;
-  font-size: 1.5rem;
-  font-weight: bold;
-  margin-right: 2rem;
-  text-decoration: none;
-}
-*/
-
-
-/*
-.overlay {
-  bottom: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: rgba(0, 0, 0, .25);
-  left: 0;
-  position: absolute;
-  right: 0;
-  top: 0;
-  z-index: 98;
-}
-
-.modal {
-  justify-content: space-between;
-  flex-direction: column;
-  display: flex;
-  width: 80vw;
-  background-color: white;
-  border: 2px solid black;
-  border-radius: 0.5rem;
-  z-index: 99;
-}
-
-table {
-  padding: 1rem;
-}
-td, th {
-  padding: 0.25rem 0;
-}
-td:first-child,
-th:first-child {
-  text-align: left;
-}
-tr:last-child td,
-tr:last-child th {
-  font-weight: bold;
-}
-
-.reset {
-  background-color: black;
-  color: white;
-  padding: 1rem;
-  border-radius: 0 0 0.5rem 0.5rem;
-  margin: -1px;
-}
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-} */

@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { Redirect } from 'react-router-dom';
 import Pressure from 'pressure';
-// import './Lift.css';
+import LS from './ls';
 import { liftItem } from './items';
 import { putItemInTable } from './db';
 
@@ -10,61 +11,61 @@ const DEFAULTS = {
 const DELAY = 1500;
 const SAMPLE_SIZE = 5;
 
-const interval = (t1, t2) => t2 - t1;
+// const interval = (t1, t2) => t2 - t1;
 
-function Results({ clicks, reset }) {
-  const results = [{
-    item: 'Date',
-    value: new Date(clicks[0].timeStamp).toLocaleDateString()
-  },
-  {
-    item: 'Time',
-    value: new Date(clicks[0].timeStamp).toLocaleTimeString()
-  }];
-  const intervals = [];
-  for (let i = 0; i < SAMPLE_SIZE; i += 1) {
-    const index = i * 2;
-    const int = interval(clicks[index].timeStamp, clicks[index+1].timeStamp);
-    const press = Math.round(clicks[index+1].pressure * 1000)/10;
-    results.push({
-      item: `Delay ${i+1}`,
-      value: `${int}ms [${press}%]`
-    });
-    intervals.push(int);
-  }
-  results.push({
-    item: 'Average',
-    value: `${Math.round(intervals.reduce((a, c) => a+c, 0) / intervals.length)}ms`
-  })
-  return (
-    <div className="modal is-active">
-      <div className="modal-background"></div>
-      <div className="modal-content has-background-white has-text-centered">
-        <div className="my-2"
-          style={{ maxHeight: '70%', overflow: 'auto' }}
-        >
-          <table className="table is-size-7">
-            <thead>
-              <tr>
-                <th>Event</th>
-                <th>Result</th>
-              </tr>
-            </thead>
-            <tbody>
-              {results.map(r => (
-                <tr key={r.item}>
-                  <td>{r.item}</td>
-                  <td>{r.value}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        <div className="button is-primary" onClick={reset}>Restart</div>
-      </div>
-    </div>
-  );
-}
+// function Results({ clicks, reset }) {
+//   const results = [{
+//     item: 'Date',
+//     value: new Date(clicks[0].timeStamp).toLocaleDateString()
+//   },
+//   {
+//     item: 'Time',
+//     value: new Date(clicks[0].timeStamp).toLocaleTimeString()
+//   }];
+//   const intervals = [];
+//   for (let i = 0; i < SAMPLE_SIZE; i += 1) {
+//     const index = i * 2;
+//     const int = interval(clicks[index].timeStamp, clicks[index+1].timeStamp);
+//     const press = Math.round(clicks[index+1].pressure * 1000)/10;
+//     results.push({
+//       item: `Delay ${i+1}`,
+//       value: `${int}ms [${press}%]`
+//     });
+//     intervals.push(int);
+//   }
+//   results.push({
+//     item: 'Average',
+//     value: `${Math.round(intervals.reduce((a, c) => a+c, 0) / intervals.length)}ms`
+//   })
+//   return (
+//     <div className="modal is-active">
+//       <div className="modal-background"></div>
+//       <div className="modal-content has-background-white has-text-centered">
+//         <div className="my-2"
+//           style={{ maxHeight: '70%', overflow: 'auto' }}
+//         >
+//           <table className="table is-size-7">
+//             <thead>
+//               <tr>
+//                 <th>Event</th>
+//                 <th>Result</th>
+//               </tr>
+//             </thead>
+//             <tbody>
+//               {results.map(r => (
+//                 <tr key={r.item}>
+//                   <td>{r.item}</td>
+//                   <td>{r.value}</td>
+//                 </tr>
+//               ))}
+//             </tbody>
+//           </table>
+//         </div>
+//         <div className="button is-primary" onClick={reset}>Restart</div>
+//       </div>
+//     </div>
+//   );
+// }
 
 function Lift() {
   const [ctext, setCtext] = useState(DEFAULTS.ctext);
@@ -93,10 +94,10 @@ function Lift() {
     });
   }, []);
 
-  const update = (ctext, active) => {
-    setCtext(ctext);
-    setActive(active);
-  }
+  // const update = (ctext, active) => {
+  //   setCtext(ctext);
+  //   setActive(active);
+  // }
 
   const save = () => {
     const items = [];
@@ -117,9 +118,7 @@ function Lift() {
 
   const reset = () => {
     save().finally(() => {
-      setRes(false);
-      setClicks([]);
-      update(DEFAULTS.ctext, false);
+      window.location.replace('/')
     });
   }
 
@@ -139,6 +138,7 @@ function Lift() {
   useEffect(() => {
     if (clicks.length === SAMPLE_SIZE * 2) {
       setRes(true);
+      reset();
     }
   }, [clicks]);
 
@@ -173,6 +173,10 @@ function Lift() {
     setTimeout(() => setCtext(DEFAULTS.ctext), DELAY);
   }
 
+  if (!LS.isValid()) {
+    return <Redirect to="/" />;
+  }
+
   return (
     <div className="px-4 py-4">
       <div className="has-text-weight-semibold mb-4">
@@ -191,16 +195,16 @@ function Lift() {
       >
         <div
           id="circle"
-          className={`circle ${pressed && 'pressed'} ${triggered && 'triggered'}`}
+          className={`circle ${pressed && 'pressed'} ${triggered && 'triggered'} ${res && 'is-hidden'}`}
           onPointerDown={pointerDown}
           onPointerUp={pointerUp}
         >
           {ctext}
         </div>
       </section>
-      {res && <Results clicks={clicks} reset={reset} />}
     </div>
   );
 }
+// {res && <Results clicks={clicks} reset={reset} />}
 
 export default Lift;
