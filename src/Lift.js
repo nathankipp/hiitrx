@@ -118,7 +118,7 @@ function Lift() {
 
   const reset = () => {
     save().finally(() => {
-      window.location.replace('/')
+      window.location.replace('#')
     });
   }
 
