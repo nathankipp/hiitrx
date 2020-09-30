@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/tri-tap/static/css/main.886c49ae.chunk.css",
-    "main.js": "/tri-tap/static/js/main.781f7f3d.chunk.js",
-    "main.js.map": "/tri-tap/static/js/main.781f7f3d.chunk.js.map",
+    "main.js": "/tri-tap/static/js/main.b4fc8c8a.chunk.js",
+    "main.js.map": "/tri-tap/static/js/main.b4fc8c8a.chunk.js.map",
     "runtime-main.js": "/tri-tap/static/js/runtime-main.3875c67d.js",
     "runtime-main.js.map": "/tri-tap/static/js/runtime-main.3875c67d.js.map",
     "static/js/2.a21bfc45.chunk.js": "/tri-tap/static/js/2.a21bfc45.chunk.js",
     "static/js/2.a21bfc45.chunk.js.map": "/tri-tap/static/js/2.a21bfc45.chunk.js.map",
     "index.html": "/tri-tap/index.html",
-    "precache-manifest.f129b64e58f18638274176bd3fda9a38.js": "/tri-tap/precache-manifest.f129b64e58f18638274176bd3fda9a38.js",
+    "precache-manifest.f927e3595258e910e82bf6fc2dcd67aa.js": "/tri-tap/precache-manifest.f927e3595258e910e82bf6fc2dcd67aa.js",
     "service-worker.js": "/tri-tap/service-worker.js",
     "static/css/main.886c49ae.chunk.css.map": "/tri-tap/static/css/main.886c49ae.chunk.css.map",
     "static/js/2.a21bfc45.chunk.js.LICENSE.txt": "/tri-tap/static/js/2.a21bfc45.chunk.js.LICENSE.txt"
@@ -17,6 +17,6 @@
     "static/js/runtime-main.3875c67d.js",
     "static/js/2.a21bfc45.chunk.js",
     "static/css/main.886c49ae.chunk.css",
-    "static/js/main.781f7f3d.chunk.js"
+    "static/js/main.b4fc8c8a.chunk.js"
   ]
 }
