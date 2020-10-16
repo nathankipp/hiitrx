@@ -6,7 +6,15 @@ const DEFAULTS = {
   age: 'unspecified',
 };
 
-const lsData = () => LS.items.map(({ field }) => ({ [field]: LS.getItem(field) || DEFAULTS[field] }));
+// const lsData = () => LS.items.map(({ field }) => ({ [field]: LS.getItem(field) || DEFAULTS[field] }));
+
+const lsData = () => LS.items.reduce((acc, curr) => {
+  const { field } = curr;
+  return {
+    [field]: LS.getItem(field) || DEFAULTS[field],
+    ...acc,
+  }
+}, {});
 
 export function liftItem(data) {
   const {
