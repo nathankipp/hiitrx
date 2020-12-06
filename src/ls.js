@@ -63,9 +63,17 @@ function isValid() {
   return hasAll && getItem('date') === new Date().toLocaleDateString();
 }
 
+function isValidUser() {
+  const hasAll = !ITEMS
+    .filter(({ field }) => ['name', 'age'].includes(field))
+    .map(({ field }) => !!getItem(field)).includes(false);
+  return hasAll && getItem('date') === new Date().toLocaleDateString();
+}
+
 export default {
   items: ITEMS,
   getItem,
   setItem,
   isValid,
+  isValidUser,
 };

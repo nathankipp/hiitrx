@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
+import TimePicker from './TimePicker';
+import SliderScale from './SliderScale';
 import LS from './ls';
 
 // const days = [
@@ -11,51 +13,6 @@ const getDefaultValue = (field) => {
     return new Date().toLocaleDateString();
   else
     return LS.getItem(field) || '';
-}
-
-const SCALE = ['Less', 'Normal', 'More'];
-const SliderScale = ({ scale = SCALE }) => (
-  <div className="slider-scale mb-4">
-    {scale.map(tick => <div key={tick}>{tick}</div>)}
-  </div>
-);
-
-const TimePicker = ({ h, m }) => {
-  const [hours, setHours] = useState(h);
-  const [minutes, setMinutes] = useState(m);
-
-  const adjust = which => amount => e => {
-    e.preventDefault();
-    if (which === 'h') {
-      const value = hours + amount;
-      if (value >= 0 && value < 25) {
-        setHours(hours + amount);
-      }
-    } else {
-      const value = minutes + amount;
-      if (value >= 0 && value < 60) {
-        setMinutes(minutes + amount);
-      }
-    }
-  }
-
-  return (
-    <>
-      <div className="time-picker mt-4 mb-4">
-        <div>
-          <button onClick={adjust('h')(-1)} className="button mr-4">-</button>
-          <button onClick={adjust('h')(1)} className="button">+</button>
-        </div>
-        <div>{hours} hrs {minutes} min</div>
-        <div>
-          <button onClick={adjust('m')(-15)} className="button mr-4">-</button>
-          <button onClick={adjust('m')(15)} className="button">+</button>
-        </div>
-      </div>
-      <SliderScale scale={['subtract/add hours', 'subtract/add minutes']} />
-      <input type="hidden" name="sleepHours" defaultValue={`${hours + minutes/60}`} />
-    </>
-  );
 }
 
 const getInput = (type, { field, scale }) => {
@@ -102,19 +59,39 @@ export default function Tform({ onSubmit }) {
   }
 
   if (redirect) {
-    return <Redirect to="/lift" />;
+    return <Redirect push to="/lift" />;
   }
+
+  const items = LS.isValidUser()
+    ? LS.items.map(item =>
+        item.field === 'name' || item.field === 'age'
+        ? { ...item, type: 'hidden' }
+        : item
+      )
+    : LS.items;
 
   return (
     <div className="px-4 py-4">
       <div>
-        <form onSubmit={submitHandler}>
-          {LS.items.map(({ label, field, type, scale }) => (
-            <div key={field} id={`${field}-wrapper`}>
-              {type !== 'hidden' && <label htmlFor={field}>{label}</label>}
-              {getInput(type, { field, scale })}
+        {LS.isValidUser()
+          ? (
+            <div className="mb-2 pb-2 is-flex is-justify-content-space-between is-align-items-center">
+              <strong>Hello, {LS.getItem('name')}</strong>
+              <Link to="/login">
+                <button className="button is-small">not {LS.getItem('name')}?</button>
+              </Link>
             </div>
-          ))}
+          ) : null
+        }
+        <form onSubmit={submitHandler}>
+          {items.map(({ label, field, type, scale }) => {
+            return (
+              <div key={field} id={`${field}-wrapper`}>
+                {type !== 'hidden' && <label htmlFor={field}>{label}</label>}
+                {getInput(type, { field, scale })}
+              </div>
+            );
+          })}
           <div className="has-text-centered">
             <input className="button is-black" type="submit" value="Next" />
           </div>
@@ -123,8 +100,3 @@ export default function Tform({ onSubmit }) {
     </div>
   );
 }
-// {
-//   LS.items.map(({ field }) =>
-//   <div key={field}>{field}: {LS.getItem(field)}</div>
-// )
-// }

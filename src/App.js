@@ -2,6 +2,7 @@ import React from 'react';
 import { HashRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import LS from './ls';
 import Data from './Data';
+import Login from './Login';
 import Stepper from './Stepper';
 import Tform from './Tform';
 import Lift from './Lift';
@@ -33,6 +34,9 @@ export default function App() {
           path="/data/:table(lift)"
           render={rp => <Data rp={rp} />}
         />
+        <Route path="/login">
+          <Login />
+        </Route>
         <Route>
           <Stepper />
           <Switch>
