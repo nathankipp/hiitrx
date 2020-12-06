@@ -1,9 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Redirect } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import Pressure from 'pressure';
 import LS from './ls';
 import { liftItem } from './items';
 import { putItemInTable } from './db';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 
 const DEFAULTS = {
   ctext: 'Press',
@@ -11,63 +13,7 @@ const DEFAULTS = {
 const DELAY = 1500;
 const SAMPLE_SIZE = 5;
 
-// const interval = (t1, t2) => t2 - t1;
-
-// function Results({ clicks, reset }) {
-//   const results = [{
-//     item: 'Date',
-//     value: new Date(clicks[0].timeStamp).toLocaleDateString()
-//   },
-//   {
-//     item: 'Time',
-//     value: new Date(clicks[0].timeStamp).toLocaleTimeString()
-//   }];
-//   const intervals = [];
-//   for (let i = 0; i < SAMPLE_SIZE; i += 1) {
-//     const index = i * 2;
-//     const int = interval(clicks[index].timeStamp, clicks[index+1].timeStamp);
-//     const press = Math.round(clicks[index+1].pressure * 1000)/10;
-//     results.push({
-//       item: `Delay ${i+1}`,
-//       value: `${int}ms [${press}%]`
-//     });
-//     intervals.push(int);
-//   }
-//   results.push({
-//     item: 'Average',
-//     value: `${Math.round(intervals.reduce((a, c) => a+c, 0) / intervals.length)}ms`
-//   })
-//   return (
-//     <div className="modal is-active">
-//       <div className="modal-background"></div>
-//       <div className="modal-content has-background-white has-text-centered">
-//         <div className="my-2"
-//           style={{ maxHeight: '70%', overflow: 'auto' }}
-//         >
-//           <table className="table is-size-7">
-//             <thead>
-//               <tr>
-//                 <th>Event</th>
-//                 <th>Result</th>
-//               </tr>
-//             </thead>
-//             <tbody>
-//               {results.map(r => (
-//                 <tr key={r.item}>
-//                   <td>{r.item}</td>
-//                   <td>{r.value}</td>
-//                 </tr>
-//               ))}
-//             </tbody>
-//           </table>
-//         </div>
-//         <div className="button is-primary" onClick={reset}>Restart</div>
-//       </div>
-//     </div>
-//   );
-// }
-
-function Lift() {
+function Lift({ history }) {
   const [ctext, setCtext] = useState(DEFAULTS.ctext);
   const [clicks, setClicks] = useState([]);
   const [active, setActive] = useState(false);
@@ -94,11 +40,6 @@ function Lift() {
     });
   }, []);
 
-  // const update = (ctext, active) => {
-  //   setCtext(ctext);
-  //   setActive(active);
-  // }
-
   const save = () => {
     const items = [];
     const timeStamp = Date.now();
@@ -118,7 +59,11 @@ function Lift() {
 
   const reset = () => {
     save().finally(() => {
-      window.location.replace('#')
+      const speed = clicks.reduce((acc, cur, idx, arr) => {
+        if ((idx % 2)) return acc;
+        return [...acc, arr[idx + 1].timeStamp - cur.timeStamp];
+      }, []);
+      history.push(`/results?speed=${speed}`)
     });
   }
 
@@ -174,12 +119,12 @@ function Lift() {
   }
 
   if (!LS.isValid()) {
-    return <Redirect to="/" />;
+    history.push('/');
   }
 
   return (
     <div className="px-4 py-4">
-      <div className="has-text-weight-semibold mb-4">
+      <div className="mb-4">
         Press with your thumb.
         When the border turns red, lift your thumb.
         Repeat five times.
@@ -188,23 +133,29 @@ function Lift() {
         className={`section py-0 lift`}
         style={{
           position: 'absolute',
-          bottom: 20,
+          bottom: 30,
           left: '50%',
           transform: 'translate(-50%)',
         }}
       >
-        <div
-          id="circle"
-          className={`circle ${pressed && 'pressed'} ${triggered && 'triggered'} ${res && 'is-hidden'}`}
-          onPointerDown={pointerDown}
-          onPointerUp={pointerUp}
-        >
-          {ctext}
-        </div>
+        {res ? (
+          <div className="circle">
+            <FontAwesomeIcon spin size="1x" icon={faSpinner} />
+          </div>
+        ) : (
+          <div
+            id="circle"
+            className={`circle ${pressed && 'pressed'} ${triggered && 'triggered'}`}
+            onPointerDown={pointerDown}
+            onPointerUp={pointerUp}
+          >
+            {ctext}
+          </div>
+        )}
       </section>
     </div>
   );
 }
 // {res && <Results clicks={clicks} reset={reset} />}
 
-export default Lift;
+export default withRouter(Lift);

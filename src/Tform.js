@@ -68,9 +68,9 @@ const getInput = (type, { field, scale }) => {
             name={field}
             defaultValue={getDefaultValue(field)}
             className="slider is-warning is-fullwidth is-large mt-2"
-            step="1"
-            min="1"
-            max="100"
+            step=".25"
+            min="0"
+            max="10"
             type="range"/>
           <SliderScale scale={scale} />
         </>
@@ -110,13 +110,13 @@ export default function Tform({ onSubmit }) {
       <div>
         <form onSubmit={submitHandler}>
           {LS.items.map(({ label, field, type, scale }) => (
-            <div key={field}>
+            <div key={field} id={`${field}-wrapper`}>
               {type !== 'hidden' && <label htmlFor={field}>{label}</label>}
               {getInput(type, { field, scale })}
             </div>
           ))}
           <div className="has-text-centered">
-            <input className="button is-primary" type="submit" value="Next" />
+            <input className="button is-black" type="submit" value="Next" />
           </div>
         </form>
       </div>

@@ -1,21 +1,13 @@
 import React from 'react';
-import { HashRouter as Router, Switch, Route } from 'react-router-dom';
+import { HashRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import LS from './ls';
-import Lift from './Lift';
-import Tform from './Tform';
 import Data from './Data';
+import Stepper from './Stepper';
+import Tform from './Tform';
+import Lift from './Lift';
+import Results from './Results';
 
 export default function App() {
-  // const [isValid, setIsValid] = useState(false);
-
-  // useEffect(() => {
-  //   setIsValid(v => LS.isValid());
-  //   window.setInterval(() => {
-  //     if (!LS.isValid()) {
-  //       setIsValid(false);
-  //     }
-  //   }, 60000);
-  // }, []);
 
   const onSubmit = e => {
     e.preventDefault();
@@ -42,13 +34,19 @@ export default function App() {
           render={rp => <Data rp={rp} />}
         />
         <Route>
-          <div className="p-2 m-0 has-background-link">&nbsp;</div>
+          <Stepper />
           <Switch>
+            <Route path="/today">
+              <Tform onSubmit={onSubmit} />
+            </Route>
             <Route path="/lift">
               <Lift />
             </Route>
+            <Route path="/results">
+              <Results />
+            </Route>
             <Route>
-              <Tform onSubmit={onSubmit} />
+              <Redirect to="/today" />
             </Route>
           </Switch>
         </Route>
@@ -56,18 +54,3 @@ export default function App() {
     </Router>
   );
 }
-
-// <nav className="navbar has-background-info-dark" role="navigation" aria-label="main navigation">
-//   <div className="navbar-brand">
-//     <Link className="navbar-item is-size-7 has-text-white" to="/user">
-//     {
-//       [
-//         new Date().toLocaleDateString(),
-//         LS.getItem('name'),
-//       ].map(t => t ? <React.Fragment key={t}>{t}<br /></React.Fragment> : null)
-//     }
-//     </Link>
-//     {isValid && <Link className="navbar-item has-text-white" to="/lift">Lift</Link>}
-//     {false && isValid && <Link className="navbar-item has-text-white" to="/tap">Tap</Link>}
-//   </div>
-// </nav>
