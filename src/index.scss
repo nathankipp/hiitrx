@@ -1,11 +1,24 @@
 @charset "utf-8";
 @import 'bulma';
+@import '~bulma-steps';
 @import '~bulma-slider';
 
-html, body, #root {
-  height: 100%;
+html, body {
+  height: 99%;
   width: 100%;
+}
+
+#root {
   user-select: none;
+}
+
+#name-wrapper {
+  float: left;
+  width: 78%;
+}
+#age-wrapper {
+  float: right;
+  width: 20%;
 }
 
 .slider-scale {
@@ -24,7 +37,7 @@ html, body, #root {
 .lift {
   align-items: center;
   display: flex;
-  flex-grow: 2;
+  flex-grow: 1;
   justify-content: center;
 }
 
@@ -39,11 +52,11 @@ html, body, #root {
 
   border: 10px solid black;
   &.pressed {
-    border-color: green;
+    border-color: $success;
   }
 
   &.triggered {
-    border-color: red;
+    border-color: $danger;
   }
 }
 
