@@ -12,10 +12,15 @@ html, body {
   user-select: none;
 }
 
+.tri-tap {
+  position: absolute;
+}
+
 #name-wrapper {
   float: left;
   width: 78%;
 }
+
 #age-wrapper {
   float: right;
   width: 20%;

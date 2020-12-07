@@ -7,7 +7,22 @@ AWS.config.credentials = new AWS.CognitoIdentityCredentials({
 });
 
 const dynamo = new AWS.DynamoDB.DocumentClient();
-// const TableName = 'cyclog';
+
+export function fetchItem(TableName, Key, AttributesToGet) {
+  const params = { TableName, Key };
+  if (AttributesToGet) {
+    params.AttributesToGet = AttributesToGet;
+  }
+  return new Promise((resolve, reject) => {
+    dynamo.get(params, (err, data) => {
+      if (err) {
+        reject('item cannot be retrieved');
+      } else {
+        resolve(data.Item);
+      }
+    });
+  });
+}
 
 export function fetchData(TableName) {
   return new Promise((resolve, reject) => {
