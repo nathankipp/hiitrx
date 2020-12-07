@@ -62,7 +62,8 @@ export default function Tform({ onSubmit }) {
     return <Redirect push to="/lift" />;
   }
 
-  const items = LS.isValidUser()
+  const hasUser = LS.isValidUser();
+  const items = hasUser
     ? LS.items.map(item =>
         item.field === 'name' || item.field === 'age'
         ? { ...item, type: 'hidden' }
@@ -73,7 +74,7 @@ export default function Tform({ onSubmit }) {
   return (
     <div className="px-4 py-4">
       <div>
-        {LS.isValidUser()
+        {hasUser
           ? (
             <div className="mb-2 pb-2 is-flex is-justify-content-space-between is-align-items-center">
               <strong>Hello, {LS.getItem('name')}</strong>

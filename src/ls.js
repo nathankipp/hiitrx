@@ -3,6 +3,7 @@ const SS = 'session';
 
 const ITEMS = [
   { label: 'Date', field: 'date', type: 'hidden', db: SS },
+  { label: 'Email', field: 'email', type: 'hidden', db: LS },
   { label: 'Name', field: 'name', db: LS },
   { label: 'Age', field: 'age', type: "number", db: LS },
   {
@@ -12,7 +13,7 @@ const ITEMS = [
     db: SS
   },
   {
-    label: 'How fast do you feel?',
+    label: 'How fresh do your legs feel?',
     field: 'fast',
     type: 'slider',
     scale: ['Slow', 'Normal', 'Fast'],
@@ -59,15 +60,18 @@ function setItem(item, value) {
 }
 
 function isValid() {
-  const hasAll = !ITEMS.map(({ field }) => !!getItem(field)).includes(false);
+  const hasAll = !ITEMS
+    .map(({ field }) => !!getItem(field))
+    .includes(false);
   return hasAll && getItem('date') === new Date().toLocaleDateString();
 }
 
 function isValidUser() {
   const hasAll = !ITEMS
-    .filter(({ field }) => ['name', 'age'].includes(field))
-    .map(({ field }) => !!getItem(field)).includes(false);
-  return hasAll && getItem('date') === new Date().toLocaleDateString();
+    .filter(({ field }) => ['email', 'name', 'age'].includes(field))
+    .map(({ field }) => !!getItem(field))
+    .includes(false);
+  return hasAll;
 }
 
 export default {

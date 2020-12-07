@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { HashRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import LS from './ls';
 import Data from './Data';
@@ -9,6 +9,22 @@ import Lift from './Lift';
 import Results from './Results';
 
 export default function App() {
+  const [user, setUser] = useState();
+  const [auth, setAuth] = useState(false);
+
+  useEffect(() => {
+    setUser({
+      email: LS.getItem('email'),
+      name: LS.getItem('name'),
+      age: LS.getItem('age'),
+    });
+  }, []);
+
+  useEffect(() => {
+    if (user?.email) {
+      setAuth(true);
+    }
+  }, [user]);
 
   const onSubmit = e => {
     e.preventDefault();
@@ -27,6 +43,18 @@ export default function App() {
     });
   }
 
+  if (!user) {
+    return null;
+  }
+
+  if (!auth) {
+    return (
+      <Router>
+        <Login setUser={setUser} />
+      </Router>
+    );
+  }
+
   return (
     <Router>
       <Switch>
@@ -35,7 +63,7 @@ export default function App() {
           render={rp => <Data rp={rp} />}
         />
         <Route path="/login">
-          <Login />
+          <Login setUser={setUser} />
         </Route>
         <Route>
           <Stepper />
