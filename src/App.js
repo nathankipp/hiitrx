@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { HashRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import LS from './ls';
-import Data from './Data';
 import Login from './Login';
+import Data from './Data';
+import Home from './Home';
 import Stepper from './Stepper';
 import Tform from './Tform';
 import Lift from './Lift';
@@ -10,7 +11,7 @@ import Results from './Results';
 
 export default function App() {
   const [user, setUser] = useState();
-  const [auth, setAuth] = useState(false);
+  const [auth, setAuth] = useState(true);
 
   useEffect(() => {
     setUser({
@@ -21,8 +22,9 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    if (user?.email) {
-      setAuth(true);
+    if (user) {
+      console.log('setting auth', !!user?.email);
+      setAuth(!!user?.email);
     }
   }, [user]);
 
@@ -43,44 +45,31 @@ export default function App() {
     });
   }
 
-  if (!user) {
-    return null;
-  }
-
-  if (!auth) {
-    return (
-      <Router>
-        <Login setUser={setUser} />
-      </Router>
-    );
-  }
-
   return (
     <Router>
+      <Stepper />
       <Switch>
+        <Route path="/login">
+          <Login setUser={setUser} />
+        </Route>
         <Route
           path="/data/:table(lift)"
           render={rp => <Data rp={rp} />}
         />
-        <Route path="/login">
-          <Login setUser={setUser} />
+        <Route path="/home">
+          <Home />
+        </Route>
+        <Route path="/today">
+          <Tform onSubmit={onSubmit} />
+        </Route>
+        <Route path="/lift">
+          <Lift />
+        </Route>
+        <Route path="/results">
+          <Results />
         </Route>
         <Route>
-          <Stepper />
-          <Switch>
-            <Route path="/today">
-              <Tform onSubmit={onSubmit} />
-            </Route>
-            <Route path="/lift">
-              <Lift />
-            </Route>
-            <Route path="/results">
-              <Results />
-            </Route>
-            <Route>
-              <Redirect to="/today" />
-            </Route>
-          </Switch>
+          <Redirect to="/home" />
         </Route>
       </Switch>
     </Router>

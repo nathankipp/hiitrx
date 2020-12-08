@@ -26,7 +26,6 @@ function Login({ setUser, history }) {
   return (
     <div className="hero">
       <div className="hero-body has-text-centered">
-        <div className="has-text-info"><b>HIITRx</b></div>
         <section className="section is-flex-grow-1">
           <input
             className="input mb-4"
