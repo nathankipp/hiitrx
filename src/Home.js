@@ -15,9 +15,8 @@ export default function Home() {
 
   useEffect(() => {
     let fcast;
-
     try {
-      fcast = JSON.parse(LS.getItem('forecast'));
+      fcast = JSON.parse(LS.getItem('forecast')) || {};
     } catch(e) {
       fcast = {};
     }

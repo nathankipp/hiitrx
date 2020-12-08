@@ -11,7 +11,7 @@ const DEFAULTS = {
   ctext: 'Press',
 }
 const DELAY = 1500;
-const SAMPLE_SIZE = 1;
+const SAMPLE_SIZE = 5;
 
 const save = (clicks) => {
   const items = [];
