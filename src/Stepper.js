@@ -1,7 +1,7 @@
 import React from 'react';
-import { withRouter } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSmile, faDotCircle, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
+import { faHome, faSmile, faDotCircle, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 
 const progress = path => step => {
   let className = "step-item is-success";
@@ -29,6 +29,7 @@ const showSteps = pathname =>
 
 function Stepper({ location: { pathname }}) {
   const classNames = progress(pathname);
+  const showHome = pathname !== '/login';
   return (
     <div className="px-4 is-flex has-background-link-light is-justify-content-space-between is-align-items-center">
       <div className="head-space has-text-info"><b>HIITRx</b></div>
@@ -47,7 +48,9 @@ function Stepper({ location: { pathname }}) {
           </div>
         </div>
       )}
-      <div className="head-space" />
+      <div className="head-space">
+        {showHome && <Link to="/home"><FontAwesomeIcon className="has-text-info" icon={faHome} size="lg" /></Link>}
+      </div>
     </div>
   );
 }

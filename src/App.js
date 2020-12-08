@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { HashRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import LS from './ls';
 import Login from './Login';
@@ -12,6 +12,7 @@ import Results from './Results';
 export default function App() {
   const [user, setUser] = useState();
   const [auth, setAuth] = useState(true);
+  const isReady = useRef(false);
 
   useEffect(() => {
     setUser({
@@ -22,10 +23,10 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    if (user) {
-      console.log('setting auth', !!user?.email);
+    if (isReady.current) { // skip first run
       setAuth(!!user?.email);
     }
+    isReady.current = true;
   }, [user]);
 
   const onSubmit = e => {
@@ -36,7 +37,6 @@ export default function App() {
         LS.setItem(field, value);
       });
       const valid = LS.isValid();
-      // setIsValid(valid);
       if (valid) {
         setTimeout(() => window.scrollTo(0,0), 500);
         resolve(true);
@@ -52,10 +52,7 @@ export default function App() {
         <Route path="/login">
           <Login setUser={setUser} />
         </Route>
-        <Route
-          path="/data/:table(lift)"
-          render={rp => <Data rp={rp} />}
-        />
+        {!auth && <Redirect to="/login" />}
         <Route path="/home">
           <Home />
         </Route>
@@ -68,9 +65,11 @@ export default function App() {
         <Route path="/results">
           <Results />
         </Route>
-        <Route>
-          <Redirect to="/home" />
-        </Route>
+        <Route
+          path="/data/:table(lift)"
+          render={rp => <Data rp={rp} />}
+        />
+        <Redirect to="/home" />
       </Switch>
     </Router>
   );

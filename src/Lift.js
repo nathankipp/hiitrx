@@ -11,7 +11,34 @@ const DEFAULTS = {
   ctext: 'Press',
 }
 const DELAY = 1500;
-const SAMPLE_SIZE = 5;
+const SAMPLE_SIZE = 1;
+
+const save = (clicks) => {
+  const items = [];
+  const timeStamp = Date.now();
+  for (let i = 0; i < clicks.length; i += 2) {
+    items.push(new Promise((resolve, reject) => {
+      const item = liftItem({
+          timeStamp,
+          trigger: clicks[i].timeStamp,
+          lift: clicks[i+1].timeStamp,
+          pressure: clicks[i+1].pressure,
+        });
+      putItemInTable(item, 'lift').then(resolve).catch(reject);
+    }));
+  }
+  return Promise.all(items);
+}
+
+const reset = (clicks) => {
+  return save(clicks).then(() => {
+    const speed = clicks.reduce((acc, cur, idx, arr) => {
+      if ((idx % 2)) return acc;
+      return [...acc, arr[idx + 1].timeStamp - cur.timeStamp];
+    }, []);
+    return speed;
+  });
+}
 
 function Lift({ history }) {
   const [ctext, setCtext] = useState(DEFAULTS.ctext);
@@ -22,6 +49,7 @@ function Lift({ history }) {
   const [triggered, setTriggered] = useState(false);
   const liftTimer = useRef(null);
   const maxForce = useRef(0);
+  const textChange = useRef();
 
   useEffect(() => {
     Pressure.set('#circle', {
@@ -40,36 +68,9 @@ function Lift({ history }) {
     });
   }, []);
 
-  const save = () => {
-    const items = [];
-    const timeStamp = Date.now();
-    for (let i = 0; i < clicks.length; i += 2) {
-      items.push(new Promise((resolve, reject) => {
-        const item = liftItem({
-            timeStamp,
-            trigger: clicks[i].timeStamp,
-            lift: clicks[i+1].timeStamp,
-            pressure: clicks[i+1].pressure,
-          });
-        putItemInTable(item, 'lift').then(resolve).catch(reject);
-      }));
-    }
-    return Promise.all(items);
-  }
-
-  const reset = () => {
-    save().finally(() => {
-      const speed = clicks.reduce((acc, cur, idx, arr) => {
-        if ((idx % 2)) return acc;
-        return [...acc, arr[idx + 1].timeStamp - cur.timeStamp];
-      }, []);
-      history.push(`/results?speed=${speed}`)
-    });
-  }
-
   useEffect(() => {
-    const rand = DELAY + Math.round(Math.random() * 250);
     if (pressed) {
+      const rand = DELAY + Math.round(Math.random() * 250);
       liftTimer.current = setTimeout(() => {
         setTriggered(true);
         setClicks(c => [
@@ -83,9 +84,13 @@ function Lift({ history }) {
   useEffect(() => {
     if (clicks.length === SAMPLE_SIZE * 2) {
       setRes(true);
-      reset();
+      clearTimeout(textChange.current);
+      reset(clicks).then(speed => {
+        LS.setItem('speed', speed);
+        history.push(`/results?speed=${speed}`);
+      });
     }
-  }, [clicks]);
+  }, [clicks, history]);
 
   const pointerDown = (e) => {
     if (ctext !== DEFAULTS.ctext) {
@@ -115,11 +120,7 @@ function Lift({ history }) {
     }
     setActive(false);
     setTriggered(false);
-    setTimeout(() => setCtext(DEFAULTS.ctext), DELAY);
-  }
-
-  if (!LS.isValid()) {
-    history.push('/');
+    textChange.current = setTimeout(() => setCtext(DEFAULTS.ctext), DELAY);
   }
 
   return (
@@ -156,6 +157,5 @@ function Lift({ history }) {
     </div>
   );
 }
-// {res && <Results clicks={clicks} reset={reset} />}
 
 export default withRouter(Lift);

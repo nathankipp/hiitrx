@@ -23,53 +23,61 @@ function Login({ setUser, history }) {
       setInvalid(true);
   };
 
+  const onSubmit = (e) => {
+    e.preventDefault();
+    if (email && password) {
+      setLoading(true);
+      setInvalid(false);
+      authenticate(email, password)
+        .then(user => {
+          if (user.email) {
+            ['email', 'name', 'age'].forEach(
+              v => LS.setItem(v, user[v])
+            );
+            setUser(user);
+            history.push('/home');
+          } else {
+            invalidate();
+          }
+        })
+        .catch(invalidate);
+    } else {
+      setInvalid(true);
+    }
+  }
+
   return (
     <div className="hero">
       <div className="hero-body has-text-centered">
         <section className="section is-flex-grow-1">
-          <input
-            className="input mb-4"
-            id='email'
-            name='email'
-            defaultValue=''
-            type='text'
-            placeholder="email"
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <input
-            className="input mb-4"
-            id='password'
-            name='password'
-            defaultValue=''
-            type='password'
-            placeholder="password"
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <button
-            className={`button is-black ${loading ? 'is-loading' : ''}`}
-            type="submit"
-            onClick={() => {
-              if (email && password) {
-                setLoading(true);
-                setInvalid(false);
-                authenticate(email, password)
-                  .then(user => {
-                    if (user.email) {
-                      ['email', 'name', 'age'].forEach(
-                        v => LS.setItem(v, user[v])
-                      );
-                      setUser(user);
-                      history.push('/today');
-                    } else {
-                      invalidate();
-                    }
-                  })
-                  .catch(invalidate);
-              } else {
-                setInvalid(true);
-              }
-            }}
-          >Go</button>
+          <form onSubmit={onSubmit}>
+            <input
+              className="input mb-4"
+              id='email'
+              name='email'
+              defaultValue=''
+              type='text'
+              placeholder="email"
+              autoComplete="email"
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <input
+              className="input mb-4"
+              id='password'
+              name='password'
+              defaultValue=''
+              type='password'
+              placeholder="password"
+              autoComplete="current-password"
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <button
+              className={`button is-black ${loading ? 'is-loading' : ''}`}
+              type="submit"
+            >
+              Go
+            </button>
+          </form>
           { invalid && <div className="mt-4 has-text-danger">invalid</div> }
         </section>
       </div>

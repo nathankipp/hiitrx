@@ -4,10 +4,6 @@ import TimePicker from './TimePicker';
 import SliderScale from './SliderScale';
 import LS from './ls';
 
-// const days = [
-//   'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'
-// ];
-
 const getDefaultValue = (field) => {
   if (field === 'date')
     return new Date().toLocaleDateString();
