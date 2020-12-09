@@ -82,13 +82,13 @@ export default function Home() {
         <Fragment key={date}>
           <div className={`columns is-mobile ${idx % 2 ? 'has-background-white-ter' : ''}`}>
             <div className="column has-text-weight-bold is-3 forecast-day">{forecast[date].day}</div>
-            <div className="clickable column is-3 has-text-centered" onClick={() => setSchedule(date, [1,0,0])}>
+            <div className="clickable column is-3 is-flex is-justify-content-center is-align-items-center" onClick={() => setSchedule(date, [1,0,0])}>
               <FontAwesomeIcon className={getColor(forecast[date].activity[0])} icon={faBed} size="lg" />
             </div>
-            <div className="clickable column is-3 has-text-centered" onClick={() => setSchedule(date, [0,1,0])}>
+            <div className="clickable column is-3 is-flex is-justify-content-center is-align-items-center" onClick={() => setSchedule(date, [0,1,0])}>
               <FontAwesomeIcon className={getColor(forecast[date].activity[1])} icon={faStopwatch} size="lg" />
             </div>
-            <div className="clickable column is-3 has-text-centered is-relative" onClick={() => setSchedule(date, [0,0,1])}>
+            <div className="clickable column is-3 is-flex is-justify-content-center is-align-items-center is-relative" onClick={() => setSchedule(date, [0,0,1])}>
               <FontAwesomeIcon className={`mx-1 ${getColor(forecast[date].activity[2])}`} icon={faSwimmer} size="sm" />
               <FontAwesomeIcon className={`mx-1 ${getColor(forecast[date].activity[2])}`} icon={faBiking} size="sm" />
               <FontAwesomeIcon className={`mx-1 ${getColor(forecast[date].activity[2])}`} icon={faRunning} size="sm" />
@@ -96,7 +96,7 @@ export default function Home() {
           </div>
           {shouldShowTodayButton && idx === 0 && !!forecast[date].activity[1] && (
             <div className={`columns is-mobile ${idx % 2 ? 'has-background-white-ter' : ''}`}>
-              <div className="column is-12 has-text-centered">
+              <div className="column is-12 is-flex is-justify-content-center is-align-items-center">
                 <Link to={todayButtonLink}><button className="button is-large">Today's Workout</button></Link>
               </div>
             </div>
@@ -104,7 +104,7 @@ export default function Home() {
           {!!forecast[date].activity[2] && (
             <div className={`columns is-mobile ${idx % 2 ? 'has-background-white-ter' : ''}`}>
               <div className="column is-12 is-flex is-align-items-center">
-                <div className="mb-5 mx-4">Anticipated Effort</div>
+                <div className="mb-1 mx-4 has-text-centered">Anticipated<br />Effort</div>
                 <div className="is-flex-grow-1 mx-4">
                   <input
                     defaultValue={forecast[date].effort}
