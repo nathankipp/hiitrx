@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Redirect, Link } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import TimePicker from './TimePicker';
 import SliderScale from './SliderScale';
 import LS from './ls';
@@ -58,8 +58,7 @@ export default function Tform({ onSubmit }) {
     return <Redirect push to="/lift" />;
   }
 
-  const hasUser = LS.isValidUser();
-  const items = hasUser
+  const items = LS.isValidUser()
     ? LS.items.map(item =>
         item.field === 'name' || item.field === 'age'
         ? { ...item, type: 'hidden' }
@@ -70,7 +69,6 @@ export default function Tform({ onSubmit }) {
   return (
     <div className="px-4 py-4">
       <div>
-        
         <form onSubmit={submitHandler}>
           {items.map(({ label, field, type, scale }) => {
             return (
