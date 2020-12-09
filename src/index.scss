@@ -12,8 +12,10 @@ html, body {
   user-select: none;
 }
 
-.tri-tap {
-  position: absolute;
+.head-space {
+  width: 5%;
+  margin: .5rem 0;
+  white-space: nowrap;
 }
 
 #name-wrapper {
@@ -62,6 +64,15 @@ html, body {
 
   &.triggered {
     border-color: $danger;
+  }
+}
+
+.forecast {
+  .headings {
+    border-bottom: 1px solid black;
+  }
+  .clickable {
+    cursor: pointer;
   }
 }
 

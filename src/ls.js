@@ -44,7 +44,7 @@ function getItem(item) {
   const db = whichDb(item);
   if (db === LS) {
     value = window.localStorage.getItem(item);
-  } else if (db === SS) {
+  } else {
     value = window.sessionStorage.getItem(item);
   }
   return value;
@@ -54,7 +54,7 @@ function setItem(item, value) {
   const db = whichDb(item);
   if (db === LS) {
     window.localStorage.setItem(item, value);
-  } else if (db === SS) {
+  } else {
     window.sessionStorage.setItem(item, value);
   }
 }

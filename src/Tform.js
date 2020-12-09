@@ -4,10 +4,6 @@ import TimePicker from './TimePicker';
 import SliderScale from './SliderScale';
 import LS from './ls';
 
-// const days = [
-//   'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'
-// ];
-
 const getDefaultValue = (field) => {
   if (field === 'date')
     return new Date().toLocaleDateString();
@@ -74,16 +70,7 @@ export default function Tform({ onSubmit }) {
   return (
     <div className="px-4 py-4">
       <div>
-        {hasUser
-          ? (
-            <div className="mb-2 pb-2 is-flex is-justify-content-space-between is-align-items-center">
-              <strong>Hello, {LS.getItem('name')}</strong>
-              <Link to="/login">
-                <button className="button is-small">not {LS.getItem('name')}?</button>
-              </Link>
-            </div>
-          ) : null
-        }
+        
         <form onSubmit={submitHandler}>
           {items.map(({ label, field, type, scale }) => {
             return (

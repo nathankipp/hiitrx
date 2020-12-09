@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { HashRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import LS from './ls';
-import Data from './Data';
 import Login from './Login';
+import Data from './Data';
+import Home from './Home';
 import Stepper from './Stepper';
 import Tform from './Tform';
 import Lift from './Lift';
@@ -10,7 +11,8 @@ import Results from './Results';
 
 export default function App() {
   const [user, setUser] = useState();
-  const [auth, setAuth] = useState(false);
+  const [auth, setAuth] = useState(true);
+  const isReady = useRef(false);
 
   useEffect(() => {
     setUser({
@@ -21,9 +23,10 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    if (user?.email) {
-      setAuth(true);
+    if (isReady.current) { // skip first run
+      setAuth(!!user?.email);
     }
+    isReady.current = true;
   }, [user]);
 
   const onSubmit = e => {
@@ -34,7 +37,6 @@ export default function App() {
         LS.setItem(field, value);
       });
       const valid = LS.isValid();
-      // setIsValid(valid);
       if (valid) {
         setTimeout(() => window.scrollTo(0,0), 500);
         resolve(true);
@@ -43,45 +45,31 @@ export default function App() {
     });
   }
 
-  if (!user) {
-    return null;
-  }
-
-  if (!auth) {
-    return (
-      <Router>
-        <Login setUser={setUser} />
-      </Router>
-    );
-  }
-
   return (
     <Router>
+      <Stepper />
       <Switch>
+        <Route path="/login">
+          <Login setUser={setUser} />
+        </Route>
+        {!auth && <Redirect to="/login" />}
+        <Route path="/home">
+          <Home />
+        </Route>
+        <Route path="/today">
+          <Tform onSubmit={onSubmit} />
+        </Route>
+        <Route path="/lift">
+          <Lift />
+        </Route>
+        <Route path="/results">
+          <Results />
+        </Route>
         <Route
           path="/data/:table(lift)"
           render={rp => <Data rp={rp} />}
         />
-        <Route path="/login">
-          <Login setUser={setUser} />
-        </Route>
-        <Route>
-          <Stepper />
-          <Switch>
-            <Route path="/today">
-              <Tform onSubmit={onSubmit} />
-            </Route>
-            <Route path="/lift">
-              <Lift />
-            </Route>
-            <Route path="/results">
-              <Results />
-            </Route>
-            <Route>
-              <Redirect to="/today" />
-            </Route>
-          </Switch>
-        </Route>
+        <Redirect to="/home" />
       </Switch>
     </Router>
   );
