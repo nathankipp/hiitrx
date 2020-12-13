@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome, faSmile, faDotCircle, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
-import LS from './ls';
+import LS from '../../utils/ls';
 
 const progress = path => step => {
   let className = "step-item is-success";
@@ -25,19 +25,20 @@ const progress = path => step => {
   return className;
 }
 
+const showHome = pathname =>
+  !['/login', '/home'].includes(pathname);
 const showSteps = pathname =>
   ['/today', '/lift', '/results'].includes(pathname);
 const showGreeting = pathname =>
   !['/login', '/lift', '/results'].includes(pathname);
 
-function Stepper({ location: { pathname }}) {
+function Header({ isLoaded, name, location: { pathname }}) {
   const classNames = progress(pathname);
-  const showHome = pathname !== '/login';
   return (
     <>
       <div className="px-4 is-flex has-background-link-light is-justify-content-space-between is-align-items-center">
         <div className="head-space has-text-info"><b>HIITRx</b></div>
-        {showSteps(pathname) && (
+        {isLoaded && showSteps(pathname) && (
           <div className="is-flex-grow-1 my-1 px-6">
             <div className="steps is-small">
               <div className={classNames(0)}>
@@ -53,14 +54,14 @@ function Stepper({ location: { pathname }}) {
           </div>
         )}
         <div className="head-space">
-          {showHome && <Link to="/home"><FontAwesomeIcon className="has-text-info" icon={faHome} size="lg" /></Link>}
+          {showHome(pathname) && <Link to="/home"><FontAwesomeIcon className="has-text-info" icon={faHome} size="lg" /></Link>}
         </div>
       </div>
       {showGreeting(pathname) && (
         <div className="px-4 py-4 is-flex is-justify-content-space-between is-align-items-center">
-          <strong>Hello, {LS.getItem('name')}</strong>
+          <strong>Hello, {name}</strong>
           <Link to="/login">
-            <button className="button is-small">not {LS.getItem('name')}?</button>
+            <button className="button is-small">not {name}?</button>
           </Link>
         </div>
       )}
@@ -68,4 +69,4 @@ function Stepper({ location: { pathname }}) {
   );
 }
 
-export default withRouter(Stepper);
+export default withRouter(Header);

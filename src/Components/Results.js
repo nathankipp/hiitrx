@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
-import LS from './ls';
-import table from './table';
+import LS from '../utils/ls';
+import table from '../utils/table';
 
 function Results({ location: { search }}) {
   const readiness = ['motivated', 'fast', 'sleep', 'sleepHours'].reduce((acc, cur) => {

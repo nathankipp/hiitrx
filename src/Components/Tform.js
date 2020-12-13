@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Redirect } from 'react-router-dom';
 import TimePicker from './TimePicker';
 import SliderScale from './SliderScale';
-import LS from './ls';
+import LS from '../utils/ls';
 
 const getDefaultValue = (field) => {
   if (field === 'date')
@@ -47,7 +47,23 @@ const getInput = (type, { field, scale }) => {
   }
 }
 
-export default function Tform({ onSubmit }) {
+const onSubmit = e => {
+  e.preventDefault();
+  return new Promise(resolve => {
+    LS.items.forEach(({ field }) => {
+      const value = (e.target[field].value || '').trim();
+      LS.setItem(field, value);
+    });
+    const valid = LS.isValid();
+    if (valid) {
+      setTimeout(() => window.scrollTo(0,0), 500);
+      resolve(true);
+    }
+    resolve(false);
+  });
+}
+
+export default function Tform() {
   const [redirect, setRedirect] = useState(false);
 
   const submitHandler = (e) => {

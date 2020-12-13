@@ -1,11 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { withRouter } from 'react-router-dom';
 import Pressure from 'pressure';
-import LS from './ls';
-import { liftItem } from './items';
-import { putItemInTable } from './db';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import LS from '../../utils/ls';
+import { liftItem } from '../../utils/items';
+import { put } from '../../utils/db';
+import Progress from '../Progress';
 
 const DEFAULTS = {
   ctext: 'Press',
@@ -24,7 +23,7 @@ const save = (clicks) => {
           lift: clicks[i+1].timeStamp,
           pressure: clicks[i+1].pressure,
         });
-      putItemInTable(item, 'lift').then(resolve).catch(reject);
+      put(item, 'lift').then(resolve).catch(reject);
     }));
   }
   return Promise.all(items);
@@ -52,6 +51,7 @@ function Lift({ history }) {
   const textChange = useRef();
 
   useEffect(() => {
+    LS.removeItem('speed');
     Pressure.set('#circle', {
       start: () => {
         maxForce.current = 0;
@@ -123,6 +123,10 @@ function Lift({ history }) {
     textChange.current = setTimeout(() => setCtext(DEFAULTS.ctext), DELAY);
   }
 
+  if (res) {
+    return <Progress />;
+  }
+
   return (
     <div className="px-4 py-4">
       <div className="mb-4">
@@ -139,20 +143,14 @@ function Lift({ history }) {
           transform: 'translate(-50%)',
         }}
       >
-        {res ? (
-          <div className="circle">
-            <FontAwesomeIcon spin size="1x" icon={faSpinner} />
-          </div>
-        ) : (
-          <div
-            id="circle"
-            className={`circle ${pressed && 'pressed'} ${triggered && 'triggered'}`}
-            onPointerDown={pointerDown}
-            onPointerUp={pointerUp}
-          >
-            {ctext}
-          </div>
-        )}
+        <div
+          id="circle"
+          className={`circle ${pressed && 'pressed'} ${triggered && 'triggered'}`}
+          onPointerDown={pointerDown}
+          onPointerUp={pointerUp}
+        >
+          {ctext}
+        </div>
       </section>
     </div>
   );

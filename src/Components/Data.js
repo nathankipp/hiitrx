@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { fetchData } from './db';
+import { fetchData } from '../utils/db';
 
 export default function Data({ x }) {
   const [data, setData] = useState([]);
