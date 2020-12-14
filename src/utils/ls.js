@@ -3,9 +3,6 @@ const SS = 'session';
 
 const ITEMS = [
   { label: 'Date', field: 'date', type: 'hidden', db: SS },
-  { label: 'Email', field: 'email', type: 'hidden', db: LS },
-  { label: 'Name', field: 'name', db: LS },
-  { label: 'Age', field: 'age', type: "number", db: LS },
   {
     label: 'How motivated are you to train?',
     field: 'motivated',
@@ -39,6 +36,15 @@ const whichDb = item => {
   return i && i.db;
 }
 
+function setItem(item, value) {
+  const db = whichDb(item);
+  if (db === LS) {
+    window.localStorage.setItem(item, value);
+  } else {
+    window.sessionStorage.setItem(item, value);
+  }
+}
+
 function getItem(item) {
   let value;
   const db = whichDb(item);
@@ -50,12 +56,12 @@ function getItem(item) {
   return value;
 }
 
-function setItem(item, value) {
+function removeItem(item, value) {
   const db = whichDb(item);
   if (db === LS) {
-    window.localStorage.setItem(item, value);
+    window.localStorage.removeItem(item, value);
   } else {
-    window.sessionStorage.setItem(item, value);
+    window.sessionStorage.removeItem(item, value);
   }
 }
 
@@ -67,17 +73,21 @@ function isValid() {
 }
 
 function isValidUser() {
-  const hasAll = !ITEMS
-    .filter(({ field }) => ['email', 'name', 'age'].includes(field))
-    .map(({ field }) => !!getItem(field))
-    .includes(false);
-  return hasAll;
+  const user = window.localStorage.getItem('user');
+  if (user) {
+    const { email, name, age } = JSON.parse(user);
+    return email && name && age
+      ? { email, name, age }
+      : false;
+  }
+  return false;
 }
 
 export default {
   items: ITEMS,
-  getItem,
   setItem,
+  getItem,
+  removeItem,
   isValid,
   isValidUser,
 };

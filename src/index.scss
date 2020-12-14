@@ -67,9 +67,10 @@ html, body {
   }
 }
 
-.forecast {
+.table {
   .headings {
     border-bottom: 1px solid black;
+    font-weight: bold;
   }
   .clickable {
     cursor: pointer;

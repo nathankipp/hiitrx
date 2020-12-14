@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { fetchData } from './db';
+import { scan } from '../../utils/db';
 
 export default function Data({ x }) {
   const [data, setData] = useState([]);
   const [keys, setKeys] = useState({});
 
   useEffect(() => {
-    fetchData('lift').then(setData);
+    scan('lift').then(setData);
   }, []);
 
   useEffect(() => {

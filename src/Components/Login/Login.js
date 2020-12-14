@@ -1,46 +1,36 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { withRouter } from 'react-router-dom';
-import { fetchItem } from './db';
-import LS from './ls';
 import sha256 from 'crypto-js/sha256';
 import Base64 from 'crypto-js/enc-base64';
 
-// console.log(Base64.stringify(sha256('')));
-const authenticate = (email, password) => fetchItem(
-  'users',
-  { hash: Base64.stringify(sha256(`${email}${password}`)) },
-  ['email', 'name', 'age']
-);
-
-function Login({ setUser, history }) {
+function Login({ reset, authenticate, authenticateApp, history }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [working, setWorking] = useState(false);
   const [invalid, setInvalid] = useState(false);
 
-  const invalidate = () => {
-      setLoading(false);
-      setInvalid(true);
-  };
+  useEffect(() => {
+    window.sessionStorage.removeItem('hash');
+    reset();
+    authenticateApp(false);
+  }, [reset, authenticateApp]);
 
   const onSubmit = (e) => {
     e.preventDefault();
     if (email && password) {
-      setLoading(true);
+      setWorking(true);
       setInvalid(false);
-      authenticate(email, password)
-        .then(user => {
-          if (user.email) {
-            ['email', 'name', 'age'].forEach(
-              v => LS.setItem(v, user[v])
-            );
-            setUser(user);
-            history.push('/home');
-          } else {
-            invalidate();
-          }
+      const hash = Base64.stringify(sha256(`${email}${password}`));
+      authenticate(hash)
+        .then(() => {
+          window.localStorage.setItem('hash', hash);
+          authenticateApp(true);
+          history.push('/home');
         })
-        .catch(invalidate);
+        .catch((e) => {
+          setWorking(false);
+          setInvalid(true);
+        });
     } else {
       setInvalid(true);
     }
@@ -72,7 +62,7 @@ function Login({ setUser, history }) {
               onChange={(e) => setPassword(e.target.value)}
             />
             <button
-              className={`button is-black ${loading ? 'is-loading' : ''}`}
+              className={`button is-black ${working ? 'is-loading' : ''}`}
               type="submit"
             >
               Go

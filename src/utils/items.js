@@ -1,5 +1,5 @@
 import { v4 as uuid } from 'uuid';
-import LS from './ls';
+import LS from '../utils/ls';
 
 const DEFAULTS = {
   name: 'unspecified',
