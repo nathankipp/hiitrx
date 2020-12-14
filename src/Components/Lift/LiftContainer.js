@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import Lift from './Lift';
-import { setSpeed } from '../../redux/actions';
+import { setLifts, updateHiitrx } from '../../redux/actions';
 
-const mapDispatchToProps = { setSpeed };
+const mapDispatchToProps = { setLifts, updateHiitrx };
 
 export default connect(null, mapDispatchToProps)(Lift);

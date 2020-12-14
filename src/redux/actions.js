@@ -3,13 +3,15 @@ import { fetchItem, put } from '../utils/db';
 const LOAD = 'LOAD';
 const RESET = 'RESET';
 const SET_SCHEDULE = 'SET_SCHEDULE';
-const SET_SPEED = 'SET_SPEED';
+const SET_TODAY = 'SET_TODAY';
+const SET_LIFTS = 'SET_LIFTS';
 
 export const actionTypes = {
   LOAD,
   RESET,
   SET_SCHEDULE,
-  SET_SPEED,
+  SET_TODAY,
+  SET_LIFTS,
 };
 
 export const load = payload => ({ type: LOAD, payload });
@@ -32,6 +34,8 @@ export const authenticate = (hash) => (dispatch) => {
 
 export const setSchedule = (payload) => ({ type: SET_SCHEDULE, payload });
 
-export const setSpeed = (payload) => ({ type: SET_SPEED, payload });
+export const setToday = (payload) => ({ type: SET_TODAY, payload });
+
+export const setLifts = (payload) => ({ type: SET_LIFTS, payload });
 
 export const updateHiitrx = () => (_, getState) => put(getState());

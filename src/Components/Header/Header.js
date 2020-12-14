@@ -1,8 +1,7 @@
 import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHome, faSmile, faDotCircle, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
-import LS from '../../utils/ls';
+import { faCalendarAlt, faSmile, faDotCircle, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 
 const progress = path => step => {
   let className = "step-item is-success";
@@ -54,7 +53,7 @@ function Header({ isLoaded, name, location: { pathname }}) {
           </div>
         )}
         <div className="head-space">
-          {showHome(pathname) && <Link to="/home"><FontAwesomeIcon className="has-text-info" icon={faHome} size="lg" /></Link>}
+          {showHome(pathname) && <Link to="/home"><FontAwesomeIcon className="has-text-info" icon={faCalendarAlt} size="lg" /></Link>}
         </div>
       </div>
       {showGreeting(pathname) && (

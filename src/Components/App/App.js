@@ -5,9 +5,9 @@ import Login from '../Login';
 import Data from '../Data';
 import Home from '../Home';
 import Header from '../Header';
-import Tform from '../Tform';
+import Today from '../Today';
 import Lift from '../Lift';
-import Results from '../Results';
+import Results from '../../Results';
 
 export default function App({ isLoaded, authenticate }) {
   const [authenticated, setAuthenticated] = useState(false);
@@ -50,7 +50,7 @@ export default function App({ isLoaded, authenticate }) {
           <Home />
         </Route>
         <Route path="/today">
-          <Tform />
+          <Today />
         </Route>
         <Route path="/lift">
           <Lift />

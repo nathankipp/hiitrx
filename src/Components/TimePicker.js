@@ -1,22 +1,29 @@
 import React, { useState } from 'react';
 import SliderScale from './SliderScale';
 
-export default function TimePicker({ h, m }) {
+export default function TimePicker({ h, m, onChange }) {
   const [hours, setHours] = useState(h);
   const [minutes, setMinutes] = useState(m);
 
   const adjust = which => amount => e => {
     e.preventDefault();
+
+    let newHours = hours;
+    let newMinutes = minutes;
     if (which === 'h') {
-      const value = hours + amount;
-      if (value >= 0 && value < 25) {
-        setHours(hours + amount);
+      if ((amount === 1 && hours < 23) || (amount === -1 && hours > 0)) {
+        newHours += amount;
       }
     } else {
-      const value = minutes + amount;
-      if (value >= 0 && value < 60) {
-        setMinutes(minutes + amount);
+      if ((amount === 15 && minutes < 45) || (amount === -15 && minutes > 0)) {
+        newMinutes += amount;
       }
+    }
+    setHours(newHours);
+    setMinutes(newMinutes);
+
+    if (newHours !== hours || newMinutes !== minutes) {
+      onChange({ target: { value: `${newHours + newMinutes/60}` }});
     }
   }
 
@@ -34,7 +41,6 @@ export default function TimePicker({ h, m }) {
         </div>
       </div>
       <SliderScale scale={['subtract/add hours', 'subtract/add minutes']} />
-      <input type="hidden" name="sleepHours" defaultValue={`${hours + minutes/60}`} />
     </>
   );
 }

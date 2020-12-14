@@ -1,10 +1,11 @@
 import React, { Fragment, useState, useEffect } from 'react';
-import { Link, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import debounce from 'lodash/debounce';
+import noop from 'lodash/noop';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBed, faStopwatch, faRunning, faSwimmer, faBiking } from '@fortawesome/free-solid-svg-icons';
-import LS from '../../utils/ls';
 import SliderScale from '../SliderScale';
+import getFullDate from '../../utils/getFullDate';
 
 const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const today = new Date().getDay();
@@ -28,21 +29,6 @@ const randomMessage = restMessages[Math.floor(Math.random() * 7)];
 
 const getColor = toggle => toggle ? "has-text-success" : "has-text-grey-light";
 
-const getFullDate = d => {
-  const fullDate = [d.getFullYear()];
-  const mo = d.getMonth() + 1;
-  fullDate.push(mo < 10
-    ? `0${mo}`
-    : mo
-  );
-  const dy = d.getDate();
-  fullDate.push(d < 10
-    ? `0${dy}`
-    : dy
-  );
-  return fullDate.join('-');
-}
-
 function Home({ schedule, setSchedule, updateHiitrx, history }) {
   const [dates, setDates] = useState([]);
 
@@ -55,14 +41,18 @@ function Home({ schedule, setSchedule, updateHiitrx, history }) {
     setDates(dts);
   }, []);
 
-  const setDaySchedule = date => item => value =>
+  const setDaySchedule = date => item => value => {
     setSchedule({ date, [item]: value });
+    // have to update server if today is NOT a HIIT day
+    if (schedule[dates[0]]?.activity?.[1] === 0) {
+      updateHiitrx().then(noop).catch(noop); // not great; fix
+    }
+  }
 
   const saveAndNext = () => updateHiitrx()
     .then(() => {
-      const speed = schedule[dates[0]].speed;
-      const to = speed
-        ? '/results?speed={}'
+      const to = !!schedule[dates[0]]?.lifts
+        ? '/results'
         : '/lift';
       history.push(to);
     })
@@ -92,7 +82,7 @@ function Home({ schedule, setSchedule, updateHiitrx, history }) {
       {dates.map((date, idx) => {
         const iconColor = key => getColor(!!schedule[date]?.activity?.[key]);
         const setActivity = setDaySchedule(date)('activity');
-        const setEffort = debounce(setDaySchedule(date)('effort'), 100);
+        const setEffort = debounce(setDaySchedule(date)('effort'), 250);
         return (
           <Fragment key={date}>
             <div className={`columns is-mobile ${idx % 2 ? 'has-background-white-ter' : ''}`}>

@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { withRouter } from 'react-router-dom';
 import Pressure from 'pressure';
-import LS from '../../utils/ls';
 import { liftItem } from '../../utils/items';
 import { put } from '../../utils/db';
 import Progress from '../Progress';
@@ -12,7 +11,7 @@ const DEFAULTS = {
 const DELAY = 1500;
 const SAMPLE_SIZE = 5;
 
-const save = (clicks) => {
+const saveLifts = (clicks) => {
   const items = [];
   const timeStamp = Date.now();
   for (let i = 0; i < clicks.length; i += 2) {
@@ -29,17 +28,14 @@ const save = (clicks) => {
   return Promise.all(items);
 }
 
-const reset = (clicks) => {
-  return save(clicks).then(() => {
-    const speed = clicks.reduce((acc, cur, idx, arr) => {
-      if ((idx % 2)) return acc;
-      return [...acc, arr[idx + 1].timeStamp - cur.timeStamp];
-    }, []);
-    return speed;
-  });
-}
+const getLiftIntervals = clicks => clicks.reduce(
+  (acc, cur, idx, arr) => (idx % 2)
+    ? acc
+    : [ ...acc, arr[idx + 1].timeStamp - cur.timeStamp],
+  []
+);
 
-function Lift({ history }) {
+function Lift({ setLifts, updateHiitrx, history }) {
   const [ctext, setCtext] = useState(DEFAULTS.ctext);
   const [clicks, setClicks] = useState([]);
   const [active, setActive] = useState(false);
@@ -51,7 +47,6 @@ function Lift({ history }) {
   const textChange = useRef();
 
   useEffect(() => {
-    LS.removeItem('speed');
     Pressure.set('#circle', {
       start: () => {
         maxForce.current = 0;
@@ -84,13 +79,15 @@ function Lift({ history }) {
   useEffect(() => {
     if (clicks.length === SAMPLE_SIZE * 2) {
       setRes(true);
+      const lifts = getLiftIntervals(clicks);
+      setLifts(lifts);
+      saveLifts(clicks)
+        .then(updateHiitrx)
+        .then(() => history.replace('/results'))
+        .catch(() => {});
       clearTimeout(textChange.current);
-      reset(clicks).then(speed => {
-        LS.setItem('speed', speed);
-        history.push(`/results?speed=${speed}`);
-      });
     }
-  }, [clicks, history]);
+  }, [clicks, setLifts, updateHiitrx, history]);
 
   const pointerDown = (e) => {
     if (ctext !== DEFAULTS.ctext) {
