@@ -44,7 +44,10 @@ function Home({ schedule, setSchedule, updateHiitrx, history }) {
   const setDaySchedule = date => item => value => {
     setSchedule({ date, [item]: value });
     // have to update server if today is NOT a HIIT day
-    if (schedule[dates[0]]?.activity?.[1] === 0) {
+
+    const todayIsNotHiit = schedule[dates[0]]?.activity?.[1] === 0;
+    const updatingToday = date === getFullDate();
+    if (todayIsNotHiit || updatingToday) {
       updateHiitrx().then(noop).catch(noop); // not great; fix
     }
   }
@@ -53,10 +56,10 @@ function Home({ schedule, setSchedule, updateHiitrx, history }) {
     .then(() => {
       const to = !!schedule[dates[0]]?.lifts
         ? '/results'
-        : '/lift';
+        : '/today';
       history.push(to);
     })
-    .catch(() => console.warn('update failed'));
+    .catch(() => console.error('update failed'));
 
   // only show button if there are entries for next # days
   const DAYS_OUT = 4;
@@ -72,12 +75,12 @@ function Home({ schedule, setSchedule, updateHiitrx, history }) {
     !!schedule[date]?.activity?.[0] && idx === 0;
 
   return (
-    <div className="forecast m-4 x">
+    <div className="table m-4">
       <div className="headings columns is-mobile">
-        <div className="column has-text-weight-bold is-3 forecast-day">Day</div>
-        <div className="column has-text-weight-bold is-3 has-text-centered">Off</div>
-        <div className="column has-text-weight-bold is-3 has-text-centered">HIIT</div>
-        <div className="column has-text-weight-bold is-3 has-text-centered">Other</div>
+        <div className="column is-3 forecast-day">Day</div>
+        <div className="column is-3 has-text-centered">Off</div>
+        <div className="column is-3 has-text-centered">HIIT</div>
+        <div className="column is-3 has-text-centered">Other</div>
       </div>
       {dates.map((date, idx) => {
         const iconColor = key => getColor(!!schedule[date]?.activity?.[key]);
@@ -86,7 +89,7 @@ function Home({ schedule, setSchedule, updateHiitrx, history }) {
         return (
           <Fragment key={date}>
             <div className={`columns is-mobile ${idx % 2 ? 'has-background-white-ter' : ''}`}>
-              <div className="column has-text-weight-bold is-3 forecast-day">
+              <div className="column is-3 has-text-weight-bold forecast-day">
                 {getDayText(idx)}
               </div>
               <div

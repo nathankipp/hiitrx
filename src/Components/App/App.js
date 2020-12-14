@@ -7,20 +7,33 @@ import Home from '../Home';
 import Header from '../Header';
 import Today from '../Today';
 import Lift from '../Lift';
-import Results from '../../Results';
+import Results from '../Results';
 
-export default function App({ isLoaded, authenticate }) {
+function hasReported(schedule) {
+  const { motivated, fast, sleep, sleepHours } = schedule;
+  return !!(motivated && fast && sleep && sleepHours);
+}
+
+function hasLifted(schedule) {
+  return !!schedule.lifts;
+}
+
+export default function App({ isLoaded, authenticate, todaysSchedule }) {
   const [authenticated, setAuthenticated] = useState(false);
   const [initialized, setInitialized] = useState(false);
   const [working, setWorking] = useState(false);
   const first = useRef(true)
+  const [status, setStatus] = useState({
+    isHiitDay: false,
+    hasReported: false,
+    hasLifted: false,
+  });
 
   useEffect(() => {
-    // XRRF69iF12Dcoo2wXAOJdekS0K03Jjgk8ZrFFYcbZzk=
     const hash = window.sessionStorage.getItem('hash');
     if (hash && first.current) {
+      console.debug('HIITRx: running login effect');
       setWorking(true);
-      console.error('running login effect');
       authenticate(hash)
         .then(() => setAuthenticated(true))
         .catch(() => {})
@@ -32,16 +45,29 @@ export default function App({ isLoaded, authenticate }) {
       setInitialized(true);
     }
     first.current = false;
-  }, [isLoaded, authenticate]);
+  }, [isLoaded, authenticate, setStatus]);
+
+  useEffect(() => {
+    const newStatus = {
+      isHiitDay: !!todaysSchedule.activity?.[1],
+      hasReported: hasReported(todaysSchedule),
+      hasLifted: hasLifted(todaysSchedule),
+    }
+    setStatus(newStatus);
+  }, [todaysSchedule])
 
   if (working) {
-    return <Progress />;
+    return <Router><Header /><Progress /></Router>;
   }
 
   return !initialized ? null : (
     <Router>
       <Header />
       <Switch>
+        <Route
+          path="/data/:table(lift)"
+          render={rp => <Data rp={rp} />}
+        />
         <Route path="/login">
           <Login authenticateApp={setAuthenticated} />
         </Route>
@@ -50,18 +76,16 @@ export default function App({ isLoaded, authenticate }) {
           <Home />
         </Route>
         <Route path="/today">
-          <Today />
+          <Today hasReported={status.hasReported} />
         </Route>
+        {!status.hasReported && <Redirect to="/home" />}
         <Route path="/lift">
           <Lift />
         </Route>
+        {!status.hasLifted && <Redirect to="/home" />}
         <Route path="/results">
           <Results />
         </Route>
-        <Route
-          path="/data/:table(lift)"
-          render={rp => <Data rp={rp} />}
-        />
         <Redirect to="/home" />
       </Switch>
     </Router>

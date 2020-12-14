@@ -35,13 +35,14 @@ const getLiftIntervals = clicks => clicks.reduce(
   []
 );
 
-function Lift({ setLifts, updateHiitrx, history }) {
+function Lift({ lifts, setLifts, updateHiitrx, history }) {
   const [ctext, setCtext] = useState(DEFAULTS.ctext);
   const [clicks, setClicks] = useState([]);
   const [active, setActive] = useState(false);
-  const [res, setRes] = useState(false);
   const [pressed, setPressed] = useState(false);
   const [triggered, setTriggered] = useState(false);
+  const [done, setDone] = useState(false);
+  const [working, setWorking] = useState(false);
   const liftTimer = useRef(null);
   const maxForce = useRef(0);
   const textChange = useRef();
@@ -78,16 +79,33 @@ function Lift({ setLifts, updateHiitrx, history }) {
 
   useEffect(() => {
     if (clicks.length === SAMPLE_SIZE * 2) {
-      setRes(true);
-      const lifts = getLiftIntervals(clicks);
-      setLifts(lifts);
+      setDone(true);
+    }
+  }, [clicks]);
+
+  const saveAndNext = () => {
+    if (!lifts) {
+      const computedLifts = getLiftIntervals(clicks);
+      setWorking(true);
+      setLifts(computedLifts)
       saveLifts(clicks)
         .then(updateHiitrx)
-        .then(() => history.replace('/results'))
+        .then(() => history.push('/results'))
         .catch(() => {});
       clearTimeout(textChange.current);
+    } else {
+      history.push('/results');
     }
-  }, [clicks, setLifts, updateHiitrx, history]);
+  }
+
+  const reset = () => {
+    setCtext(DEFAULTS.ctext);
+    setClicks([]);
+    setActive(false);
+    setPressed(false);
+    setTriggered(false);
+    setDone(false);
+  }
 
   const pointerDown = (e) => {
     if (ctext !== DEFAULTS.ctext) {
@@ -120,8 +138,41 @@ function Lift({ setLifts, updateHiitrx, history }) {
     textChange.current = setTimeout(() => setCtext(DEFAULTS.ctext), DELAY);
   }
 
-  if (res) {
+  if (working) {
     return <Progress />;
+  }
+
+  if (lifts || done) {
+    const attempts = lifts || getLiftIntervals(clicks);
+    return (
+      <div className="table m-4">
+        <div className="headings columns is-mobile">
+          <div className="column is-6">Attempt</div>
+          <div className="column is-6 has-text-centered">Reaction Speed</div>
+        </div>
+        {attempts.map((speed, idx) => (
+          <div key={speed} className="columns is-mobile">
+            <div className="column is-6 has-text-weight-bold">{idx+1}</div>
+            <div className="column is-6 has-text-centered">{`${speed}ms`}</div>
+          </div>
+        ))}
+        <div className="column is-12 has-text-centered">
+          <button
+            className="button is-info is-light mr-2"
+            onClick={reset}
+            disabled={!!lifts}
+          >
+            Retry
+          </button>
+          <button
+            className="button is-black"
+            onClick={saveAndNext}
+          >
+            Next
+          </button>
+        </div>
+      </div>
+    );
   }
 
   return (

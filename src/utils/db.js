@@ -49,17 +49,17 @@ export function put(Item, TableName = TABLE_NAME) {
 //   });
 // }
 
-// export function scan(TableName) {
-//   return new Promise((resolve, reject) => {
-//     dynamo.scan({ TableName }, (err, data) => {
-//       if (err) {
-//         reject('data cannot be retrieved');
-//       } else {
-//         resolve(data.Items);
-//       }
-//     });
-//   });
-// }
+export function scan(TableName) {
+  return new Promise((resolve, reject) => {
+    dynamo.scan({ TableName }, (err, data) => {
+      if (err) {
+        reject('data cannot be retrieved');
+      } else {
+        resolve(data.Items);
+      }
+    });
+  });
+}
 
 export function fetchData() {}
 

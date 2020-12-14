@@ -10,6 +10,7 @@ const {
 } = actionTypes;
 
 const DEFAULT_STATE = {
+  date: null,
   hash: null,
   email: null,
   name: null,

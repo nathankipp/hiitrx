@@ -24,39 +24,40 @@ const progress = path => step => {
   return className;
 }
 
-const showHome = pathname =>
-  !['/login', '/home'].includes(pathname);
-const showSteps = pathname =>
-  ['/today', '/lift', '/results'].includes(pathname);
-const showGreeting = pathname =>
-  !['/login', '/lift', '/results'].includes(pathname);
 
 function Header({ isLoaded, name, location: { pathname }}) {
-  const classNames = progress(pathname);
+  const showSteps =
+    isLoaded && ['/today', '/lift', '/results'].includes(pathname);
+  const showHomeLink =
+    !['/login', '/home'].includes(pathname);
+  const showGreeting =
+    isLoaded && !['/login', '/lift'].includes(pathname);
+  const stepperClass = progress(pathname);
+
   return (
     <>
       <div className="px-4 is-flex has-background-link-light is-justify-content-space-between is-align-items-center">
         <div className="head-space has-text-info"><b>HIITRx</b></div>
-        {isLoaded && showSteps(pathname) && (
+        {showSteps && (
           <div className="is-flex-grow-1 my-1 px-6">
             <div className="steps is-small">
-              <div className={classNames(0)}>
+              <div className={stepperClass(0)}>
                 <div className="step-marker"><FontAwesomeIcon icon={faSmile} /></div>
               </div>
-              <div className={classNames(1)}>
+              <div className={stepperClass(1)}>
                 <div className="step-marker"><FontAwesomeIcon icon={faDotCircle} /></div>
               </div>
-              <div className={classNames(2)}>
+              <div className={stepperClass(2)}>
                 <div className="step-marker"><FontAwesomeIcon icon={faCheckCircle} /></div>
               </div>
             </div>
           </div>
         )}
         <div className="head-space">
-          {showHome(pathname) && <Link to="/home"><FontAwesomeIcon className="has-text-info" icon={faCalendarAlt} size="lg" /></Link>}
+          {showHomeLink && <Link to="/home"><FontAwesomeIcon className="has-text-info" icon={faCalendarAlt} size="lg" /></Link>}
         </div>
       </div>
-      {showGreeting(pathname) && (
+      {showGreeting && (
         <div className="px-4 py-4 is-flex is-justify-content-space-between is-align-items-center">
           <strong>Hello, {name}</strong>
           <Link to="/login">

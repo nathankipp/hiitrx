@@ -1,7 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import LS from '../utils/ls';
-import table from '../utils/table';
 
 function Results({ speed, readiness }) {
   return (

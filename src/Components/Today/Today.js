@@ -3,10 +3,17 @@ import { withRouter } from 'react-router-dom';
 import noop from 'lodash/noop';
 import TimePicker from '../TimePicker';
 import SliderScale from '../SliderScale';
-import getFullDate from '../../utils/getFullDate';
 
-function Today({ motivated, fast, sleep, sleepHours, setToday, updateHiitrx, history }) {
-  const [date, setDate] = useState(getFullDate());
+function Today({
+  motivated,
+  fast,
+  sleep,
+  sleepHours,
+  setToday,
+  hasReported,
+  updateHiitrx,
+  history
+}) {
   const [answers, setAnswers] = useState({
     motivated,
     fast,
@@ -23,6 +30,13 @@ function Today({ motivated, fast, sleep, sleepHours, setToday, updateHiitrx, his
     [item]: Number(e.target.value.trim()),
   });
 
+  const saveAndNext = () => {
+    setToday(answers);
+    updateHiitrx()
+      .then(() => history.push('/lift'))
+      .catch(noop);
+  }
+
   return (
     <div className="px-4 py-4">
       <form onSubmit={(e) => e.preventDefault()}>
@@ -38,6 +52,7 @@ function Today({ motivated, fast, sleep, sleepHours, setToday, updateHiitrx, his
             max="10"
             type="range"
             onChange={setItem('motivated')}
+            disabled={hasReported}
           />
           <SliderScale />
         </>
@@ -53,6 +68,7 @@ function Today({ motivated, fast, sleep, sleepHours, setToday, updateHiitrx, his
             max="10"
             type="range"
             onChange={setItem('fast')}
+            disabled={hasReported}
           />
           <SliderScale scale={['Slow', 'Normal', 'Fast']} />
         </>
@@ -68,6 +84,7 @@ function Today({ motivated, fast, sleep, sleepHours, setToday, updateHiitrx, his
             max="10"
             type="range"
             onChange={setItem('sleep')}
+            disabled={hasReported}
           />
           <SliderScale scale={['Worse', 'Normal', 'Better']} />
         </>
@@ -75,16 +92,12 @@ function Today({ motivated, fast, sleep, sleepHours, setToday, updateHiitrx, his
           h={Number(h)}
           m={Number(`.${m}`)*60}
           onChange={setItem('sleepHours')}
+          disabled={hasReported}
         />
         <div className="has-text-centered">
           <button
             className="button is-black"
-            onClick={() => {
-              setToday(answers);
-              updateHiitrx()
-                .then(() => history.replace('/lift'))
-                .catch(noop);
-            }}
+            onClick={saveAndNext}
           >
             Next
           </button>

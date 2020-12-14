@@ -1,6 +1,7 @@
 import { fetchItem, put } from '../utils/db';
 
 const LOAD = 'LOAD';
+const SET_STATUS = 'SET_STATUS';
 const RESET = 'RESET';
 const SET_SCHEDULE = 'SET_SCHEDULE';
 const SET_TODAY = 'SET_TODAY';
@@ -8,6 +9,7 @@ const SET_LIFTS = 'SET_LIFTS';
 
 export const actionTypes = {
   LOAD,
+  SET_STATUS,
   RESET,
   SET_SCHEDULE,
   SET_TODAY,
@@ -16,10 +18,13 @@ export const actionTypes = {
 
 export const load = payload => ({ type: LOAD, payload });
 
+export const setStatus = payload => ({ type: SET_STATUS });
+
 export const reset = () => ({ type: RESET });
 
-export const authenticate = (hash) => (dispatch) => {
-  return fetchItem('hiitrx', { hash })
+export const authenticate = (hash) => (dispatch) =>
+  fetchItem('hiitrx', { hash })
+    // .then(x => new Promise(resolve => setTimeout(() => resolve(x), 2000)))
     .then(state => {
       if (state) {
         window.sessionStorage.setItem('hash', state.hash);
@@ -30,7 +35,6 @@ export const authenticate = (hash) => (dispatch) => {
       dispatch(reset());
       return Promise.reject();
     });
-}
 
 export const setSchedule = (payload) => ({ type: SET_SCHEDULE, payload });
 
