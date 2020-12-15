@@ -4,12 +4,13 @@ import getFullDate from '../utils/getFullDate';
 const {
   LOAD,
   RESET,
-  SET_SCHEDULE,
+  SET_ACTIVITY,
+  SET_EFFORT,
   SET_TODAY,
   SET_LIFTS,
 } = actionTypes;
 
-const DEFAULT_STATE = {
+export const DEFAULT_STATE = {
   date: null,
   hash: null,
   email: null,
@@ -32,21 +33,25 @@ export default function(state = DEFAULT_STATE, action) {
         ...state,
         ...DEFAULT_STATE
       };
-    case SET_SCHEDULE:
-      const activity = payload.activity
-        || state.schedule[payload.date]?.activity
-        || null;
-      const effort = Number(payload.effort)
-        || state.schedule[payload.date]?.effort
-        || null;
+    case SET_ACTIVITY:
       return {
         ...state,
         schedule: {
           ...state.schedule,
           [payload.date]: {
             ...(state.schedule[payload.date] || {}),
-            activity,
-            effort,
+            activity: payload.activity,
+          },
+        },
+      };
+    case SET_EFFORT:
+      return {
+        ...state,
+        schedule: {
+          ...state.schedule,
+          [payload.date]: {
+            ...(state.schedule[payload.date] || {}),
+            effort: payload.effort,
           },
         },
       };
