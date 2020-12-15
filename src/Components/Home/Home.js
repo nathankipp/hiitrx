@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from 'react';
+import React, { Fragment, useState, useEffect, useRef } from 'react';
 import { withRouter } from 'react-router-dom';
 import debounce from 'lodash/debounce';
 import noop from 'lodash/noop';
@@ -29,8 +29,14 @@ const randomMessage = restMessages[Math.floor(Math.random() * 7)];
 
 const getColor = toggle => toggle ? "has-text-success" : "has-text-grey-light";
 
-function Home({ schedule, setSchedule, updateHiitrx, history }) {
+function Home({ schedule, setActivity, setEffort, updateHiitrx, history }) {
   const [dates, setDates] = useState([]);
+  const updateFn = useRef(
+    // react's synthetic event plays poorly w/ debounce for onChanges
+    // this ain't great; nor is the double-noop; FIX?
+    debounce(() => updateHiitrx().then(noop).catch(noop),
+    250)
+  );
 
   useEffect(() => {
     const dts = [];
@@ -41,16 +47,7 @@ function Home({ schedule, setSchedule, updateHiitrx, history }) {
     setDates(dts);
   }, []);
 
-  const setDaySchedule = date => item => value => {
-    setSchedule({ date, [item]: value });
-    // have to update server if today is NOT a HIIT day
-
-    const todayIsNotHiit = schedule[dates[0]]?.activity?.[1] === 0;
-    const updatingToday = date === getFullDate();
-    if (todayIsNotHiit || updatingToday) {
-      updateHiitrx().then(noop).catch(noop); // not great; fix
-    }
-  }
+  useEffect(() => { updateFn.current() }, [schedule]);
 
   const saveAndNext = () => updateHiitrx()
     .then(() => {
@@ -84,8 +81,8 @@ function Home({ schedule, setSchedule, updateHiitrx, history }) {
       </div>
       {dates.map((date, idx) => {
         const iconColor = key => getColor(!!schedule[date]?.activity?.[key]);
-        const setActivity = setDaySchedule(date)('activity');
-        const setEffort = debounce(setDaySchedule(date)('effort'), 250);
+        const setActivityHandler = activity => setActivity({ date, activity });
+        const setEffortHandler = e => setEffort({ date, effort: e.target.value });
         return (
           <Fragment key={date}>
             <div className={`columns is-mobile ${idx % 2 ? 'has-background-white-ter' : ''}`}>
@@ -94,19 +91,19 @@ function Home({ schedule, setSchedule, updateHiitrx, history }) {
               </div>
               <div
                 className="clickable column is-3 is-flex is-justify-content-center is-align-items-center"
-                onClick={() => setActivity([1,0,0])}
+                onClick={() => setActivityHandler([1,0,0])}
               >
                 <FontAwesomeIcon className={iconColor(0)} icon={faBed} size="lg" />
               </div>
               <div
                 className="clickable column is-3 is-flex is-justify-content-center is-align-items-center"
-                onClick={() => setActivity([0,1,0])}
+                onClick={() => setActivityHandler([0,1,0])}
               >
                 <FontAwesomeIcon className={iconColor(1)} icon={faStopwatch} size="lg" />
               </div>
               <div
                 className="clickable column is-3 is-flex is-justify-content-center is-align-items-center is-relative"
-                onClick={() => setActivity([0,0,1])}
+                onClick={() => setActivityHandler([0,0,1])}
               >
                 <FontAwesomeIcon className={`mx-1 ${iconColor(2)}`} icon={faSwimmer} size="sm" />
                 <FontAwesomeIcon className={`mx-1 ${iconColor(2)}`} icon={faBiking} size="sm" />
@@ -150,7 +147,7 @@ function Home({ schedule, setSchedule, updateHiitrx, history }) {
                       min="0"
                       max="10"
                       type="range"
-                      onChange={(e) => setEffort(e.target.value)}
+                      onChange={setEffortHandler}
                     />
                     <SliderScale scale={['light', 'moderate', 'hard']} />
                   </div>
