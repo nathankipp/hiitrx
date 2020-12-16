@@ -1,4 +1,4 @@
-import reducer, { DEFAULT_STATE } from "./reducer";
+import reducer, { DEFAULT_STATE } from './reducer';
 import {
   load,
   reset,
@@ -6,85 +6,85 @@ import {
   setEffort,
   setToday,
   setLifts,
-} from "./actions";
+} from './actions';
 
-jest.mock("../utils/getFullDate", () => () => "2021-01-01");
+jest.mock('../utils/getFullDate', () => () => '2021-01-01');
 
-describe("hiitrx reducer", () => {
+describe('hiitrx reducer', () => {
   let INITIAL_STATE;
   beforeEach(() => {
     INITIAL_STATE = {
-      hash: "foo",
-      name: "Foo",
-      email: "foo@email.com",
+      hash: 'foo',
+      name: 'Foo',
+      email: 'foo@email.com',
       age: 50,
       schedule: {
-        "2020-12-31": {
+        '2020-12-31': {
           activity: [1, 0, 0],
         },
       },
     };
   });
 
-  it("processes load()", () => {
+  it('processes load()', () => {
     const action = load({
-      foo: "bar",
+      foo: 'bar',
     });
     const newState = reducer(INITIAL_STATE, action);
-    expect(newState.foo).toBe("bar");
+    expect(newState.foo).toBe('bar');
   });
 
-  it("processes reset()", () => {
+  it('processes reset()', () => {
     const action = reset();
     const newState = reducer(INITIAL_STATE, action);
     expect(newState).toEqual(DEFAULT_STATE);
   });
 
-  it("processes setActivity", () => {
+  it('processes setActivity', () => {
     const action = setActivity({
-      date: "2021-01-01",
+      date: '2021-01-01',
       activity: [1, 0, 0],
     });
     const newState = reducer(INITIAL_STATE, action);
-    expect(newState.schedule["2020-12-31"]).toEqual(
-      INITIAL_STATE.schedule["2020-12-31"]
+    expect(newState.schedule['2020-12-31']).toEqual(
+      INITIAL_STATE.schedule['2020-12-31']
     );
     expect(newState.schedule).toMatchObject({
-      "2021-01-01": {
+      '2021-01-01': {
         activity: [1, 0, 0],
       },
     });
   });
 
-  it("processes setEffort", () => {
+  it('processes setEffort', () => {
     const action = setEffort({
-      date: "2021-01-01",
+      date: '2021-01-01',
       effort: 7.25,
     });
     const newState = reducer(INITIAL_STATE, action);
-    expect(newState.schedule["2020-12-31"]).toEqual(
-      INITIAL_STATE.schedule["2020-12-31"]
+    expect(newState.schedule['2020-12-31']).toEqual(
+      INITIAL_STATE.schedule['2020-12-31']
     );
     expect(newState.schedule).toMatchObject({
-      "2021-01-01": {
+      '2021-01-01': {
         effort: 7.25,
       },
     });
   });
 
-  it("processes setToday", () => {
+  it('processes setToday', () => {
     const action = setToday({
-      motivated: "1.2",
-      fast: "3.4",
-      sleep: "5.6",
-      sleepHours: "7.8",
+      motivated: '1.2',
+      fast: '3.4',
+      sleep: '5.6',
+      sleepHours: '7.8',
     });
     const newState = reducer(INITIAL_STATE, action);
-    expect(newState.schedule["2020-12-31"]).toEqual(
-      INITIAL_STATE.schedule["2020-12-31"]
+    expect(newState.schedule['2020-12-31']).toEqual(
+      INITIAL_STATE.schedule['2020-12-31']
     );
     expect(newState.schedule).toMatchObject({
-      "2021-01-01": {
+      '2021-01-01': {
         motivated: 1.2,
         fast: 3.4,
         sleep: 5.6,
@@ -93,14 +93,14 @@ describe("hiitrx reducer", () => {
     });
   });
 
-  it("processes setLifts", () => {
+  it('processes setLifts', () => {
     const action = setLifts([123, 456, 789]);
     const newState = reducer(INITIAL_STATE, action);
-    expect(newState.schedule["2020-12-31"]).toEqual(
-      INITIAL_STATE.schedule["2020-12-31"]
+    expect(newState.schedule['2020-12-31']).toEqual(
+      INITIAL_STATE.schedule['2020-12-31']
     );
     expect(newState.schedule).toMatchObject({
-      "2021-01-01": {
+      '2021-01-01': {
         lifts: [123, 456, 789],
       },
     });

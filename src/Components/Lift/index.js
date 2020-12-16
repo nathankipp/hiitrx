@@ -1,3 +1,3 @@
-import LiftContainer from "./LiftContainer";
+import LiftContainer from './LiftContainer';
 
 export default LiftContainer;

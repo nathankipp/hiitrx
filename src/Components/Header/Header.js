@@ -1,29 +1,29 @@
-import React from "react";
-import { Link, withRouter } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React from 'react';
+import { Link, withRouter } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faCalendarAlt,
   faSmile,
   faDotCircle,
   faCheckCircle,
-} from "@fortawesome/free-solid-svg-icons";
+} from '@fortawesome/free-solid-svg-icons';
 
 const progress = (path) => (step) => {
-  let className = "step-item is-success";
-  const isToday = path === "/today";
-  const isLift = path === "/lift";
-  const isResults = path === "/results";
+  let className = 'step-item is-success';
+  const isToday = path === '/today';
+  const isLift = path === '/lift';
+  const isResults = path === '/results';
 
   if (isToday && step === 0) {
-    className += " is-active";
+    className += ' is-active';
   }
   if (isLift) {
-    if (step === 0) className += " is-completed";
-    if (step === 1) className += " is-active";
+    if (step === 0) className += ' is-completed';
+    if (step === 1) className += ' is-active';
   }
   if (isResults) {
-    if (step < 2) className += " is-completed";
-    else className += " is-active";
+    if (step < 2) className += ' is-completed';
+    else className += ' is-active';
   }
 
   return className;
@@ -31,9 +31,9 @@ const progress = (path) => (step) => {
 
 function Header({ isLoaded, name, location: { pathname } }) {
   const showSteps =
-    isLoaded && ["/today", "/lift", "/results"].includes(pathname);
-  const showHomeLink = !["/login", "/home"].includes(pathname);
-  const showGreeting = isLoaded && !["/login", "/lift"].includes(pathname);
+    isLoaded && ['/today', '/lift', '/results'].includes(pathname);
+  const showHomeLink = !['/login', '/home'].includes(pathname);
+  const showGreeting = isLoaded && !['/login', '/lift'].includes(pathname);
   const stepperClass = progress(pathname);
 
   return (

@@ -1,6 +1,6 @@
-import React from "react";
+import React from 'react';
 
-const SCALE = ["Less", "Normal", "More"];
+const SCALE = ['Less', 'Normal', 'More'];
 
 export default function SliderScale({ scale = SCALE }) {
   return (

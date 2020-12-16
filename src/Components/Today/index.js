@@ -1,3 +1,3 @@
-import TodayContainer from "./TodayContainer";
+import TodayContainer from './TodayContainer';
 
 export default TodayContainer;

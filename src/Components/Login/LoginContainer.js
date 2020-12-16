@@ -1,6 +1,6 @@
-import { connect } from "react-redux";
-import Login from "./Login";
-import { reset, authenticate } from "../../redux/actions";
+import { connect } from 'react-redux';
+import Login from './Login';
+import { reset, authenticate } from '../../redux/actions';
 
 const mapDispatchToProps = { reset, authenticate };
 

@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from "react";
-import { scan } from "../../utils/db";
+import React, { useState, useEffect } from 'react';
+import { scan } from '../../utils/db';
 
 export default function Data({ x }) {
   const [data, setData] = useState([]);
   const [keys, setKeys] = useState({});
 
   useEffect(() => {
-    scan("lift").then(setData);
+    scan('lift').then(setData);
   }, []);
 
   useEffect(() => {
@@ -25,7 +25,7 @@ export default function Data({ x }) {
 
   return (
     <textarea
-      style={{ fontSize: "6px", height: "99vh", width: "99vw" }}
+      style={{ fontSize: '6px', height: '99vh', width: '99vw' }}
       value={csv}
     />
   );

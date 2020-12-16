@@ -1,7 +1,7 @@
-import { connect } from "react-redux";
-import Today from "./Today";
-import getFullDate from "../../utils/getFullDate";
-import { setToday, updateHiitrx } from "../../redux/actions";
+import { connect } from 'react-redux';
+import Today from './Today';
+import getFullDate from '../../utils/getFullDate';
+import { setToday, updateHiitrx } from '../../redux/actions';
 
 const mapStateToProps = ({ schedule }) => {
   const { motivated, fast, sleep, sleepHours } = schedule[getFullDate()];

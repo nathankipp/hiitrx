@@ -1,7 +1,7 @@
-import { connect } from "react-redux";
-import Results from "./Results";
-import getFullDate from "../../utils/getFullDate";
-import table from "../../utils/table";
+import { connect } from 'react-redux';
+import Results from './Results';
+import getFullDate from '../../utils/getFullDate';
+import table from '../../utils/table';
 
 const getAvgSpeed = (lifts) => {
   const speeds = [...lifts.sort()];
@@ -16,7 +16,7 @@ const getAvgSpeed = (lifts) => {
 };
 
 const getReadines = (schedule) =>
-  ["motivated", "fast", "sleep", "sleepHours"].reduce(
+  ['motivated', 'fast', 'sleep', 'sleepHours'].reduce(
     (acc, cur) => acc + table[cur][schedule[cur]],
     0
   );

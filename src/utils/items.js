@@ -1,9 +1,9 @@
-import { v4 as uuid } from "uuid";
-import LS from "../utils/ls";
+import { v4 as uuid } from 'uuid';
+import LS from '../utils/ls';
 
 const DEFAULTS = {
-  name: "unspecified",
-  age: "unspecified",
+  name: 'unspecified',
+  age: 'unspecified',
 };
 
 // const lsData = () => LS.items.map(({ field }) => ({ [field]: LS.getItem(field) || DEFAULTS[field] }));

@@ -1,12 +1,12 @@
-import React, { useState, useRef, useEffect } from "react";
-import { withRouter } from "react-router-dom";
-import Pressure from "pressure";
-import { liftItem } from "../../utils/items";
-import { put } from "../../utils/db";
-import Progress from "../Progress";
+import React, { useState, useRef, useEffect } from 'react';
+import { withRouter } from 'react-router-dom';
+import Pressure from 'pressure';
+import { liftItem } from '../../utils/items';
+import { put } from '../../utils/db';
+import Progress from '../Progress';
 
 const DEFAULTS = {
-  ctext: "Press",
+  ctext: 'Press',
 };
 const DELAY = 1500;
 const SAMPLE_SIZE = 5;
@@ -23,7 +23,7 @@ const saveLifts = (clicks) => {
           lift: clicks[i + 1].timeStamp,
           pressure: clicks[i + 1].pressure,
         });
-        put(item, "lift").then(resolve).catch(reject);
+        put(item, 'lift').then(resolve).catch(reject);
       })
     );
   }
@@ -51,7 +51,7 @@ function Lift({ lifts, setLifts, updateHiitrx, history }) {
 
   useEffect(() => {
     Pressure.set(
-      "#circle",
+      '#circle',
       {
         start: () => {
           maxForce.current = 0;
@@ -65,7 +65,7 @@ function Lift({ lifts, setLifts, updateHiitrx, history }) {
         },
       },
       {
-        only: "touch",
+        only: 'touch',
         polyfill: false,
       }
     );
@@ -94,11 +94,11 @@ function Lift({ lifts, setLifts, updateHiitrx, history }) {
       setLifts(computedLifts);
       saveLifts(clicks)
         .then(updateHiitrx)
-        .then(() => history.push("/results"))
+        .then(() => history.push('/results'))
         .catch(() => {});
       clearTimeout(textChange.current);
     } else {
-      history.push("/results");
+      history.push('/results');
     }
   };
 
@@ -125,10 +125,10 @@ function Lift({ lifts, setLifts, updateHiitrx, history }) {
       return;
     }
     if (!triggered) {
-      setCtext("!");
+      setCtext('!');
       clearTimeout(liftTimer.current);
     } else {
-      setCtext("Good");
+      setCtext('Good');
       setClicks([
         ...clicks,
         {
@@ -185,16 +185,16 @@ function Lift({ lifts, setLifts, updateHiitrx, history }) {
       <section
         className={`section py-0 lift`}
         style={{
-          position: "absolute",
+          position: 'absolute',
           bottom: 30,
-          left: "50%",
-          transform: "translate(-50%)",
+          left: '50%',
+          transform: 'translate(-50%)',
         }}
       >
         <div
           id="circle"
-          className={`circle ${pressed && "pressed"} ${
-            triggered && "triggered"
+          className={`circle ${pressed && 'pressed'} ${
+            triggered && 'triggered'
           }`}
           onPointerDown={pointerDown}
           onPointerUp={pointerUp}
