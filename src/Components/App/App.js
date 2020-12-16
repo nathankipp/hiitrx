@@ -1,18 +1,19 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from "react";
 import {
   HashRouter as Router,
   Switch,
   Route,
   Redirect,
-} from 'react-router-dom';
-import Progress from '../Progress';
-import Login from '../Login';
-import Data from '../Data';
-import Home from '../Home';
-import Header from '../Header';
-import Today from '../Today';
-import Lift from '../Lift';
-import Results from '../Results';
+} from "react-router-dom";
+import storage from "../../utils/storage";
+import Progress from "../Progress";
+import Login from "../Login";
+import Data from "../Data";
+import Home from "../Home";
+import Header from "../Header";
+import Today from "../Today";
+import Lift from "../Lift";
+import Results from "../Results";
 
 function hasReported(schedule) {
   const { motivated, fast, sleep, sleepHours } = schedule;
@@ -35,9 +36,9 @@ export default function App({ isLoaded, authenticate, todaysSchedule }) {
   });
 
   useEffect(() => {
-    const hash = window.sessionStorage.getItem('hash');
+    const hash = storage.getItem("hash");
     if (hash && first.current) {
-      console.debug('HIITRx: running login effect');
+      console.debug("HIITRx: running login effect");
       setWorking(true);
       authenticate(hash)
         .then(() => setAuthenticated(true))

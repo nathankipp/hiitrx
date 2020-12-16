@@ -1,16 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import { withRouter } from 'react-router-dom';
-import sha256 from 'crypto-js/sha256';
-import Base64 from 'crypto-js/enc-base64';
+import React, { useState, useEffect } from "react";
+import { withRouter } from "react-router-dom";
+import sha256 from "crypto-js/sha256";
+import Base64 from "crypto-js/enc-base64";
+import storage from "../../utils/storage";
 
 function Login({ reset, authenticate, authenticateApp, history }) {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [working, setWorking] = useState(false);
   const [invalid, setInvalid] = useState(false);
 
   useEffect(() => {
-    window.sessionStorage.removeItem('hash');
+    storage.removeItem("hash");
     reset();
     authenticateApp(false);
   }, [reset, authenticateApp]);
@@ -23,9 +24,9 @@ function Login({ reset, authenticate, authenticateApp, history }) {
       const hash = Base64.stringify(sha256(`${email}${password}`));
       authenticate(hash)
         .then(() => {
-          window.localStorage.setItem('hash', hash);
+          storage.setItem("hash", hash);
           authenticateApp(true);
-          history.push('/home');
+          history.push("/home");
         })
         .catch((e) => {
           setWorking(false);
@@ -62,7 +63,7 @@ function Login({ reset, authenticate, authenticateApp, history }) {
               onChange={(e) => setPassword(e.target.value)}
             />
             <button
-              className={`button is-black ${working ? 'is-loading' : ''}`}
+              className={`button is-black ${working ? "is-loading" : ""}`}
               type="submit"
             >
               Go
