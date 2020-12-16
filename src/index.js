@@ -1,11 +1,13 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.scss';
-import { Provider } from 'react-redux';
-import store from './redux/store';
-import App from './Components/App';
+import React from "react";
+import ReactDOM from "react-dom";
+import "./index.scss";
+import { Provider } from "react-redux";
+import store from "./redux/store";
+import App from "./Components/App";
 
-window.addEventListener("contextmenu", function(e) { e.preventDefault(); })
+window.addEventListener("contextmenu", function (e) {
+  e.preventDefault();
+});
 
 ReactDOM.render(
   <React.StrictMode>
@@ -13,5 +15,5 @@ ReactDOM.render(
       <App />
     </Provider>
   </React.StrictMode>,
-  document.getElementById('root')
+  document.getElementById("root")
 );

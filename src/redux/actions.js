@@ -1,11 +1,11 @@
-import { fetchItem, put } from '../utils/db';
+import { fetchItem, put } from "../utils/db";
 
-const LOAD = 'LOAD';
-const RESET = 'RESET';
-const SET_ACTIVITY = 'SET_ACTIVITY';
-const SET_EFFORT = 'SET_EFFORT';
-const SET_TODAY = 'SET_TODAY';
-const SET_LIFTS = 'SET_LIFTS';
+const LOAD = "LOAD";
+const RESET = "RESET";
+const SET_ACTIVITY = "SET_ACTIVITY";
+const SET_EFFORT = "SET_EFFORT";
+const SET_TODAY = "SET_TODAY";
+const SET_LIFTS = "SET_LIFTS";
 
 export const actionTypes = {
   LOAD,
@@ -16,20 +16,20 @@ export const actionTypes = {
   SET_LIFTS,
 };
 
-export const load = payload => ({ type: LOAD, payload });
+export const load = (payload) => ({ type: LOAD, payload });
 
 export const reset = () => ({ type: RESET });
 
 export const authenticate = (hash) => (dispatch) =>
-  fetchItem('hiitrx', { hash })
+  fetchItem("hiitrx", { hash })
     // .then(x => new Promise(resolve => setTimeout(() => resolve(x), 2000)))
-    .then(state => {
+    .then((state) => {
       if (state) {
-        window.sessionStorage.setItem('hash', state.hash);
+        window.sessionStorage.setItem("hash", state.hash);
         dispatch(load(state));
         return Promise.resolve(state.hash);
       }
-      window.sessionStorage.removeItem('hash');
+      window.sessionStorage.removeItem("hash");
       dispatch(reset());
       return Promise.reject();
     });

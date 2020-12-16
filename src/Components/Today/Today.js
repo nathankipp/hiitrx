@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { withRouter } from 'react-router-dom';
-import noop from 'lodash/noop';
-import TimePicker from '../TimePicker';
-import SliderScale from '../SliderScale';
+import React, { useState } from "react";
+import { withRouter } from "react-router-dom";
+import noop from "lodash/noop";
+import TimePicker from "../TimePicker";
+import SliderScale from "../SliderScale";
 
 function Today({
   motivated,
@@ -12,7 +12,7 @@ function Today({
   setToday,
   hasReported,
   updateHiitrx,
-  history
+  history,
 }) {
   const [answers, setAnswers] = useState({
     motivated,
@@ -21,21 +21,22 @@ function Today({
     sleepHours,
   });
 
-  let [h, m] = `${sleepHours}`.split('.');
+  let [h, m] = `${sleepHours}`.split(".");
   h = h || 8;
   m = m || 0;
 
-  const setItem = item => e => setAnswers({
-    ...answers,
-    [item]: Number(e.target.value.trim()),
-  });
+  const setItem = (item) => (e) =>
+    setAnswers({
+      ...answers,
+      [item]: Number(e.target.value.trim()),
+    });
 
   const saveAndNext = () => {
     setToday(answers);
     updateHiitrx()
-      .then(() => history.push('/lift'))
+      .then(() => history.push("/lift"))
       .catch(noop);
-  }
+  };
 
   return (
     <div className="px-4 py-4">
@@ -51,7 +52,7 @@ function Today({
             min="0"
             max="10"
             type="range"
-            onChange={setItem('motivated')}
+            onChange={setItem("motivated")}
             disabled={hasReported}
           />
           <SliderScale />
@@ -67,10 +68,10 @@ function Today({
             min="0"
             max="10"
             type="range"
-            onChange={setItem('fast')}
+            onChange={setItem("fast")}
             disabled={hasReported}
           />
-          <SliderScale scale={['Slow', 'Normal', 'Fast']} />
+          <SliderScale scale={["Slow", "Normal", "Fast"]} />
         </>
         <>
           <label htmlFor="sleep">How well did you sleep last night?</label>
@@ -83,22 +84,19 @@ function Today({
             min="0"
             max="10"
             type="range"
-            onChange={setItem('sleep')}
+            onChange={setItem("sleep")}
             disabled={hasReported}
           />
-          <SliderScale scale={['Worse', 'Normal', 'Better']} />
+          <SliderScale scale={["Worse", "Normal", "Better"]} />
         </>
         <TimePicker
           h={Number(h)}
-          m={Number(`.${m}`)*60}
-          onChange={setItem('sleepHours')}
+          m={Number(`.${m}`) * 60}
+          onChange={setItem("sleepHours")}
           disabled={hasReported}
         />
         <div className="has-text-centered">
-          <button
-            className="button is-black"
-            onClick={saveAndNext}
-          >
+          <button className="button is-black" onClick={saveAndNext}>
             Next
           </button>
         </div>

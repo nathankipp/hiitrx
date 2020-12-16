@@ -1,5 +1,5 @@
-import { connect } from 'react-redux';
-import Header from './Header';
+import { connect } from "react-redux";
+import Header from "./Header";
 
 const mapStateToProps = ({ hash, name }) => ({ isLoaded: !!hash, name });
 

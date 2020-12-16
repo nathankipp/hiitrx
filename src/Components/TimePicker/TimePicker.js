@@ -1,16 +1,16 @@
-import React, { useState } from 'react';
-import SliderScale from '../SliderScale';
+import React, { useState } from "react";
+import SliderScale from "../SliderScale";
 
 export default function TimePicker({ h, m, onChange, disabled }) {
   const [hours, setHours] = useState(h);
   const [minutes, setMinutes] = useState(m);
 
-  const adjust = which => amount => e => {
+  const adjust = (which) => (amount) => (e) => {
     e.preventDefault();
 
     let newHours = hours;
     let newMinutes = minutes;
-    if (which === 'h') {
+    if (which === "h") {
       if ((amount === 1 && hours < 23) || (amount === -1 && hours > 0)) {
         newHours += amount;
       }
@@ -23,23 +23,23 @@ export default function TimePicker({ h, m, onChange, disabled }) {
     setMinutes(newMinutes);
 
     if (newHours !== hours || newMinutes !== minutes) {
-      onChange({ target: { value: `${newHours + newMinutes/60}` }});
+      onChange({ target: { value: `${newHours + newMinutes / 60}` } });
     }
-  }
+  };
 
   return (
     <>
       <div className="time-picker mt-4 mb-4">
         <div>
           <button
-            onClick={adjust('h')(-1)}
+            onClick={adjust("h")(-1)}
             className="button mr-4"
             disabled={disabled}
           >
             -
           </button>
           <button
-            onClick={adjust('h')(1)}
+            onClick={adjust("h")(1)}
             className="button"
             disabled={disabled}
           >
@@ -49,18 +49,20 @@ export default function TimePicker({ h, m, onChange, disabled }) {
         <div className="has-text-centered">
           Sleep duration
           <br />
-          <pre className="p-0 has-background-white">{hours} hrs {minutes} min</pre>
+          <pre className="p-0 has-background-white">
+            {hours} hrs {minutes} min
+          </pre>
         </div>
         <div>
           <button
-            onClick={adjust('m')(-15)}
+            onClick={adjust("m")(-15)}
             className="button mr-4"
             disabled={disabled}
           >
             -
           </button>
           <button
-            onClick={adjust('m')(15)}
+            onClick={adjust("m")(15)}
             className="button"
             disabled={disabled}
           >
@@ -68,7 +70,7 @@ export default function TimePicker({ h, m, onChange, disabled }) {
           </button>
         </div>
       </div>
-      <SliderScale scale={['subtract/add hours', 'subtract/add minutes']} />
+      <SliderScale scale={["subtract/add hours", "subtract/add minutes"]} />
     </>
   );
 }
