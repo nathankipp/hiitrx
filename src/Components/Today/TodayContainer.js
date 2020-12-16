@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import Today from './Today';
-import getFullDate from '../../utils/getFullDate';
+import { getFullDate } from '../../lib';
 import { setToday, updateHiitrx } from '../../redux/actions';
 
 const mapStateToProps = ({ schedule }) => {

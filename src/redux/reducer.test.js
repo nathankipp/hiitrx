@@ -9,7 +9,7 @@ import {
   setPressures,
 } from './actions';
 
-jest.mock('../utils/getFullDate', () => () => '2021-01-01');
+jest.mock('../lib/getFullDate', () => () => '2021-01-01');
 
 describe('hiitrx reducer', () => {
   let INITIAL_STATE;

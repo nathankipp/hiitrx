@@ -1,5 +1,5 @@
 import { actionTypes } from './actions';
-import getFullDate from '../utils/getFullDate';
+import { getFullDate } from '../lib';
 
 const {
   LOAD,

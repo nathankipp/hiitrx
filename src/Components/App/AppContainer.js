@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import App from './App';
 import { authenticate } from '../../redux/actions';
-import getFullDate from '../../utils/getFullDate';
+import { getFullDate } from '../../lib';
 
 const mapStateToProps = (state) => {
   const today = getFullDate();

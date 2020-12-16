@@ -5,7 +5,7 @@ import {
   Route,
   Redirect,
 } from 'react-router-dom';
-import storage from '../../utils/storage';
+import { storage } from '../../lib';
 import Progress from '../Progress';
 import Login from '../Login';
 import Data from '../Data';

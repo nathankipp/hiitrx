@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import Results from './Results';
-import getFullDate from '../../utils/getFullDate';
-import table from '../../utils/table';
+import { getFullDate } from '../../lib';
+import table from '../../lib/table';
 
 const getAvgSpeed = (lifts) => {
   const speeds = [...lifts.sort()];

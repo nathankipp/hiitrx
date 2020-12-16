@@ -1,5 +1,4 @@
-import { fetchItem, put } from '../utils/db';
-import storage from '../utils/storage';
+import { fetchItem, put, storage } from '../lib';
 
 const LOAD = 'LOAD';
 const RESET = 'RESET';
