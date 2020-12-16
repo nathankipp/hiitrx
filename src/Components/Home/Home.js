@@ -11,7 +11,7 @@ import {
   faBiking,
 } from '@fortawesome/free-solid-svg-icons';
 import SliderScale from '../SliderScale';
-import getFullDate from '../../utils/getFullDate';
+import { getFullDate } from '../../lib';
 
 const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const today = new Date().getDay();

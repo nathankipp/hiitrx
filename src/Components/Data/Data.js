@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { scan } from '../../utils/db';
+import { scan } from '../../lib';
 
 export default function Data({ x }) {
   const [data, setData] = useState([]);

@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import Lift from './Lift';
-import getFullDate from '../../utils/getFullDate';
+import { getFullDate } from '../../lib';
 import { setLifts, setPressures, updateHiitrx } from '../../redux/actions';
 
 const mapStateToProps = ({ schedule }) => ({
