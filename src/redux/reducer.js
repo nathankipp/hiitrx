@@ -8,6 +8,7 @@ const {
   SET_EFFORT,
   SET_TODAY,
   SET_LIFTS,
+  SET_PRESSURES,
 } = actionTypes;
 
 export const DEFAULT_STATE = {
@@ -77,6 +78,17 @@ export default function (state = DEFAULT_STATE, action) {
           [today]: {
             ...state.schedule[today],
             lifts: payload,
+          },
+        },
+      };
+    case SET_PRESSURES:
+      return {
+        ...state,
+        schedule: {
+          ...state.schedule,
+          [today]: {
+            ...state.schedule[today],
+            pressures: payload,
           },
         },
       };

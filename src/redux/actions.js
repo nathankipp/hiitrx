@@ -6,6 +6,7 @@ const SET_ACTIVITY = 'SET_ACTIVITY';
 const SET_EFFORT = 'SET_EFFORT';
 const SET_TODAY = 'SET_TODAY';
 const SET_LIFTS = 'SET_LIFTS';
+const SET_PRESSURES = 'SET_PRESSURES';
 
 export const actionTypes = {
   LOAD,
@@ -14,6 +15,7 @@ export const actionTypes = {
   SET_EFFORT,
   SET_TODAY,
   SET_LIFTS,
+  SET_PRESSURES,
 };
 
 export const load = (payload) => ({ type: LOAD, payload });
@@ -41,5 +43,7 @@ export const setEffort = (payload) => ({ type: SET_EFFORT, payload });
 export const setToday = (payload) => ({ type: SET_TODAY, payload });
 
 export const setLifts = (payload) => ({ type: SET_LIFTS, payload });
+
+export const setPressures = (payload) => ({ type: SET_PRESSURES, payload });
 
 export const updateHiitrx = () => (_, getState) => put(getState());

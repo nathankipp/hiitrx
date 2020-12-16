@@ -1,34 +1,13 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { withRouter } from 'react-router-dom';
-import Pressure from 'pressure';
-import { liftItem } from '../../utils/items';
-import { put } from '../../utils/db';
-import Progress from '../Progress';
+import React, { useState, useRef, useEffect } from "react";
+import { withRouter } from "react-router-dom";
+import Pressure from "pressure";
+import Progress from "../Progress";
 
 const DEFAULTS = {
-  ctext: 'Press',
+  ctext: "Press",
 };
 const DELAY = 1500;
 const SAMPLE_SIZE = 5;
-
-const saveLifts = (clicks) => {
-  const items = [];
-  const timeStamp = Date.now();
-  for (let i = 0; i < clicks.length; i += 2) {
-    items.push(
-      new Promise((resolve, reject) => {
-        const item = liftItem({
-          timeStamp,
-          trigger: clicks[i].timeStamp,
-          lift: clicks[i + 1].timeStamp,
-          pressure: clicks[i + 1].pressure,
-        });
-        put(item, 'lift').then(resolve).catch(reject);
-      })
-    );
-  }
-  return Promise.all(items);
-};
 
 const getLiftIntervals = (clicks) =>
   clicks.reduce(
@@ -37,7 +16,7 @@ const getLiftIntervals = (clicks) =>
     []
   );
 
-function Lift({ lifts, setLifts, updateHiitrx, history }) {
+function Lift({ lifts, setLifts, setPressures, updateHiitrx, history }) {
   const [ctext, setCtext] = useState(DEFAULTS.ctext);
   const [clicks, setClicks] = useState([]);
   const [active, setActive] = useState(false);
@@ -51,7 +30,7 @@ function Lift({ lifts, setLifts, updateHiitrx, history }) {
 
   useEffect(() => {
     Pressure.set(
-      '#circle',
+      "#circle",
       {
         start: () => {
           maxForce.current = 0;
@@ -65,7 +44,7 @@ function Lift({ lifts, setLifts, updateHiitrx, history }) {
         },
       },
       {
-        only: 'touch',
+        only: "touch",
         polyfill: false,
       }
     );
@@ -92,13 +71,13 @@ function Lift({ lifts, setLifts, updateHiitrx, history }) {
       const computedLifts = getLiftIntervals(clicks);
       setWorking(true);
       setLifts(computedLifts);
-      saveLifts(clicks)
-        .then(updateHiitrx)
-        .then(() => history.push('/results'))
+      setPressures(clicks.map(({ pressure }) => pressure));
+      updateHiitrx()
+        .then(() => history.push("/results"))
         .catch(() => {});
       clearTimeout(textChange.current);
     } else {
-      history.push('/results');
+      history.push("/results");
     }
   };
 
@@ -125,10 +104,10 @@ function Lift({ lifts, setLifts, updateHiitrx, history }) {
       return;
     }
     if (!triggered) {
-      setCtext('!');
+      setCtext("!");
       clearTimeout(liftTimer.current);
     } else {
-      setCtext('Good');
+      setCtext("Good");
       setClicks([
         ...clicks,
         {
@@ -185,16 +164,16 @@ function Lift({ lifts, setLifts, updateHiitrx, history }) {
       <section
         className={`section py-0 lift`}
         style={{
-          position: 'absolute',
+          position: "absolute",
           bottom: 30,
-          left: '50%',
-          transform: 'translate(-50%)',
+          left: "50%",
+          transform: "translate(-50%)",
         }}
       >
         <div
           id="circle"
-          className={`circle ${pressed && 'pressed'} ${
-            triggered && 'triggered'
+          className={`circle ${pressed && "pressed"} ${
+            triggered && "triggered"
           }`}
           onPointerDown={pointerDown}
           onPointerUp={pointerUp}
