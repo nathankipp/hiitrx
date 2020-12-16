@@ -1,9 +1,9 @@
-const LS = "local";
-const SS = "session";
+const LS = 'local';
+const SS = 'session';
 
 const ITEMS = [
-  { name: "hash", db: SS },
-  { name: "workout", db: LS },
+  { name: 'hash', db: SS },
+  { name: 'workout', db: LS },
 ];
 
 const whichDb = (item) => {
