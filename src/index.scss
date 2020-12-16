@@ -3,7 +3,8 @@
 @import '~bulma-steps';
 @import '~bulma-slider';
 
-html, body {
+html,
+body {
   height: 99%;
   width: 100%;
 }
@@ -14,7 +15,7 @@ html, body {
 
 .head-space {
   width: 5%;
-  margin: .5rem 0;
+  margin: 0.5rem 0;
   white-space: nowrap;
 }
 
@@ -31,7 +32,7 @@ html, body {
 .slider-scale {
   display: flex;
   justify-content: space-between;
-  font-size: .7rem;
+  font-size: 0.7rem;
   margin-top: -1rem;
 }
 

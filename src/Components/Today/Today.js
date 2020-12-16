@@ -12,7 +12,7 @@ function Today({
   setToday,
   hasReported,
   updateHiitrx,
-  history
+  history,
 }) {
   const [answers, setAnswers] = useState({
     motivated,
@@ -25,17 +25,18 @@ function Today({
   h = h || 8;
   m = m || 0;
 
-  const setItem = item => e => setAnswers({
-    ...answers,
-    [item]: Number(e.target.value.trim()),
-  });
+  const setItem = (item) => (e) =>
+    setAnswers({
+      ...answers,
+      [item]: Number(e.target.value.trim()),
+    });
 
   const saveAndNext = () => {
     setToday(answers);
     updateHiitrx()
       .then(() => history.push('/lift'))
       .catch(noop);
-  }
+  };
 
   return (
     <div className="px-4 py-4">
@@ -90,15 +91,12 @@ function Today({
         </>
         <TimePicker
           h={Number(h)}
-          m={Number(`.${m}`)*60}
+          m={Number(`.${m}`) * 60}
           onChange={setItem('sleepHours')}
           disabled={hasReported}
         />
         <div className="has-text-centered">
-          <button
-            className="button is-black"
-            onClick={saveAndNext}
-          >
+          <button className="button is-black" onClick={saveAndNext}>
             Next
           </button>
         </div>

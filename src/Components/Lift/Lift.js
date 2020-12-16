@@ -7,7 +7,7 @@ import Progress from '../Progress';
 
 const DEFAULTS = {
   ctext: 'Press',
-}
+};
 const DELAY = 1500;
 const SAMPLE_SIZE = 5;
 
@@ -15,25 +15,27 @@ const saveLifts = (clicks) => {
   const items = [];
   const timeStamp = Date.now();
   for (let i = 0; i < clicks.length; i += 2) {
-    items.push(new Promise((resolve, reject) => {
-      const item = liftItem({
+    items.push(
+      new Promise((resolve, reject) => {
+        const item = liftItem({
           timeStamp,
           trigger: clicks[i].timeStamp,
-          lift: clicks[i+1].timeStamp,
-          pressure: clicks[i+1].pressure,
+          lift: clicks[i + 1].timeStamp,
+          pressure: clicks[i + 1].pressure,
         });
-      put(item, 'lift').then(resolve).catch(reject);
-    }));
+        put(item, 'lift').then(resolve).catch(reject);
+      })
+    );
   }
   return Promise.all(items);
-}
+};
 
-const getLiftIntervals = clicks => clicks.reduce(
-  (acc, cur, idx, arr) => (idx % 2)
-    ? acc
-    : [ ...acc, arr[idx + 1].timeStamp - cur.timeStamp],
-  []
-);
+const getLiftIntervals = (clicks) =>
+  clicks.reduce(
+    (acc, cur, idx, arr) =>
+      idx % 2 ? acc : [...acc, arr[idx + 1].timeStamp - cur.timeStamp],
+    []
+  );
 
 function Lift({ lifts, setLifts, updateHiitrx, history }) {
   const [ctext, setCtext] = useState(DEFAULTS.ctext);
@@ -48,20 +50,25 @@ function Lift({ lifts, setLifts, updateHiitrx, history }) {
   const textChange = useRef();
 
   useEffect(() => {
-    Pressure.set('#circle', {
-      start: () => {
-        maxForce.current = 0;
+    Pressure.set(
+      '#circle',
+      {
+        start: () => {
+          maxForce.current = 0;
+        },
+        change: (force) => {
+          maxForce.current =
+            force > maxForce.current ? force : maxForce.current;
+        },
+        unsupported: function () {
+          maxForce.current = -1;
+        },
       },
-      change: force => {
-        maxForce.current = force > maxForce.current ? force : maxForce.current;
-      },
-      unsupported: function(){
-        maxForce.current = -1;
-      },
-    }, {
-      only: 'touch',
-      polyfill: false,
-    });
+      {
+        only: 'touch',
+        polyfill: false,
+      }
+    );
   }, []);
 
   useEffect(() => {
@@ -69,10 +76,7 @@ function Lift({ lifts, setLifts, updateHiitrx, history }) {
       const rand = DELAY + Math.round(Math.random() * 250);
       liftTimer.current = setTimeout(() => {
         setTriggered(true);
-        setClicks(c => [
-          ...c,
-          { timeStamp: Date.now() },
-        ]);
+        setClicks((c) => [...c, { timeStamp: Date.now() }]);
       }, rand);
     }
   }, [pressed]);
@@ -87,7 +91,7 @@ function Lift({ lifts, setLifts, updateHiitrx, history }) {
     if (!lifts) {
       const computedLifts = getLiftIntervals(clicks);
       setWorking(true);
-      setLifts(computedLifts)
+      setLifts(computedLifts);
       saveLifts(clicks)
         .then(updateHiitrx)
         .then(() => history.push('/results'))
@@ -96,7 +100,7 @@ function Lift({ lifts, setLifts, updateHiitrx, history }) {
     } else {
       history.push('/results');
     }
-  }
+  };
 
   const reset = () => {
     setCtext(DEFAULTS.ctext);
@@ -105,7 +109,7 @@ function Lift({ lifts, setLifts, updateHiitrx, history }) {
     setPressed(false);
     setTriggered(false);
     setDone(false);
-  }
+  };
 
   const pointerDown = (e) => {
     if (ctext !== DEFAULTS.ctext) {
@@ -113,7 +117,7 @@ function Lift({ lifts, setLifts, updateHiitrx, history }) {
     }
     setActive(true);
     setPressed(true);
-  }
+  };
 
   const pointerUp = (e) => {
     setPressed(false);
@@ -136,7 +140,7 @@ function Lift({ lifts, setLifts, updateHiitrx, history }) {
     setActive(false);
     setTriggered(false);
     textChange.current = setTimeout(() => setCtext(DEFAULTS.ctext), DELAY);
-  }
+  };
 
   if (working) {
     return <Progress />;
@@ -152,7 +156,7 @@ function Lift({ lifts, setLifts, updateHiitrx, history }) {
         </div>
         {attempts.map((speed, idx) => (
           <div key={speed} className="columns is-mobile">
-            <div className="column is-6 has-text-weight-bold">{idx+1}</div>
+            <div className="column is-6 has-text-weight-bold">{idx + 1}</div>
             <div className="column is-6 has-text-centered">{`${speed}ms`}</div>
           </div>
         ))}
@@ -164,10 +168,7 @@ function Lift({ lifts, setLifts, updateHiitrx, history }) {
           >
             Retry
           </button>
-          <button
-            className="button is-black"
-            onClick={saveAndNext}
-          >
+          <button className="button is-black" onClick={saveAndNext}>
             Next
           </button>
         </div>
@@ -178,8 +179,7 @@ function Lift({ lifts, setLifts, updateHiitrx, history }) {
   return (
     <div className="px-4 py-4">
       <div className="mb-4">
-        Press with your thumb.
-        When the border turns red, lift your thumb.
+        Press with your thumb. When the border turns red, lift your thumb.
         Repeat five times.
       </div>
       <section
@@ -193,7 +193,9 @@ function Lift({ lifts, setLifts, updateHiitrx, history }) {
       >
         <div
           id="circle"
-          className={`circle ${pressed && 'pressed'} ${triggered && 'triggered'}`}
+          className={`circle ${pressed && 'pressed'} ${
+            triggered && 'triggered'
+          }`}
           onPointerDown={pointerDown}
           onPointerUp={pointerUp}
         >

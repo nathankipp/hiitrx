@@ -16,14 +16,14 @@ export const actionTypes = {
   SET_LIFTS,
 };
 
-export const load = payload => ({ type: LOAD, payload });
+export const load = (payload) => ({ type: LOAD, payload });
 
 export const reset = () => ({ type: RESET });
 
 export const authenticate = (hash) => (dispatch) =>
   fetchItem('hiitrx', { hash })
     // .then(x => new Promise(resolve => setTimeout(() => resolve(x), 2000)))
-    .then(state => {
+    .then((state) => {
       if (state) {
         window.sessionStorage.setItem('hash', state.hash);
         dispatch(load(state));

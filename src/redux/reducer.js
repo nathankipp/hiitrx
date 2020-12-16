@@ -19,10 +19,10 @@ export const DEFAULT_STATE = {
   schedule: {},
 };
 
-export default function(state = DEFAULT_STATE, action) {
+export default function (state = DEFAULT_STATE, action) {
   const { type, payload } = action;
   const today = getFullDate();
-  switch(type) {
+  switch (type) {
     case LOAD:
       return {
         ...state,
@@ -31,7 +31,7 @@ export default function(state = DEFAULT_STATE, action) {
     case RESET:
       return {
         ...state,
-        ...DEFAULT_STATE
+        ...DEFAULT_STATE,
       };
     case SET_ACTIVITY:
       return {
@@ -80,6 +80,7 @@ export default function(state = DEFAULT_STATE, action) {
           },
         },
       };
-    default: return state;
+    default:
+      return state;
   }
 }

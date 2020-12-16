@@ -1,5 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { HashRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
+import {
+  HashRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from 'react-router-dom';
 import Progress from '../Progress';
 import Login from '../Login';
 import Data from '../Data';
@@ -22,7 +27,7 @@ export default function App({ isLoaded, authenticate, todaysSchedule }) {
   const [authenticated, setAuthenticated] = useState(false);
   const [initialized, setInitialized] = useState(false);
   const [working, setWorking] = useState(false);
-  const first = useRef(true)
+  const first = useRef(true);
   const [status, setStatus] = useState({
     isHiitDay: false,
     hasReported: false,
@@ -52,22 +57,24 @@ export default function App({ isLoaded, authenticate, todaysSchedule }) {
       isHiitDay: !!todaysSchedule.activity?.[1],
       hasReported: hasReported(todaysSchedule),
       hasLifted: hasLifted(todaysSchedule),
-    }
+    };
     setStatus(newStatus);
-  }, [todaysSchedule])
+  }, [todaysSchedule]);
 
   if (working) {
-    return <Router><Header /><Progress /></Router>;
+    return (
+      <Router>
+        <Header />
+        <Progress />
+      </Router>
+    );
   }
 
   return !initialized ? null : (
     <Router>
       <Header />
       <Switch>
-        <Route
-          path="/data/:table(lift)"
-          render={rp => <Data rp={rp} />}
-        />
+        <Route path="/data/:table(lift)" render={(rp) => <Data rp={rp} />} />
         <Route path="/login">
           <Login authenticateApp={setAuthenticated} />
         </Route>

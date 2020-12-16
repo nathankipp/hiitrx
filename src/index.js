@@ -5,7 +5,9 @@ import { Provider } from 'react-redux';
 import store from './redux/store';
 import App from './Components/App';
 
-window.addEventListener("contextmenu", function(e) { e.preventDefault(); })
+window.addEventListener('contextmenu', function (e) {
+  e.preventDefault();
+});
 
 ReactDOM.render(
   <React.StrictMode>

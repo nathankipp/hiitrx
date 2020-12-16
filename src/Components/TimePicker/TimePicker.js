@@ -5,7 +5,7 @@ export default function TimePicker({ h, m, onChange, disabled }) {
   const [hours, setHours] = useState(h);
   const [minutes, setMinutes] = useState(m);
 
-  const adjust = which => amount => e => {
+  const adjust = (which) => (amount) => (e) => {
     e.preventDefault();
 
     let newHours = hours;
@@ -23,9 +23,9 @@ export default function TimePicker({ h, m, onChange, disabled }) {
     setMinutes(newMinutes);
 
     if (newHours !== hours || newMinutes !== minutes) {
-      onChange({ target: { value: `${newHours + newMinutes/60}` }});
+      onChange({ target: { value: `${newHours + newMinutes / 60}` } });
     }
-  }
+  };
 
   return (
     <>
@@ -49,7 +49,9 @@ export default function TimePicker({ h, m, onChange, disabled }) {
         <div className="has-text-centered">
           Sleep duration
           <br />
-          <pre className="p-0 has-background-white">{hours} hrs {minutes} min</pre>
+          <pre className="p-0 has-background-white">
+            {hours} hrs {minutes} min
+          </pre>
         </div>
         <div>
           <button

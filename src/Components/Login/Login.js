@@ -34,7 +34,7 @@ function Login({ reset, authenticate, authenticateApp, history }) {
     } else {
       setInvalid(true);
     }
-  }
+  };
 
   return (
     <div className="hero">
@@ -43,20 +43,20 @@ function Login({ reset, authenticate, authenticateApp, history }) {
           <form onSubmit={onSubmit}>
             <input
               className="input mb-4"
-              id='email'
-              name='email'
-              defaultValue=''
-              type='text'
+              id="email"
+              name="email"
+              defaultValue=""
+              type="text"
               placeholder="email"
               autoComplete="email"
               onChange={(e) => setEmail(e.target.value)}
             />
             <input
               className="input mb-4"
-              id='password'
-              name='password'
-              defaultValue=''
-              type='password'
+              id="password"
+              name="password"
+              defaultValue=""
+              type="password"
               placeholder="password"
               autoComplete="current-password"
               onChange={(e) => setPassword(e.target.value)}
@@ -68,11 +68,11 @@ function Login({ reset, authenticate, authenticateApp, history }) {
               Go
             </button>
           </form>
-          { invalid && <div className="mt-4 has-text-danger">invalid</div> }
+          {invalid && <div className="mt-4 has-text-danger">invalid</div>}
         </section>
       </div>
     </div>
-  )
+  );
 }
 
 export default withRouter(Login);

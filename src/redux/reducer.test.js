@@ -1,5 +1,5 @@
 import reducer, { DEFAULT_STATE } from './reducer';
-import  {
+import {
   load,
   reset,
   setActivity,
@@ -20,7 +20,7 @@ describe('hiitrx reducer', () => {
       age: 50,
       schedule: {
         '2020-12-31': {
-          activity: [1,0,0]
+          activity: [1, 0, 0],
         },
       },
     };
@@ -40,27 +40,31 @@ describe('hiitrx reducer', () => {
     expect(newState).toEqual(DEFAULT_STATE);
   });
 
-  it('processes setActivity',() => {
+  it('processes setActivity', () => {
     const action = setActivity({
       date: '2021-01-01',
-      activity: [1,0,0]
+      activity: [1, 0, 0],
     });
     const newState = reducer(INITIAL_STATE, action);
-    expect(newState.schedule['2020-12-31']).toEqual(INITIAL_STATE.schedule['2020-12-31']);
+    expect(newState.schedule['2020-12-31']).toEqual(
+      INITIAL_STATE.schedule['2020-12-31']
+    );
     expect(newState.schedule).toMatchObject({
       '2021-01-01': {
-        activity: [1,0,0],
+        activity: [1, 0, 0],
       },
     });
   });
 
-  it('processes setEffort',() => {
+  it('processes setEffort', () => {
     const action = setEffort({
       date: '2021-01-01',
-      effort: 7.25
+      effort: 7.25,
     });
     const newState = reducer(INITIAL_STATE, action);
-    expect(newState.schedule['2020-12-31']).toEqual(INITIAL_STATE.schedule['2020-12-31']);
+    expect(newState.schedule['2020-12-31']).toEqual(
+      INITIAL_STATE.schedule['2020-12-31']
+    );
     expect(newState.schedule).toMatchObject({
       '2021-01-01': {
         effort: 7.25,
@@ -76,7 +80,9 @@ describe('hiitrx reducer', () => {
       sleepHours: '7.8',
     });
     const newState = reducer(INITIAL_STATE, action);
-    expect(newState.schedule['2020-12-31']).toEqual(INITIAL_STATE.schedule['2020-12-31']);
+    expect(newState.schedule['2020-12-31']).toEqual(
+      INITIAL_STATE.schedule['2020-12-31']
+    );
     expect(newState.schedule).toMatchObject({
       '2021-01-01': {
         motivated: 1.2,
@@ -87,13 +93,15 @@ describe('hiitrx reducer', () => {
     });
   });
 
-  it('processes setLifts',() => {
-    const action = setLifts([123,456,789]);
+  it('processes setLifts', () => {
+    const action = setLifts([123, 456, 789]);
     const newState = reducer(INITIAL_STATE, action);
-    expect(newState.schedule['2020-12-31']).toEqual(INITIAL_STATE.schedule['2020-12-31']);
+    expect(newState.schedule['2020-12-31']).toEqual(
+      INITIAL_STATE.schedule['2020-12-31']
+    );
     expect(newState.schedule).toMatchObject({
       '2021-01-01': {
-        lifts: [123,456,789]
+        lifts: [123, 456, 789],
       },
     });
   });
