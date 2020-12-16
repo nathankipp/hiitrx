@@ -1,8 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { withRouter } from 'react-router-dom';
 import Pressure from 'pressure';
-import { liftItem } from '../../utils/items';
-import { put } from '../../utils/db';
 import Progress from '../Progress';
 
 const DEFAULTS = {
@@ -11,25 +9,6 @@ const DEFAULTS = {
 const DELAY = 1500;
 const SAMPLE_SIZE = 5;
 
-const saveLifts = (clicks) => {
-  const items = [];
-  const timeStamp = Date.now();
-  for (let i = 0; i < clicks.length; i += 2) {
-    items.push(
-      new Promise((resolve, reject) => {
-        const item = liftItem({
-          timeStamp,
-          trigger: clicks[i].timeStamp,
-          lift: clicks[i + 1].timeStamp,
-          pressure: clicks[i + 1].pressure,
-        });
-        put(item, 'lift').then(resolve).catch(reject);
-      })
-    );
-  }
-  return Promise.all(items);
-};
-
 const getLiftIntervals = (clicks) =>
   clicks.reduce(
     (acc, cur, idx, arr) =>
@@ -37,7 +16,7 @@ const getLiftIntervals = (clicks) =>
     []
   );
 
-function Lift({ lifts, setLifts, updateHiitrx, history }) {
+function Lift({ lifts, setLifts, setPressures, updateHiitrx, history }) {
   const [ctext, setCtext] = useState(DEFAULTS.ctext);
   const [clicks, setClicks] = useState([]);
   const [active, setActive] = useState(false);
@@ -92,8 +71,8 @@ function Lift({ lifts, setLifts, updateHiitrx, history }) {
       const computedLifts = getLiftIntervals(clicks);
       setWorking(true);
       setLifts(computedLifts);
-      saveLifts(clicks)
-        .then(updateHiitrx)
+      setPressures(clicks.map(({ pressure }) => pressure));
+      updateHiitrx()
         .then(() => history.push('/results'))
         .catch(() => {});
       clearTimeout(textChange.current);

@@ -5,6 +5,7 @@ import {
   Route,
   Redirect,
 } from 'react-router-dom';
+import storage from '../../utils/storage';
 import Progress from '../Progress';
 import Login from '../Login';
 import Data from '../Data';
@@ -35,7 +36,7 @@ export default function App({ isLoaded, authenticate, todaysSchedule }) {
   });
 
   useEffect(() => {
-    const hash = window.sessionStorage.getItem('hash');
+    const hash = storage.getItem('hash');
     if (hash && first.current) {
       console.debug('HIITRx: running login effect');
       setWorking(true);
