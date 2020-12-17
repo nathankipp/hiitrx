@@ -1,13 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 // import PropTypes from 'prop-types';
-import {
-  keyGen,
-  computeMillis,
-  getTime,
-  getItem,
-  setItem,
-  removeItem,
-} from '../lib';
+import { keyGen, computeMillis, getTime, storage } from '../../lib';
 import Controls from '../Controls';
 
 const INTERVAL = 100;
@@ -26,14 +19,14 @@ const Timer = ({
   const isCountDown = direction === -1;
   const { STORAGE_KEY, STARTED_KEY, RUNNING_KEY } = keyGen(storageKey);
 
-  const isRunning = !!getItem(RUNNING_KEY);
+  const isRunning = !!storage.getItem(RUNNING_KEY);
   const [running, setRunning] = useState(isRunning);
 
-  const sessionStarted = Number(getItem(STARTED_KEY));
+  const sessionStarted = Number(storage.getItem(STARTED_KEY));
   const [started, setStarted] = useState(sessionStarted);
 
   const initialTime = computeMillis(from);
-  const sessionTime = getItem(STORAGE_KEY);
+  const sessionTime = storage.getItem(STORAGE_KEY);
   let defaultTime;
   if (sessionTime) {
     defaultTime = started
@@ -60,17 +53,17 @@ const Timer = ({
         startedAt = nowish() - time;
       }
       setStarted(startedAt);
-      setItem(STARTED_KEY, startedAt);
+      storage.setItem(STARTED_KEY, startedAt);
     }
     setRunning(true);
-    setItem(RUNNING_KEY, true);
+    storage.setItem(RUNNING_KEY, true);
   };
 
   const stop = () => {
     clearInterval(timer.current);
     setRunning(false);
     setStarted(0);
-    [RUNNING_KEY, STARTED_KEY].forEach(removeItem);
+    [RUNNING_KEY, STARTED_KEY].forEach(storage.removeItem);
   };
 
   const reset = () => {
@@ -97,7 +90,7 @@ const Timer = ({
         stop();
       }
     }
-    setItem(STORAGE_KEY, time);
+    storage.setItem(STORAGE_KEY, time);
   }, [time]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const disabled = {
@@ -107,7 +100,9 @@ const Timer = ({
 
   return (
     <>
-      <div className="time">{getTime(time)}</div>
+      <div className="time mb-4">
+        <pre className="has-background-white is-size-1">{getTime(time)}</pre>
+      </div>
       {controls && (
         <Controls
           running={running}

@@ -14,6 +14,7 @@ import Header from '../Header';
 import Today from '../Today';
 import Lift from '../Lift';
 import Results from '../Results';
+import Workout from '../Workout';
 
 function hasReported(schedule) {
   const { motivated, fast, sleep, sleepHours } = schedule;
@@ -93,6 +94,9 @@ export default function App({ isLoaded, authenticate, todaysSchedule }) {
         {!status.hasLifted && <Redirect to="/home" />}
         <Route path="/results">
           <Results />
+        </Route>
+        <Route path="/workout">
+          <Workout />
         </Route>
         <Redirect to="/home" />
       </Switch>
