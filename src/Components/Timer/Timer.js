@@ -7,6 +7,29 @@ const INTERVAL = 100;
 const round = (ms) => Math.round(ms / INTERVAL) * INTERVAL;
 const nowish = () => round(Date.now());
 
+const beepHigh = new Audio(`${process.env.PUBLIC_URL}/beep-high.wav`);
+const beepLow = new Audio(`${process.env.PUBLIC_URL}/beep-low.wav`);
+const high = () => beepHigh.play();
+const low = () => beepLow.play();
+const playBeep = (time) => {
+  switch (time) {
+    case 0:
+      high();
+      setTimeout(high, 250);
+      setTimeout(high, 500);
+      break;
+    case 5000:
+    case 4000:
+    case 3000:
+    case 2000:
+    case 1000:
+      low();
+      break;
+    default:
+      break;
+  }
+};
+
 const Timer = ({
   autoStart,
   controls,
@@ -92,6 +115,12 @@ const Timer = ({
     }
     storage.setItem(STORAGE_KEY, time);
   }, [time]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    if (running && time !== initialTime) {
+      playBeep(time);
+    }
+  }, [running, time, initialTime]);
 
   const disabled = {
     start: isCountDown ? time <= 0 : limit && time >= computeMillis(limit),

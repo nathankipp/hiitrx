@@ -18,30 +18,126 @@ export default function Workout() {
         intervals: [
           {
             name: 'Warm-up',
-            from: '00:10',
+            from: '05:00',
           },
           {
-            name: 'Work',
-            from: '00:05',
+            name: 'Sprint',
+            detail: '90% HRmax',
+            from: '00:30',
           },
           {
             name: 'Rest',
-            from: '00:7.5',
+            from: '00:30',
           },
           {
-            name: 'Work',
-            from: '00:05',
+            name: 'Sprint',
+            detail: '90% HRmax',
+            from: '00:30',
+          },
+          {
+            name: 'Rest',
+            from: '00:30',
+          },
+          {
+            name: 'Sprint',
+            detail: '90% HRmax',
+            from: '00:30',
+          },
+          {
+            name: 'Rest',
+            from: '00:30',
+          },
+          {
+            name: 'Sprint',
+            detail: '90% HRmax',
+            from: '00:30',
+          },
+          {
+            name: 'Rest',
+            from: '00:30',
+          },
+          {
+            name: 'Sprint',
+            detail: '90% HRmax',
+            from: '00:30',
+          },
+          {
+            name: 'Rest',
+            from: '00:30',
+          },
+          {
+            name: 'Sprint',
+            detail: '90% HRmax',
+            from: '00:30',
+          },
+          {
+            name: 'Rest',
+            from: '00:30',
+          },
+          {
+            name: 'Sprint',
+            detail: '90% HRmax',
+            from: '00:30',
+          },
+          {
+            name: 'Rest',
+            from: '00:30',
+          },
+          {
+            name: 'Sprint',
+            detail: '90% HRmax',
+            from: '00:30',
+          },
+          {
+            name: 'Rest',
+            from: '00:30',
+          },
+          {
+            name: 'Sprint',
+            detail: '90% HRmax',
+            from: '00:30',
+          },
+          {
+            name: 'Rest',
+            from: '00:30',
+          },
+          {
+            name: 'Sprint',
+            detail: '90% HRmax',
+            from: '00:30',
+          },
+          {
+            name: 'Rest',
+            from: '00:30',
           },
           {
             name: 'Cool-down',
-            from: '00:10',
+            from: '05:00',
           },
         ],
       })
     );
 
-    const workout = storage.getItem('workout');
-    setWorkout(JSON.parse(workout));
+    const storedWorkout = JSON.parse(storage.getItem('workout'));
+    setWorkout(storedWorkout);
+
+    // The wake lock sentinel.
+    let wakeLock = null;
+    // Function that attempts to request a screen wake lock.
+    const requestWakeLock = async () => {
+      try {
+        wakeLock = await navigator.wakeLock.request('screen');
+        wakeLock.addEventListener('release', () => {
+          console.log('Screen Wake Lock released:', wakeLock.released);
+        });
+      } catch (err) {
+        console.error(`${err.name}, ${err.message}`);
+      }
+    };
+    // Request a screen wake lock…
+    requestWakeLock();
+
+    return () => wakeLock.release();
   }, []);
 
   if (workout?.date !== getFullDate()) {
@@ -67,9 +163,11 @@ export default function Workout() {
     <>
       {int?.name ? (
         <div className="m-4 has-text-centered">
-          <div className="mb-2 is-size-1">Interval {count + 1}</div>
-          <div className="mb-6 is-size-3 has-text-info">
-            {int.name}
+          <div className="mb-2 is-size-1 has-text-info">{int.name}</div>
+          <div className="mb-2 is-size-3 has-text-info">
+            {int.detail || <>&nbsp;</>}
+          </div>
+          <div className="mb-6">
             {workout.intervals.map((interval, idx) =>
               idx === count ? (
                 <Timer
@@ -97,8 +195,8 @@ export default function Workout() {
         <>
           <hr className="my-4" />
           <div className="m-4 has-text-centered">
-            <div className="is-size-3 mb-2">Up next</div>
-            <div className="is-size-4 has-text-info">
+            <div className="is-size-4 mb-2">Up next</div>
+            <div className="is-size-3 has-text-info">
               {workout.intervals[count + 1].name}
             </div>
             <pre className="has-background-white is-size-4">

@@ -14,8 +14,8 @@ const Controls = (props) => {
         </button>
       )}
       {running && (
-        <button className="button is-large stop is-danger mr-4" onClick={stop}>
-          Stop
+        <button className="button is-large stop is-warning mr-4" onClick={stop}>
+          Pause
         </button>
       )}
       <button
