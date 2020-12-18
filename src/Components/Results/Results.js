@@ -18,10 +18,10 @@ function Results({ speed, readiness }) {
       </article>
       <div className="has-text-centered">
         <Link to="/home">
-          <button className="button is-black mr-2">Done</button>
+          <button className="button mr-2">Back</button>
         </Link>
         <Link to="/workout">
-          <button className="button is-success">Start Workout</button>
+          <button className="button is-black">Preview Workout</button>
         </Link>
       </div>
     </section>

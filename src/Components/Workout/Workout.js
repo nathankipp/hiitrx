@@ -1,14 +1,39 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import noop from 'lodash/noop';
 import { storage, getFullDate } from '../../lib';
+import Preview from './Preview';
 import Timer from '../Timer';
 
 export default function Workout() {
+  const [preview, setPreview] = useState(true);
   const [workout, setWorkout] = useState({
     date: null,
     intervals: [],
   });
   const [count, setCount] = useState(0);
+
+  const beepLow = useRef();
+  const beepHigh = useRef(null);
+
+  useEffect(() => {
+    async function getAudio() {
+      beepLow.current = await new Audio(
+        `${process.env.PUBLIC_URL}/beep-low.wav`
+      );
+      beepHigh.current = await new Audio(
+        `${process.env.PUBLIC_URL}/beep-high.wav`
+      );
+      beepLow.current.load();
+      beepHigh.current.load();
+    }
+    getAudio();
+  }, []);
+
+  const playBeep = (which) => {
+    const beep = which === 'high' ? beepHigh.current : beepLow.current;
+    beep.play().then(noop).catch(noop);
+  };
 
   useEffect(() => {
     storage.setItem(
@@ -17,8 +42,18 @@ export default function Workout() {
         date: getFullDate(),
         intervals: [
           {
+            name: 'Test beeps 1',
+            detail: 'whole number',
+            from: '00:10',
+          },
+          {
+            name: 'Test beeps 2',
+            detail: 'fraction of sec',
+            from: '00:7.5',
+          },
+          {
             name: 'Warm-up',
-            from: '05:00',
+            from: '02:00',
           },
           {
             name: 'Sprint',
@@ -119,38 +154,31 @@ export default function Workout() {
     );
 
     const storedWorkout = JSON.parse(storage.getItem('workout'));
+    storedWorkout.intervals.forEach((_, idx) =>
+      storage.removeItem(`interval-${idx}`)
+    );
     setWorkout(storedWorkout);
-
-    // The wake lock sentinel.
-    let wakeLock = null;
-    // Function that attempts to request a screen wake lock.
-    const requestWakeLock = async () => {
-      try {
-        wakeLock = await navigator.wakeLock.request('screen');
-        wakeLock.addEventListener('release', () => {
-          console.log('Screen Wake Lock released:', wakeLock.released);
-        });
-      } catch (err) {
-        console.error(`${err.name}, ${err.message}`);
-      }
-    };
-    // Request a screen wake lock…
-    requestWakeLock();
-
-    return () => wakeLock.release();
   }, []);
 
-  if (workout?.date !== getFullDate()) {
-    return (
-      <div className="has-text-danger has-text-centered">
-        <b>
-          Your workout isn't ready.
-          <br />
-          Please try again.
-        </b>
-      </div>
-    );
-  }
+  // useEffect(() => {
+  //   // The wake lock sentinel.
+  //   let wakeLock = null;
+  //   // Function that attempts to request a screen wake lock.
+  //   const requestWakeLock = async () => {
+  //     try {
+  //       wakeLock = await navigator.wakeLock.request('screen');
+  //       wakeLock.addEventListener('release', () => {
+  //         console.log('Screen Wake Lock released:', wakeLock.released);
+  //       });
+  //     } catch (err) {
+  //       console.error(`${err.name}, ${err.message}`);
+  //     }
+  //   };
+  //   // Request a screen wake lock…
+  //   requestWakeLock();
+  //
+  //   return () => wakeLock.release();
+  // }, []);
 
   const int = workout.intervals[count];
   const onComplete = () => {
@@ -159,15 +187,26 @@ export default function Workout() {
     setCount(count + 1);
   };
 
+  if (preview) {
+    return (
+      <Preview
+        intervals={workout.intervals}
+        onNext={() => {
+          setPreview(false);
+        }}
+      />
+    );
+  }
+
   return (
     <>
       {int?.name ? (
         <div className="m-4 has-text-centered">
-          <div className="mb-2 is-size-1 has-text-info">{int.name}</div>
-          <div className="mb-2 is-size-3 has-text-info">
+          <div className="mb-2 is-size-2 has-text-info">{int.name}</div>
+          <div className="mb-2 is-size-4 has-text-info">
             {int.detail || <>&nbsp;</>}
           </div>
-          <div className="mb-6">
+          <div className="mb-5">
             {workout.intervals.map((interval, idx) =>
               idx === count ? (
                 <Timer
@@ -176,6 +215,7 @@ export default function Workout() {
                   controls
                   direction={-1}
                   from={interval.from}
+                  playBeep={playBeep}
                   onComplete={onComplete}
                   autoStart={idx > 0}
                 />
@@ -195,8 +235,8 @@ export default function Workout() {
         <>
           <hr className="my-4" />
           <div className="m-4 has-text-centered">
-            <div className="is-size-4 mb-2">Up next</div>
-            <div className="is-size-3 has-text-info">
+            <div className="is-size-5 mb-2">Up next</div>
+            <div className="is-size-4 has-text-info">
               {workout.intervals[count + 1].name}
             </div>
             <pre className="has-background-white is-size-4">
