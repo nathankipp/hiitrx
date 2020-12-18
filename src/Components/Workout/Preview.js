@@ -21,7 +21,7 @@ export default function Preview({ intervals, onNext }) {
           <div className="column is-3 has-text-centered">{int.from}</div>
         </div>
       ))}
-      <button className="button is-black mb-4 fixed-button" onClick={onNext}>
+      <button className="button is-black fixed-button" onClick={onNext}>
         Start Workout
       </button>
     </div>

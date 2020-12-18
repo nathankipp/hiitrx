@@ -1,6 +1,6 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import noop from 'lodash/noop';
+// import noop from 'lodash/noop';
 import { storage, getFullDate } from '../../lib';
 import Preview from './Preview';
 import Timer from '../Timer';
@@ -13,26 +13,27 @@ export default function Workout() {
   });
   const [count, setCount] = useState(0);
 
-  const beepLow = useRef();
-  const beepHigh = useRef(null);
+  // const beepLow = useRef(null);
+  // const beepHigh = useRef(null);
 
-  useEffect(() => {
-    async function getAudio() {
-      beepLow.current = await new Audio(
-        `${process.env.PUBLIC_URL}/beep-low.wav`
-      );
-      beepHigh.current = await new Audio(
-        `${process.env.PUBLIC_URL}/beep-high.wav`
-      );
-      beepLow.current.load();
-      beepHigh.current.load();
-    }
-    getAudio();
-  }, []);
+  // useEffect(() => {
+  //   async function getAudio() {
+  //     beepLow.current = await new Audio(
+  //       `${process.env.PUBLIC_URL}/beep-low.wav`
+  //     );
+  //     beepHigh.current = await new Audio(
+  //       `${process.env.PUBLIC_URL}/beep-high.wav`
+  //     );
+  //   }
+  //   getAudio();
+  // }, []);
 
   const playBeep = (which) => {
-    const beep = which === 'high' ? beepHigh.current : beepLow.current;
-    beep.play().then(noop).catch(noop);
+    // const beep =
+    //   which === 'high'
+    //     ? beepHigh.current
+    //     : beepLow.current
+    // beep.play().then(noop).catch(noop);
   };
 
   useEffect(() => {
@@ -181,8 +182,9 @@ export default function Workout() {
   // }, []);
 
   const int = workout.intervals[count];
+  const timerId = `interval-${count}`;
   const onComplete = () => {
-    const currentTimer = `interval-${count}`;
+    const currentTimer = timerId;
     setTimeout(() => storage.removeItem(currentTimer), 0);
     setCount(count + 1);
   };
@@ -206,12 +208,12 @@ export default function Workout() {
           <div className="mb-2 is-size-4 has-text-info">
             {int.detail || <>&nbsp;</>}
           </div>
-          <div className="mb-5">
+          <div className="mb-5" onClick={() => playBeep('high')}>
             {workout.intervals.map((interval, idx) =>
               idx === count ? (
                 <Timer
-                  key={`interval-${idx}`}
-                  storageKey={`interval-${idx}`}
+                  key={timerId}
+                  storageKey={timerId}
                   controls
                   direction={-1}
                   from={interval.from}
