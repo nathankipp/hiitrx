@@ -5,16 +5,24 @@ const Controls = (props) => {
   return (
     <div>
       {!running && (
-        <button className="start" disabled={disabled.start} onClick={start}>
+        <button
+          className="button is-large start is-success mr-4"
+          disabled={disabled.start}
+          onClick={start}
+        >
           Start
         </button>
       )}
       {running && (
-        <button className="stop" onClick={stop}>
-          Stop
+        <button className="button is-large stop is-warning mr-4" onClick={stop}>
+          Pause
         </button>
       )}
-      <button className="reset" disabled={disabled.reset} onClick={reset}>
+      <button
+        className="button is-large reset is-black mr-4"
+        disabled={disabled.reset}
+        onClick={reset}
+      >
         Reset
       </button>
     </div>

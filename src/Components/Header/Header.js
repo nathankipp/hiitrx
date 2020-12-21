@@ -33,7 +33,8 @@ function Header({ isLoaded, name, location: { pathname } }) {
   const showSteps =
     isLoaded && ['/today', '/lift', '/results'].includes(pathname);
   const showHomeLink = !['/login', '/home'].includes(pathname);
-  const showGreeting = isLoaded && !['/login', '/lift'].includes(pathname);
+  const showGreeting =
+    isLoaded && !['/login', '/lift', '/workout'].includes(pathname);
   const stepperClass = progress(pathname);
 
   return (

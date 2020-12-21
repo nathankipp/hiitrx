@@ -68,6 +68,13 @@ body {
   }
 }
 
+.fixed-button {
+  position: fixed;
+  bottom: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
 .table {
   .headings {
     border-bottom: 1px solid black;

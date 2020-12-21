@@ -31,12 +31,12 @@ function getItem(item) {
   return value;
 }
 
-function removeItem(item, value) {
+function removeItem(item) {
   const db = whichDb(item);
   if (db === LS) {
-    window.localStorage.removeItem(item, value);
+    window.localStorage.removeItem(item);
   } else {
-    window.sessionStorage.removeItem(item, value);
+    window.sessionStorage.removeItem(item);
   }
 }
 
