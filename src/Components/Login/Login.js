@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { withRouter } from 'react-router-dom';
-import sha256 from 'crypto-js/sha256';
-import Base64 from 'crypto-js/enc-base64';
 import { storage } from '../../lib';
 
 function Login({ reset, authenticate, authenticateApp, history }) {
@@ -21,9 +19,8 @@ function Login({ reset, authenticate, authenticateApp, history }) {
     if (email && password) {
       setWorking(true);
       setInvalid(false);
-      const hash = Base64.stringify(sha256(`${email}${password}`));
-      authenticate(hash)
-        .then(() => {
+      authenticate({ email, password })
+        .then((hash) => {
           storage.setItem('hash', hash);
           authenticateApp(true);
           history.push('/home');
