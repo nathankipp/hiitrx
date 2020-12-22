@@ -7,6 +7,7 @@ import {
   setToday,
   setLifts,
   setPressures,
+  setEvents,
 } from './actions';
 
 jest.mock('../lib/getFullDate', () => () => '2021-01-01');
@@ -24,6 +25,7 @@ describe('hiitrx reducer', () => {
           activity: [1, 0, 0],
         },
       },
+      events: ['2020-12-31'],
     };
   });
 
@@ -118,5 +120,11 @@ describe('hiitrx reducer', () => {
         pressures: [-1, 0.1, 0.99],
       },
     });
+  });
+
+  it('processes setEvents', () => {
+    const action = setEvents(['2020-01-01', '2020-01-02']);
+    const newState = reducer(INITIAL_STATE, action);
+    expect(newState.events).toMatchObject(['2020-01-01', '2020-01-02']);
   });
 });

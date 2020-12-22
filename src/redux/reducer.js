@@ -9,6 +9,7 @@ const {
   SET_TODAY,
   SET_LIFTS,
   SET_PRESSURES,
+  SET_EVENTS,
 } = actionTypes;
 
 export const DEFAULT_STATE = {
@@ -17,6 +18,7 @@ export const DEFAULT_STATE = {
   email: null,
   name: null,
   age: null,
+  events: [],
   schedule: {},
 };
 
@@ -91,6 +93,11 @@ export default function (state = DEFAULT_STATE, action) {
             pressures: payload,
           },
         },
+      };
+    case SET_EVENTS:
+      return {
+        ...state,
+        events: payload,
       };
     default:
       return state;
