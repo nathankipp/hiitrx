@@ -9,6 +9,7 @@ import { storage } from '../../lib';
 import Progress from '../Progress';
 import Login from '../Login';
 import Home from '../Home';
+import Schedule from '../Schedule';
 import Header from '../Header';
 import Today from '../Today';
 import Lift from '../Lift';
@@ -81,6 +82,9 @@ export default function App({ isLoaded, getHiitrx, todaysSchedule }) {
         {!authenticated && <Redirect to="/login" />}
         <Route path="/home">
           <Home />
+        </Route>
+        <Route path="/schedule">
+          <Schedule />
         </Route>
         <Route path="/today">
           <Today hasReported={status.hasReported} />
