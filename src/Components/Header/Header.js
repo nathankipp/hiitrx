@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-  faCalendarAlt,
+  faHome,
   faSmile,
   faDotCircle,
   faCheckCircle,
@@ -69,7 +69,7 @@ function Header({ isLoaded, name, location: { pathname } }) {
             <Link to="/home">
               <FontAwesomeIcon
                 className="has-text-info"
-                icon={faCalendarAlt}
+                icon={faHome}
                 size="lg"
               />
             </Link>

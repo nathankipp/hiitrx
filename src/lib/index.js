@@ -5,11 +5,4 @@ import keyGen from './keyGen';
 import storage from './storage';
 import table from './table';
 
-export {
-  computeMillis,
-  getFullDate,
-  getTime,
-  keyGen,
-  storage,
-  table,
-};
+export { computeMillis, getFullDate, getTime, keyGen, storage, table };

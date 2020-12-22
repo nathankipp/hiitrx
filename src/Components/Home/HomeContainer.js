@@ -1,9 +1,9 @@
 import { connect } from 'react-redux';
 import Home from './Home';
-import { setActivity, setEffort, updateHiitrx } from '../../redux/actions';
+import { getFullDate } from '../../lib';
 
-const mapStateToProps = ({ schedule }) => ({ schedule });
+const mapStateToProps = ({ schedule }) => ({
+  hasLifts: !!schedule[getFullDate()]?.lifts?.length,
+});
 
-const mapDispatchToProps = { setActivity, setEffort, updateHiitrx };
-
-export default connect(mapStateToProps, mapDispatchToProps)(Home);
+export default connect(mapStateToProps)(Home);
