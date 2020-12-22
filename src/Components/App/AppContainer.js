@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import App from './App';
-import { authenticate } from '../../redux/actions';
+import { getHiitrx } from '../../redux/actions';
 import { getFullDate } from '../../lib';
 
 const mapStateToProps = (state) => {
@@ -12,6 +12,6 @@ const mapStateToProps = (state) => {
   return appState;
 };
 
-const mapDispatchToProps = { authenticate };
+const mapDispatchToProps = { getHiitrx };
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

@@ -1,4 +1,6 @@
-import { fetchItem, put, storage } from '../lib';
+import { storage } from '../lib';
+
+const API = "https://q1yg2vh97k.execute-api.us-east-2.amazonaws.com/live";
 
 const LOAD = 'LOAD';
 const RESET = 'RESET';
@@ -18,13 +20,23 @@ export const actionTypes = {
   SET_PRESSURES,
 };
 
-export const load = (payload) => ({ type: LOAD, payload });
+const fetchX = (method, url, body) => {
+  const options = {
+    method,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  };
+  if (body) {
+    options.body = JSON.stringify(body);
+  }
+  return fetch(url, options)
+    .then(res => res.status === 200 ? res : new Error())
+    .then(response => response.json());
+}
 
-export const reset = () => ({ type: RESET });
-
-export const authenticate = (hash) => (dispatch) =>
-  fetchItem('hiitrx', { hash })
-    // .then(x => new Promise(resolve => setTimeout(() => resolve(x), 2000)))
+export const getHiitrx = (hash) => (dispatch) =>
+  fetchX('GET', `${API}/hiitrx?hash=${hash}`)
     .then((state) => {
       if (state) {
         storage.setItem('hash', state.hash);
@@ -34,7 +46,20 @@ export const authenticate = (hash) => (dispatch) =>
       storage.removeItem('hash');
       dispatch(reset());
       return Promise.reject();
-    });
+    })
+    .catch(() => Promise.reject());
+
+export const updateHiitrx = () => (_, getState) =>
+  fetchX('POST', `${API}/hiitrx`, getState());
+
+export const authenticate = ({ email, password }) => dispatch =>
+  fetchX('POST', `${API}/auth`, { email, password })
+    .then(({ hash }) => getHiitrx(hash)(dispatch))
+    .catch(Promise.reject);
+
+export const load = (payload) => ({ type: LOAD, payload });
+
+export const reset = () => ({ type: RESET });
 
 export const setActivity = (payload) => ({ type: SET_ACTIVITY, payload });
 
@@ -45,5 +70,3 @@ export const setToday = (payload) => ({ type: SET_TODAY, payload });
 export const setLifts = (payload) => ({ type: SET_LIFTS, payload });
 
 export const setPressures = (payload) => ({ type: SET_PRESSURES, payload });
-
-export const updateHiitrx = () => (_, getState) => put(getState());

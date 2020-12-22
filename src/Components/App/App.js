@@ -8,7 +8,6 @@ import {
 import { storage } from '../../lib';
 import Progress from '../Progress';
 import Login from '../Login';
-import Data from '../Data';
 import Home from '../Home';
 import Header from '../Header';
 import Today from '../Today';
@@ -25,7 +24,7 @@ function hasLifted(schedule) {
   return !!schedule.lifts;
 }
 
-export default function App({ isLoaded, authenticate, todaysSchedule }) {
+export default function App({ isLoaded, getHiitrx, todaysSchedule }) {
   const [authenticated, setAuthenticated] = useState(false);
   const [initialized, setInitialized] = useState(false);
   const [working, setWorking] = useState(false);
@@ -41,7 +40,7 @@ export default function App({ isLoaded, authenticate, todaysSchedule }) {
     if (hash && first.current) {
       console.debug('HIITRx: running login effect');
       setWorking(true);
-      authenticate(hash)
+      getHiitrx(hash)
         .then(() => setAuthenticated(true))
         .catch(() => {})
         .finally(() => {
@@ -52,7 +51,7 @@ export default function App({ isLoaded, authenticate, todaysSchedule }) {
       setInitialized(true);
     }
     first.current = false;
-  }, [isLoaded, authenticate, setStatus]);
+  }, [isLoaded, getHiitrx, setStatus]);
 
   useEffect(() => {
     const newStatus = {
@@ -76,7 +75,6 @@ export default function App({ isLoaded, authenticate, todaysSchedule }) {
     <Router>
       <Header />
       <Switch>
-        <Route path="/data/:table(lift)" render={(rp) => <Data rp={rp} />} />
         <Route path="/login">
           <Login authenticateApp={setAuthenticated} />
         </Route>
