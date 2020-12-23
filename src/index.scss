@@ -73,6 +73,19 @@ body {
   }
 }
 
+.workout-preview-spacer {
+  height: 20rem;
+}
+
+.workout-timer {
+  border-top: 2px solid $success;
+  bottom: 0;
+  left: 50%;
+  position: fixed;
+  transform: translateX(-50%);
+  width: 100%;
+}
+
 .fixed-button {
   position: fixed;
   bottom: 1rem;

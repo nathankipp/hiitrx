@@ -124,7 +124,9 @@ const Timer = ({
   return (
     <>
       <div className="time mb-4">
-        <pre className="has-background-white is-size-1">{getTime(time)}</pre>
+        <pre className="has-background-white is-size-1 p-2">
+          {getTime(time)}
+        </pre>
       </div>
       {controls && (
         <Controls
