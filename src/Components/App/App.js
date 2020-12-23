@@ -11,6 +11,7 @@ import Login from '../Login';
 import Home from '../Home';
 import Schedule from '../Schedule';
 import Events from '../Events';
+import User from '../User';
 import Header from '../Header';
 import Today from '../Today';
 import Lift from '../Lift';
@@ -89,6 +90,9 @@ export default function App({ isLoaded, getHiitrx, todaysSchedule }) {
         </Route>
         <Route path="/events">
           <Events />
+        </Route>
+        <Route path="/user">
+          <User />
         </Route>
         <Route path="/today">
           <Today hasReported={status.hasReported} />

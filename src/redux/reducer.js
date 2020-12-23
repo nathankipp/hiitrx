@@ -10,6 +10,7 @@ const {
   SET_LIFTS,
   SET_PRESSURES,
   SET_EVENTS,
+  SET_USER,
 } = actionTypes;
 
 export const DEFAULT_STATE = {
@@ -98,6 +99,12 @@ export default function (state = DEFAULT_STATE, action) {
       return {
         ...state,
         events: payload,
+      };
+    case SET_USER:
+      return {
+        ...state,
+        name: payload.name,
+        age: payload.age,
       };
     default:
       return state;

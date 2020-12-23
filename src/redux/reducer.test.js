@@ -8,6 +8,7 @@ import {
   setLifts,
   setPressures,
   setEvents,
+  setUser,
 } from './actions';
 
 jest.mock('../lib/getFullDate', () => () => '2021-01-01');
@@ -126,5 +127,12 @@ describe('hiitrx reducer', () => {
     const action = setEvents(['2020-01-01', '2020-01-02']);
     const newState = reducer(INITIAL_STATE, action);
     expect(newState.events).toMatchObject(['2020-01-01', '2020-01-02']);
+  });
+
+  it('processes setUser', () => {
+    const action = setUser({ age: 45, name: 'bar' });
+    const newState = reducer(INITIAL_STATE, action);
+    expect(newState.age).toBe(45);
+    expect(newState.name).toBe('bar');
   });
 });

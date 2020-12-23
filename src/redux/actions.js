@@ -10,6 +10,7 @@ const SET_TODAY = 'SET_TODAY';
 const SET_LIFTS = 'SET_LIFTS';
 const SET_PRESSURES = 'SET_PRESSURES';
 const SET_EVENTS = 'SET_EVENTS';
+const SET_USER = 'SET_USER';
 
 export const actionTypes = {
   LOAD,
@@ -20,6 +21,7 @@ export const actionTypes = {
   SET_LIFTS,
   SET_PRESSURES,
   SET_EVENTS,
+  SET_USER,
 };
 
 const fetchX = (method, url, body) => {
@@ -74,3 +76,5 @@ export const setLifts = (payload) => ({ type: SET_LIFTS, payload });
 export const setPressures = (payload) => ({ type: SET_PRESSURES, payload });
 
 export const setEvents = (payload) => ({ type: SET_EVENTS, payload });
+
+export const setUser = (payload) => ({ type: SET_USER, payload });
