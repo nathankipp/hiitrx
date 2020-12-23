@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
+import { withRouter } from 'react-router-dom';
 import noop from 'lodash/noop';
 
-function User({ user, setUser, updateHiitrx }) {
+function User({ user, setUser, updateHiitrx, history }) {
   const [name, setName] = useState(user.name);
   const [age, setAge] = useState(user.age);
 
   const save = () => {
     setUser({ name, age });
-    updateHiitrx().then(noop).catch(noop);
+    updateHiitrx()
+      .then(() => history.push('/home'))
+      .catch(noop);
   };
 
   return (
@@ -42,4 +45,4 @@ function User({ user, setUser, updateHiitrx }) {
   );
 }
 
-export default User;
+export default withRouter(User);
