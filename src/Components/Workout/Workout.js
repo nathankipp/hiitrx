@@ -13,7 +13,7 @@ export default function Workout() {
     date: null,
     intervals: [],
   });
-  const [count, setCount] = useState(23);
+  const [count, setCount] = useState(0);
 
   useEffect(() => {
     mockWorkout();
