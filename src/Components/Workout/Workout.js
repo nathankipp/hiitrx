@@ -1,159 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-// import noop from 'lodash/noop';
-import { storage, getFullDate } from '../../lib';
-import Preview from './Preview';
+import noop from 'lodash/noop';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
+import { storage } from '../../lib';
 import Timer from '../Timer';
 
+import mockWorkout from './mock-workout'; // TODO: remove
+
 export default function Workout() {
-  const [preview, setPreview] = useState(true);
   const [workout, setWorkout] = useState({
     date: null,
     intervals: [],
   });
-  const [count, setCount] = useState(0);
-
-  // const beepLow = useRef(null);
-  // const beepHigh = useRef(null);
-
-  // useEffect(() => {
-  //   async function getAudio() {
-  //     beepLow.current = await new Audio(
-  //       `${process.env.PUBLIC_URL}/beep-low.wav`
-  //     );
-  //     beepHigh.current = await new Audio(
-  //       `${process.env.PUBLIC_URL}/beep-high.wav`
-  //     );
-  //   }
-  //   getAudio();
-  // }, []);
-
-  const playBeep = (which) => {
-    // const beep =
-    //   which === 'high'
-    //     ? beepHigh.current
-    //     : beepLow.current
-    // beep.play().then(noop).catch(noop);
-  };
+  const [count, setCount] = useState(23);
 
   useEffect(() => {
-    storage.setItem(
-      'workout',
-      JSON.stringify({
-        date: getFullDate(),
-        intervals: [
-          {
-            name: 'Test beeps 1',
-            detail: 'whole number',
-            from: '00:10',
-          },
-          {
-            name: 'Test beeps 2',
-            detail: 'fraction of sec',
-            from: '00:7.5',
-          },
-          {
-            name: 'Warm-up',
-            from: '02:00',
-          },
-          {
-            name: 'Sprint',
-            detail: '90% HRmax',
-            from: '00:30',
-          },
-          {
-            name: 'Rest',
-            from: '00:30',
-          },
-          {
-            name: 'Sprint',
-            detail: '90% HRmax',
-            from: '00:30',
-          },
-          {
-            name: 'Rest',
-            from: '00:30',
-          },
-          {
-            name: 'Sprint',
-            detail: '90% HRmax',
-            from: '00:30',
-          },
-          {
-            name: 'Rest',
-            from: '00:30',
-          },
-          {
-            name: 'Sprint',
-            detail: '90% HRmax',
-            from: '00:30',
-          },
-          {
-            name: 'Rest',
-            from: '00:30',
-          },
-          {
-            name: 'Sprint',
-            detail: '90% HRmax',
-            from: '00:30',
-          },
-          {
-            name: 'Rest',
-            from: '00:30',
-          },
-          {
-            name: 'Sprint',
-            detail: '90% HRmax',
-            from: '00:30',
-          },
-          {
-            name: 'Rest',
-            from: '00:30',
-          },
-          {
-            name: 'Sprint',
-            detail: '90% HRmax',
-            from: '00:30',
-          },
-          {
-            name: 'Rest',
-            from: '00:30',
-          },
-          {
-            name: 'Sprint',
-            detail: '90% HRmax',
-            from: '00:30',
-          },
-          {
-            name: 'Rest',
-            from: '00:30',
-          },
-          {
-            name: 'Sprint',
-            detail: '90% HRmax',
-            from: '00:30',
-          },
-          {
-            name: 'Rest',
-            from: '00:30',
-          },
-          {
-            name: 'Sprint',
-            detail: '90% HRmax',
-            from: '00:30',
-          },
-          {
-            name: 'Rest',
-            from: '00:30',
-          },
-          {
-            name: 'Cool-down',
-            from: '05:00',
-          },
-        ],
-      })
-    );
-
+    mockWorkout();
     const storedWorkout = JSON.parse(storage.getItem('workout'));
     storedWorkout.intervals.forEach((_, idx) =>
       storage.removeItem(`interval-${idx}`)
@@ -161,27 +24,7 @@ export default function Workout() {
     setWorkout(storedWorkout);
   }, []);
 
-  // useEffect(() => {
-  //   // The wake lock sentinel.
-  //   let wakeLock = null;
-  //   // Function that attempts to request a screen wake lock.
-  //   const requestWakeLock = async () => {
-  //     try {
-  //       wakeLock = await navigator.wakeLock.request('screen');
-  //       wakeLock.addEventListener('release', () => {
-  //         console.log('Screen Wake Lock released:', wakeLock.released);
-  //       });
-  //     } catch (err) {
-  //       console.error(`${err.name}, ${err.message}`);
-  //     }
-  //   };
-  //   // Request a screen wake lock…
-  //   requestWakeLock();
-  //
-  //   return () => wakeLock.release();
-  // }, []);
-
-  const int = workout.intervals[count];
+  const currentInterval = workout.intervals[count];
   const timerId = `interval-${count}`;
   const onComplete = () => {
     const currentTimer = timerId;
@@ -189,64 +32,76 @@ export default function Workout() {
     setCount(count + 1);
   };
 
-  if (preview) {
-    return (
-      <Preview
-        intervals={workout.intervals}
-        onNext={() => {
-          setPreview(false);
-        }}
-      />
-    );
-  }
-
   return (
     <>
-      {int?.name ? (
-        <div className="m-4 has-text-centered">
-          <div className="mb-2 is-size-2 has-text-info">{int.name}</div>
-          <div className="mb-2 is-size-4 has-text-info">
-            {int.detail || <>&nbsp;</>}
-          </div>
-          <div className="mb-5" onClick={() => playBeep('high')}>
-            {workout.intervals.map((interval, idx) =>
-              idx === count ? (
-                <Timer
-                  key={timerId}
-                  storageKey={timerId}
-                  controls
-                  direction={-1}
-                  from={interval.from}
-                  playBeep={playBeep}
-                  onComplete={onComplete}
-                  autoStart={idx > 0}
-                />
-              ) : null
-            )}
-          </div>
+      <div className="table m-4">
+        <div className="headings columns is-mobile">
+          <div className="column is-9">Interval</div>
+          <div className="column is-3 has-text-centered">Duration</div>
         </div>
-      ) : (
-        <div className="m-4 is-size-1 has-text-success has-text-centered">
-          <div className="mb-6">Workout Completed!</div>
-          <Link to="/home">
-            <button className="button is-large is-black">Done</button>
-          </Link>
-        </div>
-      )}
-      {workout.intervals[count + 1] && (
-        <>
-          <hr className="my-4" />
-          <div className="m-4 has-text-centered">
-            <div className="is-size-5 mb-2">Up next</div>
-            <div className="is-size-4 has-text-info">
-              {workout.intervals[count + 1].name}
+        {workout.intervals.map((int, idx) => (
+          <div
+            key={`${int.name}-${idx}`}
+            className={`columns is-mobile ${
+              idx === count
+                ? 'has-background-warning has-text-weight-bold'
+                : idx % 2
+                ? 'has-background-white-ter'
+                : 'has-background-white'
+            }`}
+          >
+            <div className="column is-1">
+              <b>{idx + 1}</b>
             </div>
-            <pre className="has-background-white is-size-4">
-              {workout.intervals[count + 1].from}
-            </pre>
+            <div className="column is-8">
+              {idx < count && (
+                <FontAwesomeIcon
+                  className="mr-2 has-text-success"
+                  icon={faCheckCircle}
+                />
+              )}
+              <span>{int.name}</span>
+            </div>
+            <div className="column is-3 has-text-centered">{int.from}</div>
           </div>
-        </>
-      )}
+        ))}
+      </div>
+      <div className="workout-preview-spacer"></div>
+      <div className="workout-timer has-background-white has-text-centered">
+        {currentInterval?.name ? (
+          <>
+            <div className="mt-2 mb-0 is-size-2 has-text-info">
+              {currentInterval.name}
+            </div>
+            <div className="mb-2 is-size-5 has-text-info">
+              {currentInterval.detail || <>&nbsp;</>}
+            </div>
+            <div className="mb-5">
+              {workout.intervals.map((interval, idx) =>
+                idx === count ? (
+                  <Timer
+                    key={timerId}
+                    storageKey={timerId}
+                    controls
+                    direction={-1}
+                    from={interval.from}
+                    playBeep={noop}
+                    onComplete={onComplete}
+                    autoStart={idx > 0}
+                  />
+                ) : null
+              )}
+            </div>
+          </>
+        ) : (
+          <div className="m-4 is-size-3 has-text-success has-text-centered">
+            <div className="mb-6">Workout Completed!</div>
+            <Link to="/home">
+              <button className="button is-large is-black">Done</button>
+            </Link>
+          </div>
+        )}
+      </div>
     </>
   );
 }
