@@ -57,7 +57,7 @@ function Home({ hasLifts }) {
         </Link>
       </div>
       <div className="p-4 has-text-centered">
-        <Link to="/profile">
+        <Link to="/user">
           <button className="button is-large home-button">
             <FontAwesomeIcon className="mr-4 has-text-info" icon={faUser} />
             <span>User Profile</span>
