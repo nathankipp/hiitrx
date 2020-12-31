@@ -1,4 +1,4 @@
-import { storage } from '../lib';
+import { storage, getFullDate } from '../lib';
 
 const API = 'https://q1yg2vh97k.execute-api.us-east-2.amazonaws.com/live';
 
@@ -42,6 +42,7 @@ const fetchX = (method, url, body) => {
 export const getHiitrx = (hash) => (dispatch) =>
   fetchX('GET', `${API}/hiitrx?hash=${hash}`)
     .then((state) => {
+      // result of api includes fitnessTests
       if (state) {
         storage.setItem('hash', state.hash);
         dispatch(load(state));
@@ -53,8 +54,10 @@ export const getHiitrx = (hash) => (dispatch) =>
     })
     .catch(() => Promise.reject());
 
-export const updateHiitrx = () => (_, getState) =>
-  fetchX('POST', `${API}/hiitrx`, getState());
+export const updateHiitrx = () => (_, getState) => {
+  const { fitnessTests, ...hiitrx } = getState(); // omit fitnessTests from save
+  return fetchX('POST', `${API}/hiitrx`, { ...hiitrx, date: getFullDate() });
+};
 
 export const authenticate = ({ email, password }) => (dispatch) =>
   fetchX('POST', `${API}/auth`, { email, password })

@@ -14,13 +14,14 @@ const {
 } = actionTypes;
 
 export const DEFAULT_STATE = {
-  date: null,
+  date: null, // set as today on save
   hash: null,
   email: null,
   name: null,
   age: null,
   events: [],
   schedule: {},
+  fitnessTests: {}, // omitted on save
 };
 
 export default function (state = DEFAULT_STATE, action) {

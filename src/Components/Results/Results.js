@@ -1,14 +1,26 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-function Results({ speed, readiness }) {
+const LOWER_LIMIT_SCORE = 60;
+
+function Results({ readiness, nextTest, speed }) {
+  const canTeest = readiness >= LOWER_LIMIT_SCORE;
   return (
-    <section className="section">
+    <div className="m-4">
       <article className="message is-info">
         <div className="message-header">
           <p>HIIT readiness</p>
         </div>
-        <div className="message-body">{readiness}%</div>
+        <div className="message-body is-flex is-justify-content-space-between is-align-items-center">
+          <div>{readiness}%</div>
+          <div>
+            {canTeest && (
+              <button className="button is-info is-light is-outlined">
+                Test {nextTest.name}*
+              </button>
+            )}
+          </div>
+        </div>
       </article>
       <article className="message is-info">
         <div className="message-header">
@@ -21,10 +33,17 @@ function Results({ speed, readiness }) {
           <button className="button mr-2">Back</button>
         </Link>
         <Link to="/workout">
-          <button className="button is-black">Preview Workout</button>
+          <button className="button is-black">Get HIITRx Workout</button>
         </Link>
       </div>
-    </section>
+      {canTeest && (
+        <div className="fixed-button p-4 width-100 is-size-7 has-text-justified">
+          * Your readiness is sufficient for an all-out fitness test. Regular
+          testing can improve the accuracy and quality of your HIITRx workouts.
+          Testing today will replace your workout.
+        </div>
+      )}
+    </div>
   );
 }
 
