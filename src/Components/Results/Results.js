@@ -4,7 +4,7 @@ import noop from 'lodash/noop';
 
 import mockWorkout from './mock-workout'; // TODO: remove
 
-const LOWER_LIMIT_SCORE = 60;
+const LOWER_LIMIT_SCORE = 85;
 
 function Results({
   readiness,
