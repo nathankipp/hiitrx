@@ -7,7 +7,7 @@ const mapStateToProps = ({ schedule }) => {
 
   return {
     hasLifts: !!sched?.lifts?.length,
-    workoutIsComplete: !!sched?.workout?.completed,
+    isWorkoutComplete: !!sched?.workout?.completed,
   };
 };
 
