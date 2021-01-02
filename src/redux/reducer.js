@@ -11,6 +11,9 @@ const {
   SET_PRESSURES,
   SET_EVENTS,
   SET_USER,
+  SET_FITNESS_TEST,
+  SET_WORKOUT,
+  SET_WORKOUT_COMPLETED,
 } = actionTypes;
 
 export const DEFAULT_STATE = {
@@ -21,7 +24,17 @@ export const DEFAULT_STATE = {
   age: null,
   events: [],
   schedule: {},
-  fitnessTests: {}, // omitted on save
+  fitnessTests: {
+    ac: {
+      name: 'a c baby',
+      intervals: [
+        { duration: '00:01', name: 'foo' },
+        { duration: '00:01', name: 'foo' },
+        { duration: '00:01', name: 'foo' },
+        { duration: '00:01', name: 'foo' },
+      ],
+    },
+  }, // omitted on save
 };
 
 export default function (state = DEFAULT_STATE, action) {
@@ -106,6 +119,31 @@ export default function (state = DEFAULT_STATE, action) {
         ...state,
         name: payload.name,
         age: payload.age,
+      };
+    case SET_WORKOUT:
+      return {
+        ...state,
+        schedule: {
+          ...state.schedule,
+          [today]: {
+            ...state.schedule[today],
+            workout: payload,
+          },
+        },
+      };
+    case SET_WORKOUT_COMPLETED:
+      return {
+        ...state,
+        schedule: {
+          ...state.schedule,
+          [today]: {
+            ...state.schedule[today],
+            workout: {
+              ...state.schedule[today].workout,
+              completed: payload,
+            },
+          },
+        },
       };
     default:
       return state;

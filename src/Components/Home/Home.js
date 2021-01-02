@@ -10,18 +10,18 @@ import {
   faUser,
 } from '@fortawesome/free-solid-svg-icons';
 
-function Home({ hasLifts }) {
+function Home({ hasLifts, workoutIsComplete }) {
   return (
     <div className="is-flex is-flex-direction-column is-justify-content-center is-align-items-stretch">
       {hasLifts && (
         <div className="p-4 has-text-centered">
-          <Link to="/workout">
+          <Link to={workoutIsComplete ? '/workout' : '/results'}>
             <button className="button is-large home-button">
               <FontAwesomeIcon
                 className="mr-4 has-text-success"
                 icon={faStopwatch}
               />
-              <span>Today's Workout</span>
+              <span>Today's HIITRx</span>
             </button>
           </Link>
         </div>

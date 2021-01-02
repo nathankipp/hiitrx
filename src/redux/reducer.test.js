@@ -9,6 +9,8 @@ import {
   setPressures,
   setEvents,
   setUser,
+  setWorkout,
+  setWorkoutCompleted,
 } from './actions';
 
 jest.mock('../lib/getFullDate', () => () => '2021-01-01');
@@ -134,5 +136,21 @@ describe('hiitrx reducer', () => {
     const newState = reducer(INITIAL_STATE, action);
     expect(newState.age).toBe(45);
     expect(newState.name).toBe('bar');
+  });
+
+  it('processes setWorkout', () => {
+    const action = setWorkout({ intervals: [1] });
+    const newState = reducer(INITIAL_STATE, action);
+    expect(newState.schedule['2021-01-01'].workout).toMatchObject({
+      intervals: [1],
+    });
+  });
+
+  it('processes setWorkoutCompleted', () => {
+    const setupAction = setWorkout({ intervals: [1] });
+    let newState = reducer(INITIAL_STATE, setupAction);
+    const action = setWorkoutCompleted(14);
+    newState = reducer(newState, action);
+    expect(newState.schedule['2021-01-01'].workout.completed).toBe(14);
   });
 });

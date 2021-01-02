@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 import Results from './Results';
 import { getFullDate, table } from '../../lib';
+import { setWorkout, updateHiitrx } from '../../redux/actions';
 
 const TESTS = [
   { id: 'ac', name: 'Aerobic Capacity' },
@@ -19,9 +20,10 @@ const getNextTest = (schedule = {}) => {
     .sort((a, b) => b.localeCompare(a))
     .reduce(
       (acc, cur) =>
-        schedule[cur].fitnessTest &&
-        !acc.find((testId) => testId === schedule[cur].fitnessTest.id)
-          ? [...acc, schedule[cur].fitnessTest.id]
+        cur !== getFullDate() &&
+        schedule[cur].workout &&
+        !acc.find((testId) => testId === schedule[cur].workout.fitnessTestId)
+          ? [...acc, schedule[cur].workout.fitnessTestId]
           : acc,
       []
     );
@@ -43,14 +45,17 @@ const getAvgSpeed = (lifts) => {
   return Math.round(avg);
 };
 
-const mapStateToProps = ({ schedule }) => {
+const mapStateToProps = ({ schedule, fitnessTests }) => {
   const sched = schedule[getFullDate()];
 
   return {
     readiness: getReadines(sched),
-    nextTest: getNextTest(sched),
+    fitnessTests,
+    nextTest: getNextTest(schedule),
     speed: getAvgSpeed(sched.lifts),
   };
 };
 
-export default connect(mapStateToProps)(Results);
+const mapDispatchToProps = { setWorkout, updateHiitrx };
+
+export default connect(mapStateToProps, mapDispatchToProps)(Results);

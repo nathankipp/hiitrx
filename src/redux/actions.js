@@ -11,6 +11,8 @@ const SET_LIFTS = 'SET_LIFTS';
 const SET_PRESSURES = 'SET_PRESSURES';
 const SET_EVENTS = 'SET_EVENTS';
 const SET_USER = 'SET_USER';
+const SET_WORKOUT = 'SET_WORKOUT';
+const SET_WORKOUT_COMPLETED = 'SET_WORKOUT_COMPLETED';
 
 export const actionTypes = {
   LOAD,
@@ -22,6 +24,8 @@ export const actionTypes = {
   SET_PRESSURES,
   SET_EVENTS,
   SET_USER,
+  SET_WORKOUT,
+  SET_WORKOUT_COMPLETED,
 };
 
 const fetchX = (method, url, body) => {
@@ -81,3 +85,10 @@ export const setPressures = (payload) => ({ type: SET_PRESSURES, payload });
 export const setEvents = (payload) => ({ type: SET_EVENTS, payload });
 
 export const setUser = (payload) => ({ type: SET_USER, payload });
+
+export const setWorkout = (payload) => ({ type: SET_WORKOUT, payload });
+
+export const setWorkoutCompleted = (payload) => ({
+  type: SET_WORKOUT_COMPLETED,
+  payload,
+});

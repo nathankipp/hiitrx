@@ -1,28 +1,46 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import noop from 'lodash/noop';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import { storage } from '../../lib';
 import Timer from '../Timer';
 
-import mockWorkout from './mock-workout'; // TODO: remove
+// const saveFn = ({
+//   match: {
+//     params: { fitnessTestId },
+//   },
+//   setFitnessTest,
+//   completeWorkout,
+//   updateHiitrx,
+// }) => (count) => {
+//   if (fitnessTestId) {
+//     setFitnessTest({
+//       id: fitnessTestId,
+//       result: count,
+//     });
+//   } else {
+//     completeWorkout(count);
+//   }
+//   console.log('updateHiitrx');
+//   // updateHiitrx().then(noop).catch(noop);
+// };
 
-export default function Workout() {
-  const [workout, setWorkout] = useState({
-    date: null,
-    intervals: [],
-  });
-  const [count, setCount] = useState(0);
+function Workout({ workout, setWorkoutCompleted, updateHiitrx, history }) {
+  const [count, setCount] = useState(workout.completed || 0);
+  const [complete, setComplete] = useState(false);
+
+  const onEnd = () => {
+    setComplete(true);
+    setWorkoutCompleted(count);
+    updateHiitrx().then(noop).catch(noop);
+  };
 
   useEffect(() => {
-    mockWorkout();
-    const storedWorkout = JSON.parse(storage.getItem('workout'));
-    storedWorkout.intervals.forEach((_, idx) =>
-      storage.removeItem(`interval-${idx}`)
-    );
-    setWorkout(storedWorkout);
-  }, []);
+    if (count && count === workout.intervals.length) {
+      onEnd();
+    }
+  }, [count]);
 
   const currentInterval = workout.intervals[count];
   const timerId = `interval-${count}`;
@@ -31,6 +49,8 @@ export default function Workout() {
     setTimeout(() => storage.removeItem(currentTimer), 0);
     setCount(count + 1);
   };
+
+  const isWorkingOut = currentInterval && !complete;
 
   return (
     <>
@@ -62,13 +82,13 @@ export default function Workout() {
               )}
               <span>{int.name}</span>
             </div>
-            <div className="column is-3 has-text-centered">{int.from}</div>
+            <div className="column is-3 has-text-centered">{int.duration}</div>
           </div>
         ))}
       </div>
       <div className="workout-preview-spacer"></div>
       <div className="workout-timer has-background-white has-text-centered">
-        {currentInterval?.name ? (
+        {isWorkingOut ? (
           <>
             <div className="mt-2 mb-0 is-size-2 has-text-info">
               {currentInterval.name}
@@ -83,8 +103,9 @@ export default function Workout() {
                     key={timerId}
                     storageKey={timerId}
                     controls
+                    onEnd={onEnd}
                     direction={-1}
-                    from={interval.from}
+                    from={interval.duration}
                     playBeep={noop}
                     onComplete={onComplete}
                     autoStart={idx > 0}
@@ -105,3 +126,5 @@ export default function Workout() {
     </>
   );
 }
+
+export default Workout;

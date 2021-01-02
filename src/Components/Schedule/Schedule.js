@@ -57,7 +57,11 @@ function Schedule({ schedule, setActivity, setEffort, updateHiitrx, history }) {
   const saveAndNext = () =>
     updateHiitrx()
       .then(() => {
-        const to = !!schedule[dates[0]]?.lifts ? '/results' : '/today';
+        const to = !!schedule[dates[0]]?.lifts
+          ? !!schedule[dates[0]]?.workout
+            ? '/workout'
+            : '/results'
+          : '/today';
         history.push(to);
       })
       .catch(() => console.error('update failed'));
@@ -156,7 +160,7 @@ function Schedule({ schedule, setActivity, setEffort, updateHiitrx, history }) {
                         className="mr-4 has-text-success"
                         icon={faStopwatch}
                       />
-                      <span>Today's Workout</span>
+                      <span>Today's HIITRx</span>
                     </button>
                   ) : (
                     <div className="py-5 has-text-info">
