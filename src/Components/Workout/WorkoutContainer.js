@@ -1,17 +1,13 @@
 import { connect } from 'react-redux';
-import { getFullDate, table } from '../../lib';
+import { getFullDate } from '../../lib';
 import { setWorkoutCompleted, updateHiitrx } from '../../redux/actions';
 import Workout from './Workout';
 
-const xmapStateToProps = ({
+const mapStateToProps = ({
   schedule: {
     [getFullDate()]: { workout },
   },
 }) => ({ workout });
-
-const mapStateToProps = (state) => {
-  return { workout: state.schedule[getFullDate()].workout };
-};
 
 const mapDispatchToProps = { setWorkoutCompleted, updateHiitrx };
 

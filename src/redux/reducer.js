@@ -11,7 +11,6 @@ const {
   SET_PRESSURES,
   SET_EVENTS,
   SET_USER,
-  SET_FITNESS_TEST,
   SET_WORKOUT,
   SET_WORKOUT_COMPLETED,
 } = actionTypes;
@@ -24,17 +23,7 @@ export const DEFAULT_STATE = {
   age: null,
   events: [],
   schedule: {},
-  fitnessTests: {
-    ac: {
-      name: 'a c baby',
-      intervals: [
-        { duration: '00:01', name: 'foo' },
-        { duration: '00:01', name: 'foo' },
-        { duration: '00:01', name: 'foo' },
-        { duration: '00:01', name: 'foo' },
-      ],
-    },
-  }, // omitted on save
+  fitnessTests: {}, // omitted on save
 };
 
 export default function (state = DEFAULT_STATE, action) {

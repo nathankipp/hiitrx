@@ -1,34 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { Link, withRouter } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import noop from 'lodash/noop';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import { storage } from '../../lib';
 import Timer from '../Timer';
 
-// const saveFn = ({
-//   match: {
-//     params: { fitnessTestId },
-//   },
-//   setFitnessTest,
-//   completeWorkout,
-//   updateHiitrx,
-// }) => (count) => {
-//   if (fitnessTestId) {
-//     setFitnessTest({
-//       id: fitnessTestId,
-//       result: count,
-//     });
-//   } else {
-//     completeWorkout(count);
-//   }
-//   console.log('updateHiitrx');
-//   // updateHiitrx().then(noop).catch(noop);
-// };
-
-function Workout({ workout, setWorkoutCompleted, updateHiitrx, history }) {
+export default function Workout({
+  workout,
+  setWorkoutCompleted,
+  updateHiitrx,
+  history,
+}) {
   const [count, setCount] = useState(workout.completed || 0);
-  const [complete, setComplete] = useState(false);
+  const [complete, setComplete] = useState(!!workout.completed);
 
   const onEnd = () => {
     setComplete(true);
@@ -37,10 +22,11 @@ function Workout({ workout, setWorkoutCompleted, updateHiitrx, history }) {
   };
 
   useEffect(() => {
-    if (count && count === workout.intervals.length) {
+    const isJustDone = !complete && count && count === workout.intervals.length;
+    if (isJustDone) {
       onEnd();
     }
-  }, [count]);
+  }, [count]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const currentInterval = workout.intervals[count];
   const timerId = `interval-${count}`;
@@ -126,5 +112,3 @@ function Workout({ workout, setWorkoutCompleted, updateHiitrx, history }) {
     </>
   );
 }
-
-export default Workout;
