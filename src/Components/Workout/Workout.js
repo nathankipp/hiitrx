@@ -6,12 +6,15 @@ import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import { storage } from '../../lib';
 import Timer from '../Timer';
 
+const tid = (id) => `interval-${id}`;
+
 export default function Workout({
   workout,
   setWorkoutCompleted,
   updateHiitrx,
   history,
 }) {
+  const [ready, setReady] = useState(false);
   const [count, setCount] = useState(workout.completed || 0);
   const [complete, setComplete] = useState(!!workout.completed);
 
@@ -22,6 +25,13 @@ export default function Workout({
   };
 
   useEffect(() => {
+    for (let i = 0; i < workout.intervals.length; i += 1) {
+      storage.removeItem(tid(i));
+    }
+    setReady(true);
+  }, [workout.intervals.length]);
+
+  useEffect(() => {
     const isJustDone = !complete && count && count === workout.intervals.length;
     if (isJustDone) {
       onEnd();
@@ -29,7 +39,7 @@ export default function Workout({
   }, [count]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const currentInterval = workout.intervals[count];
-  const timerId = `interval-${count}`;
+  const timerId = tid(count);
   const onComplete = () => {
     const currentTimer = timerId;
     setTimeout(() => storage.removeItem(currentTimer), 0);
@@ -84,7 +94,7 @@ export default function Workout({
             </div>
             <div className="mb-5">
               {workout.intervals.map((interval, idx) =>
-                idx === count ? (
+                ready && idx === count ? (
                   <Timer
                     key={timerId}
                     storageKey={timerId}
