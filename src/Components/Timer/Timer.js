@@ -10,6 +10,7 @@ const nowish = () => round(Date.now());
 const Timer = ({
   autoStart,
   controls,
+  onEnd,
   direction,
   from,
   limit,
@@ -135,6 +136,7 @@ const Timer = ({
           start={start}
           stop={stop}
           reset={reset}
+          onEnd={onEnd}
         />
       )}
     </>

@@ -2,8 +2,13 @@ import { connect } from 'react-redux';
 import Home from './Home';
 import { getFullDate } from '../../lib';
 
-const mapStateToProps = ({ schedule }) => ({
-  hasLifts: !!schedule[getFullDate()]?.lifts?.length,
-});
+const mapStateToProps = ({ schedule }) => {
+  const sched = schedule[getFullDate()];
+
+  return {
+    hasLifts: !!sched?.lifts?.length,
+    isWorkoutComplete: !!sched?.workout?.completed,
+  };
+};
 
 export default connect(mapStateToProps)(Home);

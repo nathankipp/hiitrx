@@ -11,16 +11,19 @@ const {
   SET_PRESSURES,
   SET_EVENTS,
   SET_USER,
+  SET_WORKOUT,
+  SET_WORKOUT_COMPLETED,
 } = actionTypes;
 
 export const DEFAULT_STATE = {
-  date: null,
+  date: null, // set as today on save
   hash: null,
   email: null,
   name: null,
   age: null,
   events: [],
   schedule: {},
+  fitnessTests: {}, // omitted on save
 };
 
 export default function (state = DEFAULT_STATE, action) {
@@ -105,6 +108,31 @@ export default function (state = DEFAULT_STATE, action) {
         ...state,
         name: payload.name,
         age: payload.age,
+      };
+    case SET_WORKOUT:
+      return {
+        ...state,
+        schedule: {
+          ...state.schedule,
+          [today]: {
+            ...state.schedule[today],
+            workout: payload,
+          },
+        },
+      };
+    case SET_WORKOUT_COMPLETED:
+      return {
+        ...state,
+        schedule: {
+          ...state.schedule,
+          [today]: {
+            ...state.schedule[today],
+            workout: {
+              ...state.schedule[today].workout,
+              completed: payload,
+            },
+          },
+        },
       };
     default:
       return state;

@@ -9,6 +9,10 @@ body {
   width: 100%;
 }
 
+.width-100 {
+  width: 100%;
+}
+
 #root {
   user-select: none;
 }
@@ -62,8 +66,8 @@ body {
   font-size: 4rem;
   justify-content: center;
   user-select: none;
-
   border: 10px solid black;
+
   &.pressed {
     border-color: $success;
   }

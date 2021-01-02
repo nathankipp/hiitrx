@@ -1,3 +1,3 @@
-import Workout from './Workout';
+import WorkoutContainer from './WorkoutContainer';
 
-export default Workout;
+export default WorkoutContainer;

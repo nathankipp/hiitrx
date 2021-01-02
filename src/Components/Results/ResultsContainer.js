@@ -1,6 +1,37 @@
 import { connect } from 'react-redux';
 import Results from './Results';
 import { getFullDate, table } from '../../lib';
+import { setWorkout, updateHiitrx } from '../../redux/actions';
+
+const TESTS = [
+  { id: 'ac', name: 'Aerobic Capacity' },
+  { id: 'ap', name: 'Aerobic Power' },
+  { id: 'nc', name: 'Anaerobic Capacity' },
+];
+
+const getReadines = (schedule) =>
+  ['motivated', 'fast', 'sleep', 'sleepHours'].reduce(
+    (acc, cur) => acc + table[cur][schedule[cur]],
+    0
+  );
+
+const getNextTest = (schedule = {}) => {
+  const testsTaken = Object.keys(schedule)
+    .sort((a, b) => b.localeCompare(a))
+    .reduce(
+      (acc, cur) =>
+        cur !== getFullDate() &&
+        schedule[cur].workout &&
+        !acc.find((testId) => testId === schedule[cur].workout.fitnessTestId)
+          ? [...acc, schedule[cur].workout.fitnessTestId]
+          : acc,
+      []
+    );
+
+  return testsTaken.length < TESTS.length
+    ? TESTS.find((test) => !testsTaken.includes(test.id)) // first not taken
+    : TESTS.find((test) => test.id === testsTaken[testsTaken.length - 1]); // next in cycle
+};
 
 const getAvgSpeed = (lifts) => {
   const speeds = [...lifts.sort()];
@@ -14,19 +45,17 @@ const getAvgSpeed = (lifts) => {
   return Math.round(avg);
 };
 
-const getReadines = (schedule) =>
-  ['motivated', 'fast', 'sleep', 'sleepHours'].reduce(
-    (acc, cur) => acc + table[cur][schedule[cur]],
-    0
-  );
-
-const mapStateToProps = ({ schedule }) => {
+const mapStateToProps = ({ schedule, fitnessTests }) => {
   const sched = schedule[getFullDate()];
 
   return {
-    speed: getAvgSpeed(sched.lifts),
     readiness: getReadines(sched),
+    fitnessTests,
+    nextTest: getNextTest(schedule),
+    speed: getAvgSpeed(sched.lifts),
   };
 };
 
-export default connect(mapStateToProps)(Results);
+const mapDispatchToProps = { setWorkout, updateHiitrx };
+
+export default connect(mapStateToProps, mapDispatchToProps)(Results);
