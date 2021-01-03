@@ -11,6 +11,7 @@ function Results({
   fitnessTests,
   nextTest,
   speed,
+  getWorkout,
   setWorkout,
   updateHiitrx,
   history,
@@ -32,9 +33,9 @@ function Results({
     return saveAndNext();
   };
 
-  const getWorkout = () => {
+  const doWorkout = () => {
     setWorking([false, true]);
-    Promise.resolve(mockWorkout).then((workout) => {
+    getWorkout().then((workout) => {
       setWorkout(workout);
       return saveAndNext();
     });
@@ -78,7 +79,7 @@ function Results({
         <button
           className={`button is-black ${working[1] && 'is-loading'}`}
           disabled={working.includes(true)}
-          onClick={getWorkout}
+          onClick={doWorkout}
         >
           Get Workout
         </button>

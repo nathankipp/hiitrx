@@ -63,6 +63,11 @@ export const updateHiitrx = () => (_, getState) => {
   return fetchX('POST', `${API}/hiitrx`, { ...hiitrx, date: getFullDate() });
 };
 
+export const getWorkout = () => (_, getState) => {
+  const { hash } = getState();
+  return fetchX('GET', `${API}/workout?hash=${hash}`);
+};
+
 export const authenticate = ({ email, password }) => (dispatch) =>
   fetchX('POST', `${API}/auth`, { email, password })
     .then(({ hash }) => getHiitrx(hash)(dispatch))
