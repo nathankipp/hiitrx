@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import Results from './Results';
 import { getFullDate, table } from '../../lib';
-import { setWorkout, updateHiitrx } from '../../redux/actions';
+import { getWorkout, setWorkout, updateHiitrx } from '../../redux/actions';
 
 const TESTS = [
   { id: 'ac', name: 'Aerobic Capacity' },
@@ -56,6 +56,6 @@ const mapStateToProps = ({ schedule, fitnessTests }) => {
   };
 };
 
-const mapDispatchToProps = { setWorkout, updateHiitrx };
+const mapDispatchToProps = { getWorkout, setWorkout, updateHiitrx };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Results);
