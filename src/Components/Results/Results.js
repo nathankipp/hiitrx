@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import noop from 'lodash/noop';
 
-import mockWorkout from './mock-workout'; // TODO: remove
-
 const LOWER_LIMIT_SCORE = 85;
 
 function Results({
