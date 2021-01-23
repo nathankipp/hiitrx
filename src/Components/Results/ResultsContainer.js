@@ -21,7 +21,7 @@ const getNextTest = (schedule = {}) => {
     .reduce(
       (acc, cur) =>
         cur !== getFullDate() &&
-        schedule[cur].workout &&
+        schedule[cur].workout?.fitnessTestId &&
         !acc.find((testId) => testId === schedule[cur].workout.fitnessTestId)
           ? [...acc, schedule[cur].workout.fitnessTestId]
           : acc,
